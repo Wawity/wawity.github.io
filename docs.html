@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Документация — wawity</title>
+<meta name="description" content="Полная документация wawity: десктоп-клиент, CLI-консоль, установка на сервер, протоколы, kill switch, QoS, диагностика и решение проблем.">
+<link rel="icon" href="wawity.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09090b; --bg-soft:#0d0d10;
+  --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.16);
+  --t1:#f4f4f6; --t2:rgba(244,244,246,.64); --t3:rgba(244,244,246,.42);
+  --brand:#8b6bff; --brand-soft:#a68bff; --ok:#00e6c3; --warn:#ffcc66; --bad:#ff6b6b;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --f-head:'Archivo',system-ui,sans-serif;
+  --f-text:'Inter',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',Consolas,monospace;
+  --r-md:14px;
+  --header-h:64px;
+  --side-w:272px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:var(--f-text);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(760px 420px at 18% -6%,rgba(139,107,255,.13),transparent 62%),radial-gradient(620px 380px at 92% 8%,rgba(0,230,195,.07),transparent 60%)}
+a{color:inherit;text-decoration:none}
+button{font:inherit;background:none;border:none;color:inherit;cursor:pointer}
+ul,ol{list-style:none}
+::selection{background:rgba(139,107,255,.4)}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:6px}
+[id]{scroll-margin-top:calc(var(--header-h) + 26px)}
+.wide{font-family:var(--f-head);font-stretch:122%;font-weight:600;letter-spacing:-.005em}
+
+.site-header{position:fixed;inset-inline:0;top:0;z-index:100;height:var(--header-h);background:rgba(9,9,11,.82);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid var(--line)}
+.nav{max-width:1560px;margin:0 auto;padding:0 22px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo-mark{position:relative;width:24px;height:24px;flex-shrink:0}
+.logo-mark img{width:100%;height:100%;border-radius:7px;display:block}
+.logo-mark .logo-fb{display:none;width:100%;height:100%}
+.logo-mark.fallback img{display:none}
+.logo-mark.fallback .logo-fb{display:block}
+.brand-name{font-family:var(--f-head);font-stretch:122%;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.brand-name i{font-style:normal;color:var(--brand)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:100px;font-weight:600;white-space:nowrap;transition:transform .25s var(--ease),background .25s,border-color .25s,color .25s,box-shadow .25s}
+.btn-solid{background:var(--t1);color:#0a0a0c}
+.btn-solid:hover{background:#fff;transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--line-2);color:var(--t1)}
+.btn-ghost:hover{background:rgba(255,255,255,.05);transform:translateY(-1px)}
+.btn-sm{padding:8px 15px;font-size:13.5px}
+.burger{display:none;width:38px;height:38px;border:1px solid var(--line);border-radius:11px;align-items:center;justify-content:center}
+.burger svg{width:17px;height:17px}
+
+.shell{max-width:1560px;margin:0 auto;padding:calc(var(--header-h) + 26px) 22px 90px;display:grid;grid-template-columns:var(--side-w) minmax(0,1fr) 212px;gap:44px;align-items:start}
+
+.side{position:sticky;top:calc(var(--header-h) + 20px);max-height:calc(100vh - var(--header-h) - 40px);overflow-y:auto;padding-right:6px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.12) transparent}
+.side::-webkit-scrollbar{width:7px}
+.side::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:8px}
+.side-search{position:relative;margin-bottom:18px}
+.side-search input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:10px 12px 10px 34px;color:var(--t1);font-size:13.5px;font-family:var(--f-text);outline:none;transition:border-color .2s,background .2s}
+.side-search input::placeholder{color:var(--t3)}
+.side-search input:focus{border-color:rgba(139,107,255,.45);background:rgba(255,255,255,.055)}
+.side-search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--t3)}
+.side-group{margin-bottom:22px}
+.side-group h5{font-family:var(--f-head);font-stretch:125%;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,244,246,.72);padding:0 10px;margin-bottom:9px}
+.side a{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:9px;font-size:13.5px;color:var(--t2);transition:color .18s,background .18s}
+.side a .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.16);flex-shrink:0;transition:background .2s,box-shadow .2s}
+.side a:hover{color:var(--t1);background:rgba(255,255,255,.05)}
+.side a.active{color:var(--t1);background:linear-gradient(90deg,rgba(139,107,255,.14),rgba(139,107,255,.02));box-shadow:inset 2px 0 0 var(--brand)}
+.side a.active .dot{background:var(--brand);box-shadow:0 0 10px rgba(139,107,255,.8)}
+.side a.hidden,.side-group.hidden{display:none}
+.side-empty{display:none;padding:10px;font-size:13px;color:var(--t3)}
+.side-empty.show{display:block}
+
+.toc{position:sticky;top:calc(var(--header-h) + 20px);font-size:12.5px}
+.toc h5{font-family:var(--f-head);font-stretch:125%;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin-bottom:10px}
+.toc a{display:block;padding:5px 0 5px 12px;border-left:1px solid var(--line);color:var(--t3);transition:color .2s,border-color .2s}
+.toc a:hover,.toc a.active{color:var(--t1);border-color:var(--brand)}
+
+.doc{min-width:0}
+.doc-hero{position:relative;padding-bottom:30px;border-bottom:1px solid var(--line)}
+.kicker{display:inline-flex;align-items:baseline;gap:11px;margin-bottom:16px}
+.kicker b{font-family:var(--f-head);font-stretch:125%;font-size:24px;font-weight:700;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(166,139,255,.6)}
+.kicker em{font-style:normal;font-family:var(--f-mono);font-size:10.5px;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--t3)}
+.doc-hero h1{font-family:var(--f-head);font-stretch:120%;font-size:clamp(34px,4.6vw,54px);font-weight:700;letter-spacing:-.03em;line-height:1.06}
+.doc-hero p{color:var(--t2);margin-top:16px;max-width:640px}
+.meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border:1px solid var(--line);border-radius:100px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.chip i{width:5px;height:5px;border-radius:50%;background:linear-gradient(90deg,var(--brand),var(--ok))}
+
+section.block{padding:58px 0;border-bottom:1px solid rgba(255,255,255,.055)}
+section.block:last-child{border-bottom:none}
+section.block>h2{display:flex;align-items:baseline;gap:14px;font-family:var(--f-head);font-stretch:120%;font-size:clamp(23px,2.6vw,32px);font-weight:700;letter-spacing:-.028em;line-height:1.12}
+section.block>h2 .n{font-family:var(--f-head);font-stretch:125%;font-size:clamp(23px,2.6vw,32px);font-weight:700;color:transparent;-webkit-text-stroke:1px rgba(166,139,255,.45);flex-shrink:0}
+section.block:nth-of-type(even)>h2 .n{-webkit-text-stroke-color:rgba(0,230,195,.4)}
+section.block>.lead{color:var(--t2);margin-top:16px;max-width:720px;font-size:15.5px}
+h3{font-family:var(--f-head);font-stretch:114%;font-size:18px;font-weight:600;letter-spacing:-.01em;margin-top:38px}
+h3::before{content:'';display:block;width:24px;height:2px;border-radius:2px;margin-bottom:12px;background:linear-gradient(90deg,var(--brand),var(--ok))}
+p{color:var(--t2);margin-top:12px;font-size:15px}
+b,strong{color:var(--t1);font-weight:600}
+a.link{color:var(--brand-soft);border-bottom:1px solid rgba(166,139,255,.3)}
+a.link:hover{border-color:var(--brand-soft)}
+ul.list li,ol.list li{position:relative;padding-left:20px;color:var(--t2);font-size:15px;margin-top:9px}
+ul.list li::before{content:'';position:absolute;left:1px;top:11px;width:7px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brand),var(--ok))}
+ul.list,ol.list{margin-top:12px}
+ol.list{counter-reset:li}
+ol.list li{padding-left:30px;counter-increment:li}
+ol.list li::before{content:counter(li);position:absolute;left:0;top:0;font-family:var(--f-mono);font-size:11.5px;color:var(--brand-soft)}
+code{font-family:var(--f-mono);font-size:12.8px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:6px;padding:2px 6px;color:var(--t1);word-break:break-word}
+kbd{font-family:var(--f-mono);font-size:11.5px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1px solid var(--line-2);border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--t1)}
+
+.code{margin-top:20px;background:rgba(9,9,12,.94);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;box-shadow:0 24px 50px -26px rgba(0,0,0,.7)}
+.code-top{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.tl-dot{width:9px;height:9px;border-radius:50%}
+.code-file{margin-left:8px;font-family:var(--f-mono);font-size:10.5px;color:var(--t3)}
+.copy-btn{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--t3);padding:4px 9px;border-radius:8px;transition:.2s}
+.copy-btn:hover{color:var(--t1);background:rgba(255,255,255,.06)}
+.copy-btn svg{width:12px;height:12px}
+.code pre{padding:16px 18px;font-family:var(--f-mono);font-size:12.6px;line-height:1.85;color:rgba(244,244,246,.82);overflow-x:auto;white-space:pre}
+.code pre .c{color:rgba(244,244,246,.32)}
+.code pre .k{color:#c084fc}
+.code pre .s{color:#2be3c6}
+.code pre .g{color:#7ee787}
+
+.note{margin-top:22px;padding:1px 0 1px 18px;border-left:2px solid rgba(139,107,255,.55);font-size:14.6px;color:var(--t2)}
+.note .tag{display:block;font-family:var(--f-head);font-stretch:124%;font-size:10.5px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--brand-soft);margin-bottom:5px}
+.note .tag i{display:none}
+.note p{margin-top:6px}
+.note b{color:var(--t1)}
+.note.ok{border-left-color:rgba(0,230,195,.6)}
+.note.ok .tag{color:var(--ok)}
+.note.warn{border-left-color:rgba(255,204,102,.6)}
+.note.warn .tag{color:var(--warn)}
+.note.bad{border-left-color:rgba(255,107,107,.6)}
+.note.bad .tag{color:var(--bad)}
+
+.table-wrap{margin-top:20px;overflow-x:auto;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th{text-align:left;font-family:var(--f-head);font-stretch:120%;font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding:13px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+td{padding:12px 16px;color:var(--t2);border-bottom:1px solid rgba(255,255,255,.045);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:first-child{color:var(--t1)}
+
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+.card{position:relative;border:1px solid rgba(255,255,255,.055);border-radius:20px;padding:22px 24px;background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.006) 60%);overflow:hidden;transition:transform .4s var(--ease),border-color .4s}
+.card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .4s;pointer-events:none;background:radial-gradient(280px circle at var(--mx,50%) var(--my,0%),rgba(139,107,255,.12),transparent 70%)}
+.card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.12)}
+.card:hover::before{opacity:1}
+.card.ok::before{background:radial-gradient(280px circle at var(--mx,50%) var(--my,0%),rgba(0,230,195,.1),transparent 70%)}
+.card .ic{color:var(--brand-soft);margin-bottom:12px}
+.card.ok .ic{color:var(--ok)}
+.card .ic svg{width:21px;height:21px}
+.card h4{font-family:var(--f-head);font-stretch:114%;font-size:15.5px;font-weight:600}
+.card p{font-size:13.8px;margin-top:7px}
+.card .badge{position:absolute;top:16px;right:18px;font-family:var(--f-mono);font-size:9.5px;letter-spacing:.14em;color:var(--t3)}
+
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item:first-child{border-top:1px solid var(--line)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 2px;font-size:15px;font-weight:600;color:var(--t2);width:100%;text-align:left;transition:color .25s}
+.faq-q:hover{color:var(--t1)}
+.faq-ic{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .4s var(--ease),border-color .3s,background .3s}
+.faq-ic svg{width:12px;height:12px;color:var(--t3)}
+.faq-item.open .faq-q{color:var(--t1)}
+.faq-item.open .faq-ic{transform:rotate(45deg);border-color:rgba(139,107,255,.4);background:rgba(139,107,255,.08)}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+.faq-a>div{overflow:hidden}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a p{padding:0 40px 18px 2px;font-size:14.4px}
+
+.tr-list{margin-top:22px;border-top:1px solid var(--line)}
+.tr-item{border-bottom:1px solid var(--line);transition:background .3s}
+.tr-item.open{background:linear-gradient(90deg,rgba(139,107,255,.05),transparent 60%)}
+.tr-q{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;text-align:left;padding:16px 12px 16px 18px;font-size:14.6px;font-weight:600;color:var(--t2);position:relative;transition:color .25s}
+.tr-q::before{content:'';position:absolute;left:2px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:rgba(255,107,107,.55);transition:box-shadow .3s,background .3s}
+.tr-q:hover{color:var(--t1)}
+.tr-item.open .tr-q{color:var(--t1)}
+.tr-item.open .tr-q::before{background:var(--bad);box-shadow:0 0 12px rgba(255,107,107,.7)}
+.tr-ic{flex-shrink:0;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:13px;line-height:1;color:var(--t3);transition:border-color .3s,color .3s,background .3s}
+.tr-item.open .tr-ic{border-color:rgba(139,107,255,.45);color:var(--brand-soft);background:rgba(139,107,255,.09)}
+.tr-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}
+.tr-item.open .tr-a{grid-template-rows:1fr}
+.tr-a>div{overflow:hidden}
+.tr-a p{padding:0 40px 18px 18px;margin-top:0;font-size:14.4px}
+.tr-a .code,.tr-a ul.list,.tr-a ol.list{margin-left:18px;margin-right:20px;margin-bottom:18px}
+
+footer{border-top:1px solid var(--line);padding:44px 0 40px;background:var(--bg-soft)}
+.fwrap{max-width:1560px;margin:0 auto;padding:0 22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--t3)}
+footer a{color:var(--t2)}
+footer a:hover{color:var(--t1)}
+.mono{font-family:var(--f-mono)}
+.progress{position:fixed;top:var(--header-h);left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--brand),var(--ok));z-index:101}
+
+@media(max-width:1280px){.shell{grid-template-columns:246px minmax(0,1fr);gap:34px}.toc{display:none}}
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr;padding-top:calc(var(--header-h) + 18px)}
+  .side{position:fixed;top:var(--header-h);left:0;bottom:0;width:292px;max-height:none;background:rgba(9,9,11,.97);backdrop-filter:blur(20px);border-right:1px solid var(--line);padding:18px 14px 40px;transform:translateX(-102%);transition:transform .3s var(--ease);z-index:99}
+  .side.open{transform:none}
+  .burger{display:flex}
+  .grid2,.grid3{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+.btn-tg{gap:8px}.btn-tg svg{width:15px;height:15px;display:block;color:#2aabee}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="site-header">
+  <nav class="nav">
+    <div style="display:flex;align-items:center">
+      <a class="brand" href="index.html">
+        <span class="logo-mark">
+          <img src="wawity.ico" alt="" onerror="this.parentNode.classList.add('fallback')">
+          <svg class="logo-fb" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b6bff"/><stop offset="1" stop-color="#00b39c"/></linearGradient></defs><rect width="24" height="24" rx="7" fill="url(#lg1)"/><path d="M5.5 8.5l2.3 7L12 9.5l4.2 6L18.5 8.5" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-name">wawity<i>.</i></span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <a class="btn btn-ghost btn-sm btn-tg" href="https://t.me/wawityvpn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.94 4.3 18.7 19.4c-.24 1.07-.88 1.33-1.78.83l-4.92-3.63-2.37 2.29c-.27.26-.49.48-1 .48l.35-5.05 9.16-8.28c.4-.35-.09-.55-.62-.2L6.2 13.02 1.35 11.5c-1.05-.33-1.07-1.05.22-1.55L20.58 2.9c.88-.32 1.65.2 1.36 1.4z"/></svg>Telegram</a><a class="btn btn-ghost btn-sm" href="index.html">На главную</a>
+      <a class="btn btn-solid btn-sm" href="index.html#download">Скачать</a>
+      <button class="burger" id="burger" aria-label="Меню разделов" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="shell">
+  <aside class="side" id="side">
+    <div class="side-search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14.5" y2="14.5" stroke-linecap="round"/></svg>
+      <input id="navSearch" type="search" placeholder="Поиск по разделам…" autocomplete="off">
+    </div>
+    <div class="side-empty" id="sideEmpty">Ничего не найдено</div>
+
+    <div class="side-group">
+      <h5>Начало</h5>
+      <a href="#intro"><span class="dot"></span>Что такое wawity</a>
+      <a href="#editions"><span class="dot"></span>Desktop и CLI</a>
+      <a href="#requirements"><span class="dot"></span>Требования</a>
+      <a href="#quickstart"><span class="dot"></span>Быстрый старт</a>
+    </div>
+    <div class="side-group">
+      <h5>Установка</h5>
+      <a href="#install-desktop"><span class="dot"></span>Установщик Desktop</a>
+      <a href="#install-cli"><span class="dot"></span>Установщик CLI</a>
+      <a href="#install-server"><span class="dot"></span>Установка на сервер</a>
+      <a href="#uninstall"><span class="dot"></span>Удаление и очистка</a>
+      <a href="#build"><span class="dot"></span>Сборка из исходников</a>
+    </div>
+    <div class="side-group">
+      <h5>Десктоп-клиент</h5>
+      <a href="#gui-tour"><span class="dot"></span>Обзор интерфейса</a>
+      <a href="#gui-subs"><span class="dot"></span>Подписки</a>
+      <a href="#gui-servers"><span class="dot"></span>Серверы и пинг</a>
+      <a href="#gui-games"><span class="dot"></span>Игры и античиты</a>
+      <a href="#gui-traffic"><span class="dot"></span>Трафик и мониторинг</a>
+      <a href="#gui-settings"><span class="dot"></span>Настройки</a>
+      <a href="#gui-tray"><span class="dot"></span>Трей и автозапуск</a>
+    </div>
+    <div class="side-group">
+      <h5>CLI и консоль</h5>
+      <a href="#cli-intro"><span class="dot"></span>Как запускать</a>
+      <a href="#cli-shell"><span class="dot"></span>Консоль wawity</a>
+      <a href="#cli-commands"><span class="dot"></span>Все команды</a>
+      <a href="#cli-flags"><span class="dot"></span>Флаги и ключи</a>
+      <a href="#cli-dash"><span class="dot"></span>TUI-дашборд</a>
+      <a href="#cli-json"><span class="dot"></span>JSON и скрипты</a>
+      <a href="#cli-service"><span class="dot"></span>Автозапуск на сервере</a>
+    </div>
+    <div class="side-group">
+      <h5>Под капотом</h5>
+      <a href="#protocols"><span class="dot"></span>Протоколы</a>
+      <a href="#network"><span class="dot"></span>TUN, DNS, маршруты</a>
+      <a href="#killswitch"><span class="dot"></span>Kill switch</a>
+      <a href="#qos"><span class="dot"></span>Системный QoS</a>
+      <a href="#multihop"><span class="dot"></span>Multi-hop и post-quantum</a>
+      <a href="#files"><span class="dot"></span>Файлы и пути</a>
+      <a href="#env"><span class="dot"></span>Переменные окружения</a>
+    </div>
+    <div class="side-group">
+      <h5>Проблемы</h5>
+      <a href="#diagnostics"><span class="dot"></span>Как диагностировать</a>
+      <a href="#trouble-connect"><span class="dot"></span>Не подключается</a>
+      <a href="#trouble-net"><span class="dot"></span>Проблемы с сетью</a>
+      <a href="#trouble-cli"><span class="dot"></span>Проблемы CLI</a>
+      <a href="#trouble-build"><span class="dot"></span>Ошибки сборки</a>
+      <a href="#faq"><span class="dot"></span>FAQ</a>
+      <a href="#glossary"><span class="dot"></span>Глоссарий</a>
+    </div>
+  </aside>
+
+  <main class="doc" id="doc">
+    <div class="doc-hero">
+      <div class="kicker"><b>00</b><em>Документация</em></div>
+      <h1>Всё о wawity: от установки<br>до тонкой настройки</h1>
+      <p>Два продукта на одном ядре: десктоп-клиент с графическим интерфейсом и CLI-консоль для терминала и серверов. Ниже — полное описание обоих, внутренней механики сети и разбор всех известных проблем.</p>
+      <div class="meta-row">
+        <span class="chip"><i></i>Windows 10/11 · x64</span>
+        <span class="chip"><i></i>Rust + sing-box</span>
+        <span class="chip"><i></i>8 протоколов</span>
+        <span class="chip"><i></i>Обновлено 07.2026</span>
+      </div>
+    </div>
+    <section class="block" id="intro">
+      <h2><span class="n">01</span>Что такое wawity</h2>
+      <p class="lead">wawity — это клиент, а не VPN-провайдер. Он берёт вашу subscription-ссылку, разбирает её, поднимает туннель на ядре sing-box и управляет сетью Windows: маршрутами, DNS, файрволом и приоритетами трафика.</p>
+      <div class="grid3">
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6.5"/><ellipse cx="8" cy="8" rx="2.6" ry="6.5"/><line x1="1.5" y1="8" x2="14.5" y2="8"/></svg></div>
+          <h4>Транспорт</h4>
+          <p>VLESS, Reality, Hysteria 2, TUIC v5, VMess, Trojan, Shadowsocks и ShadowTLS — всё поднимается из одной ссылки.</p>
+        </div>
+        <div class="card ok">
+          <div class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="7" width="9" height="6.5" rx="1.5"/><path d="M5.5 7V4.5a2.5 2.5 0 0 1 5 0V7"/></svg></div>
+          <h4>Защита</h4>
+          <p>Kill switch живёт в Windows Firewall, а не в приложении. Убили процесс — трафик всё равно заблокирован.</p>
+        </div>
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 13h12M3 10l3-4 3 2 4-5"/></svg></div>
+          <h4>Производительность</h4>
+          <p>Игровой трафик идёт мимо туннеля и получает DSCP 46. Пинг в игре остаётся родным.</p>
+        </div>
+      </div>
+      <div class="note">
+        <div class="tag"><i></i>важно</div>
+        Для работы нужна действующая подписка у любого провайдера, поддерживающего эти протоколы. wawity не продаёт трафик и не имеет собственных серверов.
+      </div>
+    </section>
+
+    <section class="block" id="editions">
+      <h2><span class="n">02</span>Две редакции: Desktop и CLI</h2>
+      <p class="lead">Это два независимых продукта с отдельными установщиками. Ядро — сеть, парсер подписок, kill switch — у них общее, отличается только оболочка.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Параметр</th><th>Desktop</th><th>CLI</th></tr></thead>
+          <tbody>
+            <tr><td>Установщик</td><td><code>WawitySetup-Desktop.exe</code></td><td><code>WawitySetup-CLI.exe</code></td></tr>
+            <tr><td>Исполняемый файл</td><td><code>WawityApp.exe</code></td><td><code>wawity.exe</code></td></tr>
+            <tr><td>Интерфейс</td><td>Оконный GUI, трей, графики</td><td>Консоль с меню + TUI-дашборд</td></tr>
+            <tr><td>Требует GUI-сессию</td><td>Да</td><td>Нет, работает по SSH и RDP-консоли</td></tr>
+            <tr><td>Добавляется в PATH</td><td>Нет</td><td>Да, команда <code>wawity</code> из любой папки</td></tr>
+            <tr><td>Расход памяти</td><td>~60–90 МБ</td><td>~8–15 МБ</td></tr>
+            <tr><td>Кому подходит</td><td>Домашний ПК, игры</td><td>Слабые машины, серверы, автоматизация</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note warn">
+        <div class="tag"><i></i>не смешивать</div>
+        Не держите туннель обеими редакциями одновременно: они конкурируют за один TUN-адаптер <code>wawity-tun0</code> и один набор правил файрвола.
+      </div>
+    </section>
+
+    <section class="block" id="requirements">
+      <h2><span class="n">03</span>Требования</h2>
+      <ul class="list">
+        <li><b>ОС:</b> Windows 10 (1809+), Windows 11, Windows Server 2019/2022. Только x64.</li>
+        <li><b>Права:</b> подключение требует администратора — создаются TUN-адаптер и правила файрвола.</li>
+        <li><b>Диск:</b> ~60 МБ для Desktop, ~28 МБ для CLI.</li>
+        <li><b>Сеть:</b> исходящий доступ к серверам подписки. Порты не пробрасываются, входящих соединений нет.</li>
+        <li><b>Опционально:</b> WebView2 Runtime для Desktop — установщик поставит его сам, если не найдёт.</li>
+      </ul>
+      <div class="note">
+        <div class="tag"><i></i>антивирусы</div>
+        Создание TUN-адаптера и правил файрвола — типичное поведение VPN, но некоторые антивирусы реагируют эвристикой. Если файл удаляется при распаковке, добавьте папку установки в исключения.
+      </div>
+    </section>
+
+    <section class="block" id="quickstart">
+      <h2><span class="n">04</span>Быстрый старт</h2>
+      <h3>Desktop за 3 шага</h3>
+      <ol class="list">
+        <li>Запустите <code>WawitySetup-Desktop.exe</code>, подтвердите UAC, дождитесь распаковки.</li>
+        <li>В окне клиента вставьте ссылку подписки и нажмите «Добавить».</li>
+        <li>Нажмите «Подключиться» или выберите сервер вручную по замеренному пингу.</li>
+      </ol>
+      <h3>CLI за 3 команды</h3>
+      <div class="code">
+        <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">cmd.exe (от администратора)</span><button class="copy-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M5 16V6a2 2 0 0 1 2-2h10"/></svg><span>Копировать</span></button></div>
+<pre><span class="c">:: 1. добавить подписку</span>
+wawity sub add https://panel.example/sub/TOKEN --name main
+
+<span class="c">:: 2. посмотреть серверы с пингом</span>
+wawity servers --ping
+
+<span class="c">:: 3. подключиться к самому быстрому</span>
+wawity connect fastest</pre>
+      </div>
+      <div class="note ok">
+        <div class="tag"><i></i>совет</div>
+        Наберите просто <code>wawity</code> — откроется интерактивная консоль, где всё то же самое делается выбором цифр.
+      </div>
+    </section>
+
+    <section class="block" id="install-desktop">
+      <h2><span class="n">05</span>Установщик Desktop</h2>
+      <p class="lead">Один самодостаточный <code>.exe</code>: без сторонних инсталляторов и без загрузки компонентов из интернета, кроме WebView2 при его отсутствии.</p>
+      <h3>Что делает установщик</h3>
+      <ul class="list">
+        <li>Распаковывает <code>WawityApp.exe</code> и ядро в <code>C:\Program Files\Wawity</code>.</li>
+        <li>Создаёт ярлыки в меню «Пуск» и, по желанию, на рабочем столе.</li>
+        <li>Регистрирует запись в «Программы и компоненты» для корректного удаления.</li>
+        <li>Опционально включает автозапуск при входе в систему.</li>
+      </ul>
+      <div class="note warn">
+        <div class="tag"><i></i>внимание</div>
+        Если в папке уже лежит запущенный клиент, установщик попросит его закрыть. Не игнорируйте: перезапись работающего <code>WawityApp.exe</code> оставит систему с полуобновлённым ядром.
+      </div>
+    </section>
+
+    <section class="block" id="install-cli">
+      <h2><span class="n">06</span>Установщик CLI</h2>
+      <p class="lead">Отдельный продукт со своим инсталлятором. На экране установки явно написано, что это консольная редакция и чем она отличается от обычной.</p>
+      <ul class="list">
+        <li>Кладёт <code>wawity.exe</code> и ядро в <code>C:\Program Files\Wawity</code>.</li>
+        <li>Добавляет папку в системный <code>PATH</code> и прописывает <code>WAWITY_HOME</code>.</li>
+        <li>Рассылает системе уведомление об изменении окружения, чтобы новые окна терминала сразу видели команду.</li>
+        <li>Создаёт ярлык «Wawity Console», открывающий консоль сразу в режиме wawity.</li>
+        <li>Не ставит WebView2 и не создаёт оконных ярлыков.</li>
+      </ul>
+      <div class="note bad">
+        <div class="tag"><i></i>команда не найдена</div>
+        Ошибка <code>«wawity» не является внутренней или внешней командой</code> означает, что окно терминала было открыто до установки. Закройте и откройте его заново, затем проверьте <code>where wawity</code>.
+      </div>
+      <h3>Портативный запуск</h3>
+      <p>CLI не требует установки: достаточно <code>wawity.exe</code> рядом с ядром. Данные всё равно сохраняются в профиле пользователя — см. <a class="link" href="#files">раздел 29</a>.</p>
+    </section>
+
+    <section class="block" id="install-server">
+      <h2><span class="n">07</span>Установка на сервер без GUI</h2>
+      <p class="lead">Для Windows Server, машин без графической оболочки и развёртывания по SSH есть headless-режим: установщик не рисует окно, а печатает лог в текущую консоль.</p>
+      <div class="code">
+        <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">развёртывание на сервере</span><button class="copy-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M5 16V6a2 2 0 0 1 2-2h10"/></svg><span>Копировать</span></button></div>
+<pre><span class="c">:: вариант 1 — специально собранный файл</span>
+WawitySetup-CLI-serverinstall.exe
+
+<span class="c">:: вариант 2 — обычный CLI-установщик с ключом</span>
+WawitySetup-CLI.exe -serverinstall
+WawitySetup-CLI.exe -serverinstall -dir "D:\wawity"
+
+<span class="c">:: удаление без окон</span>
+WawitySetup-CLI.exe -serverinstall -uninstall</pre>
+      </div>
+      <h3>Чем отличается серверный режим</h3>
+      <ul class="list">
+        <li>Не создаются ярлыки рабочего стола и меню «Пуск».</li>
+        <li>Не проверяется и не ставится WebView2.</li>
+        <li>Весь прогресс печатается в консоль вызывающего процесса.</li>
+        <li><code>PATH</code> и <code>WAWITY_HOME</code> прописываются на уровне машины, а не пользователя.</li>
+      </ul>
+      <div class="note">
+        <div class="tag"><i></i>после установки</div>
+        Проверьте цепочку: <code>wawity --version</code> → <code>wawity sub add &lt;url&gt;</code> → <code>wawity connect fastest</code> → <code>wawity status</code>.
+      </div>
+    </section>
+
+    <section class="block" id="uninstall">
+      <h2><span class="n">08</span>Удаление и полная очистка</h2>
+      <ol class="list">
+        <li>Отключите туннель: <code>wawity disconnect</code> или кнопка в GUI — это снимет правила файрвола.</li>
+        <li>Удалите продукт через «Параметры → Приложения» или запустив установщик повторно.</li>
+        <li>Деинсталлятор уберёт записи из PATH, задачу <code>WawityAutostart</code> и правила <code>WawityFW_*</code>.</li>
+        <li>Пользовательские данные удаляются отдельным флажком в мастере.</li>
+      </ol>
+      <div class="note warn">
+        <div class="tag"><i></i>если что-то осталось</div>
+        Ручная зачистка: удалите правила по маске <code>WawityFW_</code> через <code>netsh advfirewall firewall delete rule</code>, затем выполните <code>wawity repair</code> или перезагрузите машину.
+      </div>
+    </section>
+
+    <section class="block" id="build">
+      <h2><span class="n">09</span>Сборка из исходников</h2>
+      <p class="lead">В корне репозитория лежит <code>build.bat</code> — интерактивное меню сборки. Оно собирает продукт и сразу упаковывает соответствующий установщик.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Пункт</th><th>Что делает</th><th>Результат</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Фронтенд, Rust-бэкенд и десктоп-установщик</td><td><code>dist-build\WawitySetup-Desktop.exe</code></td></tr>
+            <tr><td>2</td><td>CLI и консольный установщик</td><td><code>WawitySetup-CLI.exe</code> и <code>-serverinstall</code></td></tr>
+            <tr><td>3</td><td>Оба продукта подряд</td><td>все три файла</td></tr>
+            <tr><td>4</td><td>Очистка артефактов сборки</td><td>—</td></tr>
+            <tr><td>5</td><td>Диагностика конфигураций cargo и зеркал</td><td>отчёт в консоли</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Требования к окружению</h3>
+      <ul class="list">
+        <li>Rust stable (MSVC) и Visual Studio Build Tools с компонентом C++.</li>
+        <li>Node.js LTS — только для десктоп-фронтенда, для CLI не нужен.</li>
+        <li>Стабильный доступ к crates.io; при проблемах с зеркалами — <code>fix-cargo-mirror.bat</code>.</li>
+      </ul>
+      <p>Перед сборкой скрипт удаляет старые бинарники и проверяет, что в пакет попал именно нужный исполняемый файл — это защита от ситуации, когда CLI-установщик по ошибке содержал десктопное приложение.</p>
+    </section>
+    <section class="block" id="gui-tour">
+      <h2><span class="n">10</span>Обзор интерфейса</h2>
+      <p class="lead">Десктоп-клиент — это окно с собственной титульной строкой и вертикальной навигацией слева. Разделов ровно четыре — больше ничего искать не придётся.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Раздел</th><th>Адрес</th><th>Что там</th></tr></thead>
+          <tbody>
+            <tr><td>Подключение</td><td><code>/</code></td><td>Главная кнопка, статус защиты, быстрые метрики сессии</td></tr>
+            <tr><td>Анализ</td><td><code>/analysis</code></td><td>Графики трафика и пинга, техническая карточка подключения, логи</td></tr>
+            <tr><td>Серверы</td><td><code>/servers</code></td><td>Подписки, список серверов, пинг, автовыбор, входной узел multi-hop</td></tr>
+            <tr><td>Настройки</td><td><code>/settings</code></td><td>Безопасность, подключение, приватность, внешний вид, обход приложений</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Окно и навигация</h3>
+      <ul class="list">
+        <li>Сверху — собственная титульная строка с иконкой, названием <b>wawity</b> и кнопками свернуть / развернуть / закрыть. Окно таскается за эту полосу.</li>
+        <li>Слева — сайдбар с четырьмя пунктами и подсветкой-пилюлей активного раздела; внизу сайдбара показана версия.</li>
+        <li>Если окно сузить, сайдбар заменяется нижней панелью с теми же четырьмя вкладками.</li>
+        <li>На каждой странице своя анимированная сцена на фоне: чёрная дыра на «Подключении», пульсар в «Настройках», туманность в «Анализе» и Земля в «Серверах». Всё это отключается одним тумблером «Космические объекты на фоне».</li>
+        <li>Всплывающие уведомления (тосты) появляются поверх любого раздела, опасные действия спрашивают подтверждение в модальном окне.</li>
+      </ul>
+      <h3>Главный экран «Подключение»</h3>
+      <ul class="list">
+        <li><b>Статус</b> — одно из четырёх состояний: <b>Защищено</b>, <b>Подключение…</b>, <b>Заблокировано</b> (работает Always-On) и <b>Не защищено</b>.</li>
+        <li><b>Кнопка</b> по центру переключает Подключить / Отключить. Если сервер не выбран, клиент пишет «Сначала выберите сервер» и отправляет в раздел «Серверы».</li>
+        <li><b>Бейджи режимов</b> под кнопкой показывают, включены ли Kill Switch, Always-On и Multi-hop.</li>
+        <li><b>Метрики</b>: Пинг, Загрузка, Отдача и длительность Сессии. Сразу после подключения вместо пинга коротко горит «измерение…».</li>
+        <li>При включённом Always-On и отсутствии туннеля сверху висит предупреждающий баннер о том, что интернет заблокирован.</li>
+      </ul>
+      <div class="note">
+        <div class="tag"><i></i>горячие клавиши</div>
+        В настройках можно назначить глобальное сочетание клавиш для переключения подключения — оно работает, даже когда окно скрыто в трей.
+      </div>
+    </section>
+
+    <section class="block" id="gui-subs">
+      <h2><span class="n">11</span>Подписки</h2>
+      <p class="lead">Подписки живут в разделе «Серверы». Своих серверов у wawity нет: вы подключаете свою ссылку от любого провайдера.</p>
+      <ol class="list">
+        <li>Вставьте ссылку в поле <b>«Вставьте URL подписки…»</b> и нажмите <b>Загрузить</b>.</li>
+        <li>Клиент покажет, сколько серверов нашлось, и спросит подтверждение «Добавить подписку?».</li>
+        <li>После добавления подписка становится группой в списке серверов.</li>
+      </ol>
+      <h3>Действия над подпиской</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Кнопка</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td>Обновить</td><td>Перечитывает ссылку и показывает разницу: <code>+N новых</code>, <code>-N удалено</code> или «Актуально»</td></tr>
+            <tr><td>Пинг</td><td>Массово измеряет задержку серверов этой подписки</td></tr>
+            <tr><td>Авто</td><td>Выбирает самый быстрый сервер и подключается к нему</td></tr>
+            <tr><td>Удалить</td><td>Сносит подписку и все её серверы после подтверждения</td></tr>
+            <tr><td>Обновить все</td><td>Проходит по всем подпискам сразу и сообщает итог</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Если панель отдаёт срок действия, рядом с подпиской появляется отсчёт вроде «осталось 12 дн.», а после окончания — метка «Истекла», и серверы становятся недоступны.</p>
+      <div class="note warn">
+        <div class="tag"><i></i>частая ошибка</div>
+        Ссылка подписки — это не ссылка на личный кабинет. Нужен адрес, который отдаёт текст со ссылками <code>vless://</code>, <code>vmess://</code>, <code>trojan://</code> или base64-блок. Откройте его в браузере — если видите обычную веб-страницу, это не та ссылка.
+      </div>
+    </section>
+
+    <section class="block" id="gui-servers">
+      <h2><span class="n">12</span>Выбор сервера</h2>
+      <ul class="list">
+        <li><b>Два вида.</b> В настройках выбирается «Колонки» (страна → серверы) или «Глобус» — серверы маркерами на вращающейся Земле.</li>
+        <li><b>Поиск.</b> Поле «Поиск серверов…» фильтрует список по имени и стране.</li>
+        <li><b>Пинг.</b> Кнопка «Пинг» в шапке измеряет все серверы сразу, цвет значения показывает качество.</li>
+        <li><b>Авто.</b> Подключает к самому быстрому из доступных серверов.</li>
+        <li><b>Флаги и гео.</b> Страна определяется по имени сервера; точнее — только с включённой онлайн-геолокацией, которая отправляет IP серверов стороннему сервису.</li>
+        <li><b>Multi-hop.</b> Если режим включён, сверху появляется баннер, а у каждого сервера — значок «назначить входным узлом». Текущий вход показан в баннере.</li>
+      </ul>
+      <div class="note ok">
+        <div class="tag"><i></i>совет</div>
+        Для игр смотрите не на страну, а на пинг: ближайший географически сервер не всегда самый быстрый по маршруту.
+      </div>
+    </section>
+
+    <section class="block" id="gui-games">
+      <h2><span class="n">13</span>Игры и раздельное туннелирование</h2>
+      <p class="lead">Блок «Раздельное туннелирование» в настройках: приложения из списка ходят мимо туннеля и видят ваш реальный IP.</p>
+      <h3>Три способа добавить приложение</h3>
+      <ul class="list">
+        <li><b>Из файла</b> — выбрать <code>.exe</code> вручную или ввести путь вроде <code>C:\Program Files\App\app.exe</code>.</li>
+        <li><b>Установленные приложения</b> — список с поиском, отмечаете нужное галочками.</li>
+        <li><b>Найти игры</b> — автоматическое сканирование установок Steam, Epic Games, Riot и Battle.net плюс запущенных процессов.</li>
+      </ul>
+      <p>Сканер собирает не только <code>.exe</code> самой игры, но и её лаунчер с анти-читом — группой. Для полного обхода нужны все компоненты группы, иначе анти-чит пойдёт через туннель, а игра мимо, и матчмейкинг может ругаться.</p>
+      <p>Отмеченное добавляется кнопкой <b>«Добавить выбранное в обход»</b> и попадает в список <b>«Приложения в обходе»</b>. Если новая конфигурация не применилась, клиент сам откатывает список к последнему рабочему состоянию.</p>
+      <div class="note bad">
+        <div class="tag"><i></i>ответственность</div>
+        Любое приложение в списке обхода работает без VPN и без защиты kill switch. Добавляйте туда только то, что действительно должно видеть ваш реальный адрес.
+      </div>
+    </section>
+
+    <section class="block" id="gui-traffic">
+      <h2><span class="n">14</span>Анализ трафика</h2>
+      <p class="lead">Раздел «Анализ» показывает текущую сессию в реальном времени — без истории посещений и без содержимого трафика.</p>
+      <div class="grid2">
+        <div class="card">
+          <h4>Верхние показатели</h4>
+          <p>Текущий пинг, Загружено и Отправлено за сессию, скорость загрузки и отдачи, состояние kill switch.</p>
+        </div>
+        <div class="card ok">
+          <h4>Пропускная способность</h4>
+          <p>Живой график с двумя линиями — Загрузка и Отправка. Рядом — история пинга с пиковым и средним значением.</p>
+        </div>
+        <div class="card">
+          <h4>Карточка подключения</h4>
+          <p>Статус, сервер, входной сервер при multi-hop, имя сетевого интерфейса, PID процесса ядра и длительность сессии.</p>
+        </div>
+        <div class="card">
+          <h4>Логи</h4>
+          <p>Живая лента сообщений ядра. Именно сюда стоит смотреть первым делом, если подключение срывается.</p>
+        </div>
+      </div>
+      <div class="note">
+        <div class="tag"><i></i>откуда цифры</div>
+        Счётчики читаются с TUN-адаптера самой Windows, а не из перехвата трафика. Клиент видит только объём и скорость, но не то, что внутри.
+      </div>
+    </section>
+
+    <section class="block" id="gui-settings">
+      <h2><span class="n">15</span>Настройки</h2>
+      <p class="lead">Все переключатели собраны в одном разделе и разбиты на группы. Изменения применяются кнопкой <b>Сохранить настройки</b>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Группа</th><th>Что внутри</th></tr></thead>
+          <tbody>
+            <tr><td>Безопасность</td><td>Kill switch, блокировка Always-On, постквантовое шифрование X25519 + ML-KEM768</td></tr>
+            <tr><td>Подключение</td><td>Запуск при старте системы, автоподключение, доступ к LAN, multi-hop, строгая маршрутизация, bootstrap DNS</td></tr>
+            <tr><td>Приватность</td><td>Блокировка трекеров, защита от DNS-утечек, трафик самого приложения через туннель, уведомления, анонимная статистика, язык</td></tr>
+            <tr><td>Внешний вид</td><td>Космические объекты на фоне и их детализация, вид выбора сервера (колонки или глобус), текстуры Земли, жидкое стекло, Discord Rich Presence</td></tr>
+            <tr><td>Горячие клавиши</td><td>Глобальное сочетание «подключить / отключить»</td></tr>
+            <tr><td>Раздельное туннелирование</td><td>Список приложений в обходе и поиск игр</td></tr>
+            <tr><td>О приложении</td><td>Версия и экстренное восстановление сети</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Что важно знать</h3>
+      <ul class="list">
+        <li><b>Always-On</b> и <b>выключение kill switch</b> требуют подтверждения — это не случайные тумблеры.</li>
+        <li><b>Строгая маршрутизация</b> гонит в туннель всё без исключений и может ломать сетевые принтеры и общие папки.</li>
+        <li><b>Разрешить небезопасный TLS</b> стоит включать только если вы полностью доверяете панели провайдера.</li>
+        <li><b>Онлайн-геолокация</b> отправляет IP серверов стороннему сервису ради флагов; выключенная — страна определяется только по имени.</li>
+        <li><b>Сбросить по умолчанию</b> возвращает все настройки, включая автозапуск и список обхода.</li>
+      </ul>
+      <div class="note warn">
+        <div class="tag"><i></i>если пропал интернет</div>
+        В блоке «О приложении» есть <b>Экстренное восстановление сети</b>: оно принудительно завершает процесс VPN и снимает все правила файрвола. Аналог в консоли — <code>wawity repair</code>.
+      </div>
+    </section>
+
+    <section class="block" id="gui-tray">
+      <h2><span class="n">16</span>Трей и уведомления</h2>
+      <ul class="list">
+        <li>Закрытие окна не рвёт туннель — клиент продолжает работать в трее.</li>
+        <li>Из трея доступно компактное окно со статусом и переключением подключения.</li>
+        <li>С включённым «Запуском при старте системы» приложение стартует тихо, без окна.</li>
+        <li>Уведомления сообщают о подключении, обрыве, сработавшем kill switch и об обновлённых подписках. Отключаются в группе «Приватность».</li>
+        <li>Глобальная горячая клавиша работает и при скрытом окне.</li>
+      </ul>
+    </section>
+    <section class="block" id="cli-intro">
+      <h2><span class="n">17</span>CLI: как запускать</h2>
+      <p class="lead">Одна команда <code>wawity</code> работает в трёх режимах: интерактивная консоль, разовые команды и живой дашборд.</p>
+      <div class="grid3">
+        <div class="card"><h4><code>wawity</code></h4><p>Без аргументов открывает интерактивную консоль с меню, ASCII-логотипом и выбором по цифрам.</p></div>
+        <div class="card ok"><h4><code>wawity &lt;команда&gt;</code></h4><p>Разовое действие и выход. Подходит для скриптов, планировщика и удалённого управления.</p></div>
+        <div class="card"><h4><code>wawity dash</code></h4><p>Полноэкранный TUI-дашборд с живыми графиками и управлением с клавиатуры.</p></div>
+      </div>
+      <div class="note warn">
+        <div class="tag"><i></i>права</div>
+        Все операции с туннелем требуют администратора. Консоль предупреждает об отсутствии прав ещё до попытки подключения.
+      </div>
+    </section>
+
+    <section class="block" id="cli-shell">
+      <h2><span class="n">18</span>Консоль wawity</h2>
+      <p class="lead">При запуске экран очищается, появляется цветной ASCII-логотип, анимированный маскот и меню. После каждой команды экран перерисовывается, поэтому логотип и строка состояния всегда остаются сверху.</p>
+      <div class="code">
+        <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">wawity console</span></div>
+<pre><span class="k">W A W I T Y</span>   <span class="c">secure tunnel console v0.1.0</span>
+
+  <span class="g">●</span> Германия    ↓ 12.4 МБ (350 КБ/с)    ↑ 1.1 МБ (28 КБ/с)
+  <span class="g">kill-switch: активен</span>   post-quantum   pid 8124   серверов: 9
+--------------------------------------------------------------------
+  1 подключить . 2 быстро . 3 отключить . 4 серверы . 5 статус
+  6 подписки . 7 настройки . 8 сеть . 9 панель . m меню . 0 выход
+
+  <span class="s">wawity &gt;</span> _</pre>
+      </div>
+      <h3>Клавиши главного меню</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Ввод</th><th>Действие</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>1</kbd></td><td>Выбор сервера по номеру и подключение</td></tr>
+            <tr><td><kbd>2</kbd></td><td>Быстрое подключение к серверу с минимальным пингом</td></tr>
+            <tr><td><kbd>3</kbd></td><td>Отключение туннеля</td></tr>
+            <tr><td><kbd>4</kbd></td><td>Список серверов с массовым замером задержки</td></tr>
+            <tr><td><kbd>5</kbd></td><td>Статус: сервер, PID, интерфейс, kill switch, трафик, скорость</td></tr>
+            <tr><td><kbd>6</kbd></td><td>Меню подписок: добавить, обновить, удалить</td></tr>
+            <tr><td><kbd>7</kbd></td><td>Настройки: kill switch, post-quantum, multi-hop, DNS</td></tr>
+            <tr><td><kbd>8</kbd></td><td>Восстановление сети: сброс правил, маршрутов и DNS</td></tr>
+            <tr><td><kbd>9</kbd></td><td>Запуск TUI-дашборда</td></tr>
+            <tr><td><kbd>m</kbd></td><td>Показать полное меню</td></tr>
+            <tr><td><kbd>r</kbd></td><td>Перечитать серверы из всех подписок</td></tr>
+            <tr><td><kbd>h</kbd></td><td>Справка по командам</td></tr>
+            <tr><td><kbd>0</kbd></td><td>Выход из консоли (туннель остаётся поднятым)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Клавиши в списке серверов</h3>
+      <p><kbd>n</kbd> следующая страница &middot; <kbd>b</kbd> предыдущая &middot; <kbd>p</kbd> замерить пинг &middot; <kbd>s</kbd> сортировка по задержке &middot; <kbd>f текст</kbd> фильтр &middot; <kbd>a</kbd> сбросить фильтр &middot; <kbd>0</kbd> назад. Ввод номера подключает выбранный сервер; звёздочкой отмечен последний использованный узел.</p>
+      <h3>Текстовые команды внутри консоли</h3>
+      <p>Помимо цифр консоль понимает слова и терпит лишний префикс: <code>connect 3</code>, <code>sub add &lt;url&gt;</code>, <code>wawity sub add &lt;url&gt;</code> и <code>status</code> будут поняты одинаково. Ссылка автоматически очищается от кавычек, угловых скобок и markdown-обёртки.</p>
+    </section>
+
+    <section class="block" id="cli-commands">
+      <h2><span class="n">19</span>Полный список команд</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Команда</th><th>Что делает</th></tr></thead>
+          <tbody>
+            <tr><td><code>wawity</code></td><td>Интерактивная консоль</td></tr>
+            <tr><td><code>wawity console</code></td><td>То же самое явно</td></tr>
+            <tr><td><code>wawity dash</code></td><td>TUI-дашборд</td></tr>
+            <tr><td><code>wawity sub add &lt;url&gt;</code></td><td>Добавить подписку, сразу проверив её</td></tr>
+            <tr><td><code>wawity sub list</code></td><td>Список подписок с идентификаторами</td></tr>
+            <tr><td><code>wawity sub refresh [id]</code></td><td>Обновить все подписки или одну</td></tr>
+            <tr><td><code>wawity sub rm &lt;id&gt;</code></td><td>Удалить подписку</td></tr>
+            <tr><td><code>wawity servers</code></td><td>Список серверов из всех подписок</td></tr>
+            <tr><td><code>wawity servers --ping</code></td><td>То же с параллельным замером задержки</td></tr>
+            <tr><td><code>wawity connect &lt;имя|номер&gt;</code></td><td>Подключиться к конкретному серверу</td></tr>
+            <tr><td><code>wawity connect fastest</code></td><td>Подключиться к самому быстрому</td></tr>
+            <tr><td><code>wawity switch &lt;имя&gt;</code></td><td>Сменить сервер без полного разрыва</td></tr>
+            <tr><td><code>wawity disconnect</code></td><td>Разорвать туннель и снять правила</td></tr>
+            <tr><td><code>wawity status</code></td><td>Состояние, трафик, скорость, kill switch</td></tr>
+            <tr><td><code>wawity status --watch</code></td><td>Непрерывное обновление статуса</td></tr>
+            <tr><td><code>wawity repair</code></td><td>Сброс маршрутов, DNS и правил файрвола</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Примеры</h3>
+      <div class="code">
+        <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">типовые сценарии</span><button class="copy-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M5 16V6a2 2 0 0 1 2-2h10"/></svg><span>Копировать</span></button></div>
+<pre><span class="c">:: подключиться к третьему серверу списка в фоне</span>
+wawity connect 3
+
+<span class="c">:: подключиться в переднем плане, Ctrl+C = отключение</span>
+wawity connect fastest --fg
+
+<span class="c">:: цепочка: вход через Хельсинки, выход через Германию</span>
+wawity connect "Германия" --entry "Хельсинки"
+
+<span class="c">:: подключение без блокировки трафика при обрыве</span>
+wawity connect fastest --no-killswitch
+
+<span class="c">:: живой мониторинг</span>
+wawity status --watch</pre>
+      </div>
+    </section>
+
+    <section class="block" id="cli-flags">
+      <h2><span class="n">20</span>Флаги и ключи</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Флаг</th><th>Где применим</th><th>Смысл</th></tr></thead>
+          <tbody>
+            <tr><td><code>--entry &lt;имя&gt;</code></td><td>connect</td><td>Промежуточный сервер входа (multi-hop)</td></tr>
+            <tr><td><code>--no-killswitch</code></td><td>connect</td><td>Не включать блокировку трафика при обрыве</td></tr>
+            <tr><td><code>--no-quantum</code></td><td>connect</td><td>Отключить post-quantum обмен ключами</td></tr>
+            <tr><td><code>--fg</code></td><td>connect</td><td>Держать туннель в текущем процессе, выход по Ctrl+C</td></tr>
+            <tr><td><code>--ping</code></td><td>servers</td><td>Замерить задержку до всех серверов</td></tr>
+            <tr><td><code>--watch</code></td><td>status</td><td>Обновлять состояние непрерывно</td></tr>
+            <tr><td><code>--name &lt;имя&gt;</code></td><td>sub add</td><td>Человекочитаемое имя подписки</td></tr>
+            <tr><td><code>--json</code></td><td>любая</td><td>Машинночитаемый вывод вместо оформленного</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <div class="tag"><i></i>фон против переднего плана</div>
+        Без <code>--fg</code> туннель живёт после выхода из команды: процесс ядра отсоединяется, а его состояние записывается в файл. Поэтому <code>wawity status</code> из другого окна всё равно видит соединение, PID и счётчики трафика.
+      </div>
+    </section>
+
+    <section class="block" id="cli-dash">
+      <h2><span class="n">21</span>TUI-дашборд</h2>
+      <p class="lead">Команда <code>wawity dash</code> открывает полноэкранную панель: график скорости, список серверов, состояние правил и лог событий.</p>
+      <ul class="list">
+        <li>Навигация стрелками или <kbd>j</kbd>/<kbd>k</kbd>, подключение — <kbd>Enter</kbd>.</li>
+        <li><kbd>p</kbd> замер пинга, <kbd>d</kbd> отключение, <kbd>r</kbd> обновление подписок.</li>
+        <li><kbd>q</kbd> или <kbd>Esc</kbd> выход из панели; туннель при этом не разрывается.</li>
+        <li>Панель корректно работает по SSH и в Windows Terminal; в устаревшем консольном хосте возможны артефакты рамок.</li>
+      </ul>
+    </section>
+
+    <section class="block" id="cli-json">
+      <h2><span class="n">22</span>JSON-вывод и автоматизация</h2>
+      <p>С флагом <code>--json</code> команды печатают структуру вместо оформленного текста — удобно для мониторинга и скриптов.</p>
+      <div class="code">
+        <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">powershell</span><button class="copy-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M5 16V6a2 2 0 0 1 2-2h10"/></svg><span>Копировать</span></button></div>
+<pre><span class="c"># поднять туннель, если он упал</span>
+$s = wawity status --json | ConvertFrom-Json
+<span class="k">if</span> (-not $s.connected) { wawity connect fastest }
+
+<span class="c"># выгрузить список серверов с пингом</span>
+wawity servers --ping --json &gt; servers.json</pre>
+      </div>
+      <h3>Поля статуса</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Поле</th><th>Тип</th><th>Значение</th></tr></thead>
+          <tbody>
+            <tr><td><code>connected</code></td><td>bool</td><td>Туннель поднят</td></tr>
+            <tr><td><code>pid</code></td><td>number</td><td>PID процесса ядра</td></tr>
+            <tr><td><code>kill_switch</code></td><td>bool</td><td>Блокировка активна</td></tr>
+            <tr><td><code>always_on_locked</code></td><td>bool</td><td>Сеть заблокирована при отключённом туннеле</td></tr>
+            <tr><td><code>multihop</code></td><td>bool</td><td>Используется цепочка серверов</td></tr>
+            <tr><td><code>interface</code></td><td>string</td><td>Имя TUN-адаптера</td></tr>
+            <tr><td><code>server_name</code></td><td>string</td><td>Выходной сервер</td></tr>
+            <tr><td><code>entry_server_name</code></td><td>string</td><td>Входная точка при multi-hop</td></tr>
+            <tr><td><code>bytes_rx</code> / <code>bytes_tx</code></td><td>number</td><td>Принято и отправлено байт</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block" id="cli-service">
+      <h2><span class="n">23</span>Автозапуск и постоянный туннель</h2>
+      <ol class="list">
+        <li>Настройте подписку и убедитесь, что подключение проходит вручную.</li>
+        <li>Включите автозапуск — создаётся задача планировщика <code>WawityAutostart</code> с повышенными правами.</li>
+        <li>Для сервера включите always-on: сеть будет заблокирована до поднятия туннеля, что исключает утечку при перезагрузке.</li>
+        <li>Проверьте восстановление: перезагрузите машину и выполните <code>wawity status</code>.</li>
+      </ol>
+      <div class="note warn">
+        <div class="tag"><i></i>удалённый доступ</div>
+        Если вы управляете сервером по RDP или SSH, включайте always-on осторожно: неверная конфигурация может отрезать вас от машины. Сначала проверьте связку на тестовом хосте или сохраните доступ через консоль гипервизора.
+      </div>
+    </section>
+    <section class="block" id="protocols">
+      <h2><span class="n">24</span>Протоколы</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Протокол</th><th>Транспорт</th><th>Когда выбирать</th></tr></thead>
+          <tbody>
+            <tr><td>VLESS</td><td>TCP, WS, gRPC</td><td>Универсальный вариант, максимальная совместимость</td></tr>
+            <tr><td>Reality</td><td>TCP + XTLS</td><td>Жёсткая фильтрация и DPI</td></tr>
+            <tr><td>Hysteria 2</td><td>QUIC / UDP</td><td>Нестабильный канал, потери пакетов</td></tr>
+            <tr><td>TUIC v5</td><td>QUIC / UDP</td><td>Низкая задержка, много UDP-трафика</td></tr>
+            <tr><td>VMess</td><td>TCP, WS</td><td>Старые панели и легаси-конфиги</td></tr>
+            <tr><td>Trojan</td><td>TLS</td><td>Маскировка под обычный HTTPS</td></tr>
+            <tr><td>Shadowsocks</td><td>TCP, UDP</td><td>Простота и минимальные накладные расходы</td></tr>
+            <tr><td>ShadowTLS</td><td>TLS-обёртка</td><td>Когда нужен чужой TLS-отпечаток</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Протокол берётся из самой ссылки подписки — выбирать его вручную не нужно. Если провайдер даёт несколько вариантов одного сервера, сравните их массовым пингом.</p>
+    </section>
+
+    <section class="block" id="network">
+      <h2><span class="n">25</span>Как устроена сеть</h2>
+      <ul class="list">
+        <li><b>TUN-адаптер</b> <code>wawity-tun0</code> — виртуальный интерфейс, через который идёт туннелированный трафик. На нём же читаются счётчики.</li>
+        <li><b>Локальный прокси</b> на порту <code>18232</code> — точка входа для ядра, слушает только локальный интерфейс.</li>
+        <li><b>DNS в туннеле</b> — запросы перехватываются и отправляются через туннель на адрес <code>172.19.0.2</code>.</li>
+        <li><b>Bootstrap DNS</b> — отдельный резолвер для первичного разрешения домена сервера до поднятия туннеля.</li>
+        <li><b>Маршруты</b> — добавляются с меньшей метрикой, чем системные, и снимаются при отключении.</li>
+      </ul>
+      <div class="code">
+        <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">быстрая проверка сети</span><button class="copy-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M5 16V6a2 2 0 0 1 2-2h10"/></svg><span>Копировать</span></button></div>
+<pre><span class="c">:: есть ли адаптер и как он называется</span>
+netsh interface show interface
+
+<span class="c">:: маршруты и метрики</span>
+route print 0.0.0.0
+
+<span class="c">:: правила файрвола wawity</span>
+netsh advfirewall firewall show rule name=all | findstr WawityFW_
+
+<span class="c">:: слушает ли локальный прокси</span>
+netstat -ano | findstr 18232</pre>
+      </div>
+      <div class="note warn">
+        <div class="tag"><i></i>имя адаптера</div>
+        Если в системе адаптер назван иначе, чем <code>wawity-tun0</code>, счётчики трафика могут показывать нули, хотя соединение работает. Проверьте имя командой выше.
+      </div>
+    </section>
+
+    <section class="block" id="killswitch">
+      <h2><span class="n">26</span>Kill switch и always-on</h2>
+      <p class="lead">Блокировка живёт в Windows Firewall. Правила создаются с префиксом <code>WawityFW_</code>, чтобы их можно было найти и снять даже без самого клиента.</p>
+      <ul class="list">
+        <li><b>Обычный режим:</b> блокировка включается вместе с туннелем и снимается при корректном отключении.</li>
+        <li><b>Always-on:</b> правила остаются и при опущенном туннеле — без VPN трафика не будет вообще.</li>
+        <li><b>Аварийное завершение:</b> при следующем запуске клиент находит свои правила и откатывает сеть автоматически.</li>
+        <li><b>Аварийный выход:</b> <code>wawity repair</code> снимает все правила, маршруты и возвращает DNS в исходное состояние.</li>
+      </ul>
+      <p>Из блокировки всегда исключаются: локальная петля, DHCP, адреса серверов подписки, bootstrap DNS, сам TUN-адаптер и процессы из списка исключений.</p>
+    </section>
+
+    <section class="block" id="qos">
+      <h2><span class="n">27</span>Системный QoS</h2>
+      <p>Игровому трафику присваивается метка DSCP 46 (Expedited Forwarding) на уровне политики Windows. Роутер с поддержкой QoS обслужит такие пакеты вне очереди.</p>
+      <ul class="list">
+        <li>Работает и без активного VPN-подключения.</li>
+        <li>Не ускоряет канал как таковой — влияет только на порядок обслуживания при загруженной сети.</li>
+        <li>Некоторые провайдеры сбрасывают метки DSCP на границе сети — эффект будет только внутри домашней сети.</li>
+      </ul>
+    </section>
+
+    <section class="block" id="multihop">
+      <h2><span class="n">28</span>Multi-hop и post-quantum</h2>
+      <h3>Цепочка серверов</h3>
+      <p>При multi-hop трафик сначала идёт на входной сервер, а затем на выходной. Выходной узел не видит ваш реальный адрес, но задержка складывается. Для игр режим не рекомендуется.</p>
+      <h3>Post-quantum</h3>
+      <p>Если сервер поддерживает гибридный обмен ключами, он используется автоматически. При несовместимости клиент откатывается к обычному рукопожатию; принудительно отключить можно флагом <code>--no-quantum</code>.</p>
+    </section>
+
+    <section class="block" id="files">
+      <h2><span class="n">29</span>Где что лежит</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Путь</th><th>Содержимое</th></tr></thead>
+          <tbody>
+            <tr><td><code>%APPDATA%\Wawity\cli</code></td><td>Данные CLI</td></tr>
+            <tr><td><code>subscriptions.json</code></td><td>Подписки и кэш списка серверов</td></tr>
+            <tr><td><code>settings.json</code></td><td>Настройки: kill switch, DNS, multi-hop</td></tr>
+            <tr><td><code>detached.json</code></td><td>Состояние фонового туннеля: PID, серверы, флаги</td></tr>
+            <tr><td><code>%TEMP%\wawity.log</code></td><td>Лог ядра и ошибок подключения</td></tr>
+            <tr><td><code>%LOCALAPPDATA%\com.wawity.vpn</code></td><td>Данные десктоп-клиента</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <div class="tag"><i></i>перенос конфига</div>
+        Чтобы перенести настройки на другую машину, скопируйте <code>subscriptions.json</code> и <code>settings.json</code> при отключённом туннеле. <code>detached.json</code> переносить не нужно.
+      </div>
+    </section>
+
+    <section class="block" id="env">
+      <h2><span class="n">30</span>Переменные окружения</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Переменная</th><th>Назначение</th></tr></thead>
+          <tbody>
+            <tr><td><code>WAWITY_HOME</code></td><td>Каталог установки; по нему находятся ядро и ресурсы</td></tr>
+            <tr><td><code>WAWITY_SINGBOX</code></td><td>Явный путь к исполняемому файлу ядра</td></tr>
+            <tr><td><code>WAWITY_SERVER_INSTALL</code></td><td>Включает headless-режим установщика</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block" id="diagnostics">
+      <h2><span class="n">31</span>Диагностика: порядок действий</h2>
+      <p class="lead">Если что-то не работает, идите по этой лестнице сверху вниз — в большинстве случаев ответ находится на первых трёх шагах.</p>
+      <ol class="list">
+        <li><b>Права.</b> Консоль или клиент запущены от администратора?</li>
+        <li><b>Подписка.</b> <code>wawity sub refresh</code> — сколько серверов вернулось?</li>
+        <li><b>Доступность.</b> <code>wawity servers --ping</code> — есть ли хоть один ответивший узел?</li>
+        <li><b>Состояние.</b> <code>wawity status</code> — что с PID, интерфейсом и kill switch?</li>
+        <li><b>Лог.</b> Последние строки <code>%TEMP%\wawity.log</code>.</li>
+        <li><b>Сброс.</b> <code>wawity repair</code>, затем повторное подключение.</li>
+      </ol>
+    </section>
+
+    <section class="block" id="trouble-connect">
+      <h2><span class="n">32</span>Про��лемы с подключением</h2>
+      <div class="tr-list">
+        <div class="tr-item">
+          <button class="tr-q"><span>Failed to parse subscription: No valid proxy URL in subscription</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Клиент получил ответ от панели, но не нашёл в нём ни одной рабочей ссылки на сервер. Выполните <code>wawity sub refresh</code> — подписка перечитается в исходном виде и ссылки сохранятся целиком. Если не помогло, откройте ссылку в браузере: вы должны увидеть текст со строками вида <code>vless://</code> или base64-блок. Пустая страница или HTML означают, что ссылка просрочена или требует авторизации.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Подключение виснет и обрывается по таймауту</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Проверьте пинг до сервера: если весь список показывает прочерки, блокируется сам доступ, а не протокол. Попробуйте сервер на QUIC (Hysteria 2 или TUIC) — UDP часто проходит там, где TCP режется, или наоборот. Также проверьте, не блокирует ли сторонний антивирус исходящие соединения ядра.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Подключилось, но сайты не открываются</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Почти всегда это DNS. Проверьте, что включена защита от DNS-утечек, и смените bootstrap DNS. Если в системе есть сторонний DNS-клиент или блокировщик рекламы, временно отключите его и выполните <code>ipconfig /flushdns</code>.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>После обрыва пропал интернет целиком</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Сработал kill switch — это штатное поведение. Запустите клиент снова: он откатит правила. Если клиент недоступен, выполните <code>wawity repair</code> или удалите правила с префиксом <code>WawityFW_</code> вручную.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="trouble-net">
+      <h2><span class="n">33</span>Проблемы сети и скорости</h2>
+      <div class="tr-list">
+        <div class="tr-item">
+          <button class="tr-q"><span>Скорость и трафик показывают нули</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Счётчики читаются с адаптера <code>wawity-tun0</code>. Если адаптер назван иначе, цифры останутся нулевыми. Проверьте <code>netsh interface show interface</code>. Также первые секунды после подключения скорость всегда нулевая: нужны два замера подряд.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Скорость заметно ниже, чем без VPN</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Попробуйте другой сервер и другой протокол: QUIC-варианты часто заметно быстрее на плохом канале. Отключите multi-hop, если он включён: цепочка всегда стоит пропускной способности и задержки.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>В игре вырос пинг</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Значит, игра не попала в исключения. Откройте раздел игр и добавьте процесс вручную по имени исполняемого файла, затем перезапустите игру. Лаунчер и сама игра могут быть разными процессами.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Подписка не обновляется</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Панель может быть заблокирована провайдером. Поднимите туннель на любом рабочем сервере и повторите обновление — запрос пойдёт через туннель.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="trouble-cli">
+      <h2><span class="n">34</span>Проблемы CLI и консоли</h2>
+      <div class="tr-list">
+        <div class="tr-item">
+          <button class="tr-q"><span>«wawity» не является внутренней или внешней командой</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Переменная PATH обновляется только в новых окнах терминала. Закройте текущее окно, откройте новое и выполните <code>where wawity</code>. Если путь не найден, запустите установщик ещё раз и убедитесь, что выбрана именно CLI-редакция.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Вместо консоли открывается окно десктоп-клиента</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>В PATH нашёлся старый файл с тем же именем. В актуальных сборках графическое приложение называется <code>WawityApp.exe</code>, а <code>wawity.exe</code> — это только CLI. Удалите старую установку и поставьте CLI заново.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Вместо букв и рамок — кракозябры</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Консоль работает в однобайтовой кодовой странице. Выполните <code>chcp 65001</code> или используйте Windows Terminal вместо устаревшего консольного хоста.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>status пишет «не подключено», хотя туннель работает</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Фоновое состояние хранится в профиле той учётной записи, которая подняла туннель. Если подключение было сделано из-под администратора, а <code>status</code> вы запускаете обычным пользователем, файл состояния не будет найден. Запускайте обе команды одинаково.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Длинная ссылка обрезается при вставке</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Классическая консоль ограничивает длину строки ввода. Используйте Windows Terminal либо задайте ссылку аргументом команды: <code>wawity sub add "&lt;ссылка&gt;"</code>.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="trouble-build">
+      <h2><span class="n">35</span>Проблемы сборки</h2>
+      <div class="tr-list">
+        <div class="tr-item">
+          <button class="tr-q"><span>SSL connect error при загрузке зависимостей</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Недоступно зеркало реестра пакетов. Запустите <code>fix-cargo-mirror.bat</code>: он отключает зеркало и возвращает прямой источник. Пункт диагностики в <code>build.bat</code> покажет, какие конфигурации реально применяются.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Источник определён дважды</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Один и тот же реестр переопределён в двух конфигах сразу — глобальном и проектном. Проверьте конфиги в профиле пользователя, в корне проекта и в подпроектах — переопределение должно остаться только в одном месте.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Установщик собрался, но без нужного бинарника</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>В папке сборки остался артефакт от предыдущего прогона. Выполните пункт очистки в <code>build.bat</code> и соберите заново — скрипт проверяет наличие нужного файла перед упаковкой.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="faq">
+      <h2><span class="n">36</span>Частые вопросы</h2>
+      <div class="tr-list">
+        <div class="tr-item">
+          <button class="tr-q"><span>Можно ли держать Desktop и CLI на одной машине?</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Да, они устанавливаются отдельно и не мешают друг другу. Но поднимать туннель одновременно двумя клиентами нельзя.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Нужны ли права администратора каждый раз?</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Для поднятия туннеля — да. Чтобы не видеть запрос при каждом входе, включите автозапуск: задача планировщика стартует с повышенными правами без окна подтверждения.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Где взять подписку?</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>У любого провайдера, который выдаёт subscription-ссылку с поддержкой перечисленных протоколов. wawity не привязан к конкретному сервису.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Поддерживаются ли macOS и Linux?</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Пока только Windows: kill switch, QoS и маршрутизация сделаны через системные API этой ОС.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Можно ли использовать несколько подписок?</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Да. Серверы из всех подписок объединяются в один список; источник виден в строке сервера, а фильтр умеет искать по имени подписки.</p></div></div>
+        </div>
+        <div class="tr-item">
+          <button class="tr-q"><span>Что произойдёт при перезагрузке с поднятым туннелем?</span><span class="tr-ic">+</span></button>
+          <div class="tr-a"><div><p>Туннель опускается вместе с системой. Без always-on сеть после загрузки работает обычно; с always-on трафик будет заблокирован до повторного подключения.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="glossary">
+      <h2><span class="n">37</span>Глоссарий</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Термин</th><th>Значение</th></tr></thead>
+          <tbody>
+            <tr><td>Подписка</td><td>Ссылка, по которой клиент получает список серверов</td></tr>
+            <tr><td>TUN</td><td>Виртуальный сетевой адаптер для туннелирования</td></tr>
+            <tr><td>Kill switch</td><td>Блокировка трафика при падении туннеля</td></tr>
+            <tr><td>Always-on</td><td>Блокировка сохраняется даже без активного туннеля</td></tr>
+            <tr><td>Multi-hop</td><td>Цепочка из входного и выходного серверов</td></tr>
+            <tr><td>DSCP 46</td><td>Метка приоритетного трафика в очереди QoS</td></tr>
+            <tr><td>Bootstrap DNS</td><td>Резолвер для первого разрешения адреса сервера</td></tr>
+            <tr><td>Detached-режим</td><td>Туннель живёт после завершения команды</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note ok">
+        <div class="tag"><i></i>не нашли ответ</div>
+        Загляните в <a class="link" href="index.html#faq">FAQ на главной</a> или приложите последние строки <code>%TEMP%\wawity.log</code> — в них почти всегда видна причина.
+      </div>
+    </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="fwrap">
+      <span>&copy; 2026 wawity. Собрано на sing-box и Rust.</span>
+      <span><a href="index.html">Главная</a> &middot; <a href="terms.html">Условия</a> &middot; <a href="privacy.html">Приватность</a> &middot; <a href="docs.html">Документация</a> &middot; <a href="https://t.me/wawityvpn" target="_blank" rel="noopener">Telegram</a></span>
+    </div>
+  </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  "use strict";
+  var d=document;
+  function $(s,c){return (c||d).querySelector(s)}
+  function $$(s,c){return [].slice.call((c||d).querySelectorAll(s))}
+
+  var side=$('#side'), burger=$('#burger'), progress=$('#progress');
+  var links=$$('.toc a'), sideLinks=$$('.side a[href^="#"]'), sections=$$('section.block');
+
+  if(burger){
+    burger.addEventListener('click',function(){
+      var open=side.classList.toggle('open');
+      burger.setAttribute('aria-expanded',open?'true':'false');
+    });
+  }
+  sideLinks.concat(links).forEach(function(a){
+    a.addEventListener('click',function(){
+      if(window.innerWidth<=900){side.classList.remove('open');if(burger)burger.setAttribute('aria-expanded','false')}
+    });
+  });
+
+  $$('.card').forEach(function(c){
+    c.addEventListener('pointermove',function(e){
+      var r=c.getBoundingClientRect();
+      c.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      c.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+  });
+
+  var search=$('#sideSearch'), empty=$('#sideEmpty');
+  if(search){
+    search.addEventListener('input',function(){
+      var q=search.value.trim().toLowerCase();
+      var visible=0;
+      sideLinks.forEach(function(a){
+        var hit=!q||a.textContent.toLowerCase().indexOf(q)>-1;
+        a.classList.toggle('hidden',!hit);
+        if(hit)visible++;
+      });
+      $$('.side-group').forEach(function(g){
+        var any=$$('a:not(.hidden)',g).length>0;
+        g.classList.toggle('hidden',!any);
+      });
+      if(empty)empty.classList.toggle('show',visible===0);
+    });
+  }
+
+  var ticking=false;
+  function onScroll(){
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(function(){
+      ticking=false;
+      var y=window.scrollY, h=d.body.scrollHeight-window.innerHeight;
+      if(progress)progress.style.transform='scaleX('+(h>0?Math.min(y/h,1):0)+')';
+      var current=null;
+      for(var i=0;i<sections.length;i++){
+        var r=sections[i].getBoundingClientRect();
+        if(r.top<=140)current=sections[i].id; else break;
+      }
+      links.forEach(function(a){
+        a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+      });
+      sideLinks.forEach(function(a){
+        a.classList.toggle('active',a.getAttribute('href')==='#'+current);
+      });
+    });
+  }
+  addEventListener('scroll',onScroll,{passive:true});
+  addEventListener('resize',onScroll);
+  onScroll();
+
+  $$('.tr-item').forEach(function(item){
+    var btn=$('.tr-q',item);
+    btn.addEventListener('click',function(){
+      item.classList.toggle('open');
+      var ic=$('.tr-ic',item);
+      if(ic)ic.textContent=item.classList.contains('open')?'\u2212':'+';
+    });
+  });
+
+  $$('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var pre=$('pre',btn.closest('.code'));
+      var label=$('span',btn);
+      var text=pre?pre.innerText:'';
+      function done(){if(label){label.textContent='\u0421\u043a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u043d\u043e';setTimeout(function(){label.textContent='\u041a\u043e\u043f\u0438\u0440\u043e\u0432\u0430\u0442\u044c'},1600)}}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(done)}else{done()}
+    });
+  });
+});
+</script>
+</body>
+</html>
