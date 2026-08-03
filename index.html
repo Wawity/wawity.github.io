@@ -999,28 +999,45 @@ $('#copyCodeBtn').addEventListener('click',function(){
   function done(){label.textContent='Скопировано ✓';setTimeout(function(){label.textContent='Копировать'},1600)}
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(codeScroll.innerText).then(done).catch(done)}else{done()}
 });
-
 function rotator(boxId,phrases,ms){
   var box=d.getElementById(boxId);
   if(!box)return;
   if(reduced)return;
   var i=0;
-  function width(el){box.style.width=el.getBoundingClientRect().width+'px'}
-  var first=$('.rot-word',box);
-  requestAnimationFrame(function(){if(first)width(first)});
-  setInterval(function(){
-    i=(i+1)%phrases.length;
-    var cur=box.querySelector('.rot-word:not(.leaving)');
-    if(!cur)return;
-    var nx=d.createElement('span');
-    nx.className='rot-word entering';
-    nx.innerHTML=phrases[i];
-    cur.classList.add('leaving');
-    box.appendChild(nx);
-    width(nx);
-    setTimeout(function(){if(cur.parentNode)cur.remove();nx.classList.remove('entering')},600);
-  },ms||2800);
+  function width(el){
+    box.style.width = el.getBoundingClientRect().width + 'px';
+  }
+  function startRotation(){
+    var first=$('.rot-word',box);
+    if(first) width(first);
+    setInterval(function(){
+      i=(i+1)%phrases.length;
+      var cur=box.querySelector('.rot-word:not(.leaving)');
+      if(!cur)return;
+      var nx=d.createElement('span');
+      nx.className='rot-word entering';
+      nx.innerHTML=phrases[i];
+      cur.classList.add('leaving');
+      box.appendChild(nx);
+      width(nx);
+      setTimeout(function(){
+        if(cur.parentNode)cur.remove();
+        nx.classList.remove('entering');
+      },600);
+    },ms||2800);
+  }
+
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(function(){
+      startRotation();
+    });
+  } else {
+    window.addEventListener('load', function(){
+      startRotation();
+    });
+  }
 }
+
 rotator('rotBox',['пинг','комфорт','геймплей'],2800);
 function ib(svg){return '<span class="feat-icon-box"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">'+svg+'</svg></span>'}
 rotator('featRot1',[
