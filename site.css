@@ -162,7 +162,14 @@ tbody tr:hover td{background:rgba(255,255,255,.02)}
 code{
   font-family:var(--f-mono);font-size:.9em;color:#e8e6e3;
   background:rgba(255,255,255,.06);border:1px solid var(--hairline);
-  border-radius:6px;padding:2px 7px;white-space:nowrap;
+  border-radius:6px;padding:2px 7px;
+  white-space:normal;overflow-wrap:anywhere;
+}
+kbd{
+  font-family:var(--f-mono);font-size:.85em;color:var(--paper);
+  background:rgba(255,255,255,.07);
+  border:1px solid var(--hairline-2);border-bottom-width:2px;
+  border-radius:6px;padding:2px 8px;white-space:nowrap;
 }
 .code{margin-top:26px;border:1px solid var(--hairline);border-radius:14px;overflow:hidden;background:#121110}
 .code code{background:none;border:none;padding:0;white-space:normal}
@@ -189,6 +196,9 @@ code{
   font-family:var(--f-mono);font-size:12.5px;line-height:1.85;color:#cfcecc;
 }
 .code .c{color:#6f6e6b}
+.code .k{color:#fff;font-weight:500}
+.code .g{color:#6ccb5f}
+.code .s{color:var(--ember)}
 
 .tr-list{margin-top:26px;border-top:1px solid var(--hairline)}
 .tr-item{border-bottom:1px solid var(--hairline)}
