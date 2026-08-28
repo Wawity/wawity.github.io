@@ -12,7 +12,7 @@
 <link rel="icon" href="wawity.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Inter:wght@400;500&family=Unbounded:wght@300;400;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@300;400;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="home.css">
 <noscript><style>
 .loader,.grain{display:none}
@@ -39,6 +39,7 @@
     <nav class="nav-links" aria-label="Разделы">
       <a href="#features">Возможности</a>
       <a href="#protocols">Протоколы</a>
+      <a href="#killswitch">Kill switch</a>
       <a href="#compare">Сравнение</a>
       <a href="#download">Загрузка</a>
       <a href="#faq">FAQ</a>
@@ -60,6 +61,7 @@
 <div class="mobile-menu" id="mobileMenu">
   <a href="#features">Возможности</a>
   <a href="#protocols">Протоколы</a>
+  <a href="#killswitch">Kill switch</a>
   <a href="#compare">Сравнение</a>
   <a href="#faq">FAQ</a>
   <a class="btn btn-light" href="#download">Скачать для Windows</a>
@@ -269,6 +271,161 @@
   </div>
 </section>
 
+<section class="section ks" id="killswitch">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="mono-label">kill switch</p>
+      <h2 class="display h-section">Вырви кабель.<br>Ничего не утечёт.</h2>
+      <p class="body">Kill switch живёт в Windows Firewall, а не в процессе клиента. Ниже — реальный сценарий обрыва, секунда за секундой, командами, которые его обеспечивают. Клиент можно убить из диспетчера задач — защита останется.</p>
+    </div>
+
+    <div class="ks-track">
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">02:14:03</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">шаг 01 · вооружение</p>
+          <h3>Четыре правила уже в файрволе</h3>
+          <p>Правила ставятся при первом запуске и живут в ActiveStore — вне процесса клиента. Весь исходящий трафик блокируется, разрешение есть только у туннеля.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> netsh advfirewall firewall add rule `
+    name=<span class="c-s">"wawity · deny all"</span> dir=out action=<span class="c-k">block</span>
+<span class="c-p">$</span> netsh advfirewall firewall add rule `
+    name=<span class="c-s">"wawity · allow tun"</span> dir=out action=allow `
+    program=<span class="c-s">"...\wawity\tun.exe"</span>
+<span class="c-s">Ok.</span></pre>
+        </div>
+      </div>
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">02:14:31</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">шаг 02 · обрыв</p>
+          <h3>Сорок миллисекунд — и контур закрыт</h3>
+          <p>Wi-Fi пропал — реагировать нечему и незачем: правила уже стоят. Пакеты наружу не уходят, приложения об этом даже не узнают.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> Get-NetFirewallRule wawity-* `
+    -PolicyStore ActiveStore
+
+Name                Enabled Action
+<span class="c-s">wawity · deny all   True   </span> <span class="c-k">Block</span>
+<span class="c-s">wawity · allow tun  True    Allow</span></pre>
+        </div>
+      </div>
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">02:15:02</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">шаг 03 · проверка на прочность</p>
+          <h3>Убей процесс. Правила останутся</h3>
+          <p>Самая честная проверка kill switch — диспетчер задач. Правила привязаны к файрволу, а не к процессу: пока маршруты не откатятся, наружу не уйдёт ничего.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> taskkill /F /IM wawity.exe
+<span class="c-s">SUCCESS: процесс завершён.</span>
+
+<span class="c-p">$</span> netsh wfp show filters
+<span class="c-s">… wawity: 4 filters ·</span> <span class="c-k">policy persists</span></pre>
+        </div>
+      </div>
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">02:15:47</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">шаг 04 · возврат</p>
+          <h3>Сеть вернулась — всё откатилось само</h3>
+          <p>Туннель поднят, временные правила смыты, маршруты возвращены. Интернет не «теряется» молча — ни на одну секунду.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> wawity reconnect --auto
+<span class="c-s">handshake 0.8s · Frankfurt №4 · 23ms</span>
+
+<span class="c-p">$</span> netsh advfirewall firewall delete rule `
+    name=<span class="c-s">"wawity · deny all"</span>
+<span class="c-s">Deleted.</span></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section ks split" id="split">
+  <div class="wrap">
+    <div class="section-head center" data-reveal>
+      <p class="mono-label">сплит-туннелинг</p>
+      <h2 class="display h-section">Один ПК.<br>Два маршрута.</h2>
+      <p class="body">wawity решает судьбу каждого приложения ещё до подключения: игры и античиты выходят в сеть напрямую, всё остальное идёт через туннель. Ниже — маршруты, которыми это делается.</p>
+    </div>
+
+    <div class="ks-track">
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">DIRECT</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">маршрут 01 · игры</p>
+          <h3>Игра выходит наружу напрямую</h3>
+          <p>Трафик игры даже не попадает в туннель: пакеты уходят в обычную сеть с твоего IP. Сервер общается с игроком, как будто VPN вообще нет — и пинг тот же.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> wawity route set cs2.exe --verdict direct
+  cs2.exe    out via wi-fi · <span class="c-k">ваш ip</span>
+  ping       11ms · <span class="c-k">без туннеля</span></pre>
+        </div>
+      </div>
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">DIRECT</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">маршрут 02 · античиты</p>
+          <h3>Античит исключён до запуска игры</h3>
+          <p>BattlEye, EAC и Vanguard находит сканер — автоматически, одним списком. Античит видит обычную сеть, потому что она и есть обычная.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> wawity scan --anticheat
+  battleye   найден  → <span class="c-k">direct</span>
+  easyantic  найден  → <span class="c-k">direct</span>
+  vanguard   найден  → <span class="c-k">direct</span>
+  <span class="c-s">3 процесса вне туннеля</span></pre>
+        </div>
+      </div>
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">TUNNEL</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">маршрут 03 · всё остальное</p>
+          <h3>Браузер и загрузки — через туннель</h3>
+          <p>Всё, что не игра, идёт через Frankfurt: торренты, стриминги, гео-сервисы. Скорость канала видна на живом графике в клиенте, а не на ощупь.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> wawity route set * --verdict tun
+  chrome      → tun · Frankfurt №4
+  discord     → tun · Frankfurt №4
+  qbittorrent → tun · <span class="c-k">Frankfurt №4</span></pre>
+        </div>
+      </div>
+
+      <div class="ks-step" data-reveal>
+        <span class="ks-ghost" aria-hidden="true">46</span>
+        <div class="ks-body">
+          <p class="mono-label neutral">маршрут 04 · приоритет</p>
+          <h3>Роутер ставит игру в начало очереди</h3>
+          <p>Пакетам игры выставляется DSCP 46 — тег приоритета, который роутер понимает без настроек. Когда сеть забита, очередь расступается перед игрой.</p>
+        </div>
+        <div class="ks-code">
+<pre><span class="c-p">$</span> New-NetQosPolicy -Name <span class="c-s">"wawity · games"</span> `
+    -AppPathMatch cs2.exe -<span class="c-k">DSCPAction 46</span>
+  <span class="c-s">политика создана · DSCP 46</span>
+  <span class="c-k">приоритет</span> <span class="c-s">в очереди роутера</span></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <section class="section" id="compare" style="padding-top:0">
   <div class="wrap">
     <div class="section-head center" data-reveal>
@@ -414,6 +571,8 @@
         <h5>Продукт</h5>
         <a href="#features">Возможности</a>
         <a href="#protocols">Протоколы</a>
+        <a href="#killswitch">Kill switch</a>
+        <a href="#split">Сплит-туннелинг</a>
         <a href="#compare">Сравнение</a>
         <a href="#download">Загрузка</a>
       </div>
@@ -442,8 +601,9 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
@@ -454,7 +614,10 @@ function $$(s,c){return [].slice.call((c||d).querySelectorAll(s))}
 var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 var fine=matchMedia('(pointer:fine)').matches;
 var hasGsap=!!(window.gsap&&window.ScrollTrigger);
-if(hasGsap&&!reduced){gsap.registerPlugin(ScrollTrigger)}
+if(hasGsap&&!reduced){
+  gsap.registerPlugin(ScrollTrigger);
+  if(window.ScrambleTextPlugin)gsap.registerPlugin(ScrambleTextPlugin);
+}
 
 var loader=$('#loader'),loadStarted=false;
 function startPoster(){
@@ -551,8 +714,26 @@ if(hasGsap&&!reduced){
   gsap.to('.tray-wrap',{yPercent:-18,ease:'none',
     scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
 
-  gsap.fromTo('.proto-row',{xPercent:-5},{xPercent:5,ease:'none',
-    scrollTrigger:{trigger:'.proto-strip',start:'top bottom',end:'bottom top',scrub:true}});
+  var protoRow=$('.proto-row');
+  if(protoRow){
+    var phtml=protoRow.innerHTML;
+    protoRow.classList.add('proto-track');
+    protoRow.innerHTML='<div class="proto-set">'+phtml+'</div><div class="proto-set" aria-hidden="true">'+phtml+'</div>';
+    var mq=gsap.to(protoRow,{xPercent:-50,ease:'none',duration:32,repeat:-1});
+    var skewSet=gsap.quickSetter(protoRow,'skewX','deg');
+    var sk=0,ts=1;
+    ScrollTrigger.create({onUpdate:function(self){
+      var v=self.getVelocity();
+      var ns=gsap.utils.clamp(-9,9,v/-90);
+      if(Math.abs(ns)>Math.abs(sk))sk=ns;
+      var nt=Math.min(4,1+Math.abs(v)/800);
+      if(nt>ts)ts=nt;
+    }});
+    gsap.ticker.add(function(){
+      sk*=.92;ts+=(1-ts)*.05;
+      skewSet(sk);mq.timeScale(ts);
+    });
+  }
 
   gsap.fromTo('.showcase-frame',{rotateX:15,y:70,transformPerspective:1200},
     {rotateX:0,y:0,ease:'none',
@@ -562,6 +743,12 @@ if(hasGsap&&!reduced){
   ScrollTrigger.batch('.section-head h2 .rline-in',{
     start:'top 88%',once:true,
     onEnter:function(els){gsap.to(els,{yPercent:0,duration:1.1,ease:'power3.out',stagger:.1,overwrite:true})}
+  });
+
+  $$('.mono-label').forEach(function(el){
+    ScrollTrigger.create({trigger:el,start:'top 92%',once:true,onEnter:function(){
+      gsap.to(el,{duration:1.2,ease:'none',scrambleText:{text:el.textContent,chars:'01<>/{}#$&@%!;:',speed:.4}});
+    }});
   });
 
   $$('.cnt').forEach(function(el){
