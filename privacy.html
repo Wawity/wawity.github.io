@@ -4,210 +4,80 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Политика приватности :: wawity</title>
-<meta name="description" content="Политика приватности wawity: нет аккаунтов и телеметрии, всё хранится локально — точные пути файлов, сетевые запросы и как всё удалить.">
+<meta name="description" content="Политика приватности wawity: без аккаунтов и облака, всё локальное хранилище — точные пути файлов, сетевые запросы, опциональная статистика и как всё удалить.">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="wawity.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#09090b;--bg-soft:#0d0d10;--line:rgba(255,255,255,.07);--line-2:rgba(255,255,255,.16);
-  --t1:#f4f4f6;--t2:rgba(244,244,246,.64);--t3:rgba(244,244,246,.42);
-  --brand:#8b6bff;--brand-soft:#a68bff;--ok:#00e6c3;--warn:#ffcc66;--bad:#ff6b6b;
-  --f-head:'Archivo',sans-serif;--f-text:'Inter',sans-serif;--f-mono:'JetBrains Mono',monospace;
-  --ease:cubic-bezier(.16,1,.3,1);--header-h:64px;--side-w:250px
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
-body{background:var(--bg);color:var(--t1);font-family:var(--f-text);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(900px 520px at 12% -8%,rgba(139,107,255,.13),transparent 70%),radial-gradient(760px 460px at 100% 4%,rgba(0,230,195,.07),transparent 68%)}
-a{color:inherit;text-decoration:none}
-ul{list-style:none}
-.wide{font-family:var(--f-head);font-stretch:122%}
-
-header{position:sticky;top:0;z-index:60;height:var(--header-h);border-bottom:1px solid var(--line);background:rgba(9,9,11,.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-.hrow{max-width:1280px;margin:0 auto;padding:0 26px;height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Unbounded',system-ui,sans-serif;font-weight:500;font-size:17px;letter-spacing:-.01em}
-.logo-mark{width:26px;height:26px;position:relative;flex-shrink:0}
-.logo-mark img{width:100%;height:100%;border-radius:8px;display:block}
-.logo-mark .logo-fb{display:none;width:100%;height:100%}
-.logo-mark.fallback img{display:none}
-.logo-mark.fallback .logo-fb{display:block}
-.logo i{color:var(--brand);font-style:normal}
-.hnav{display:flex;align-items:center;gap:22px;font-size:13.5px;color:var(--t2)}
-.hnav a{transition:color .2s}
-.hnav a:hover,.hnav a.on{color:var(--t1)}
-.hbtns{display:flex;align-items:center;gap:10px}
-.btn{display:inline-flex;align-items:center;gap:8px;border-radius:100px;font-weight:600;font-size:13.5px;padding:9px 17px;transition:transform .25s var(--ease),box-shadow .25s,border-color .25s,color .25s}
-.btn-ghost{color:var(--t2);border:1px solid var(--line)}
-.btn-ghost:hover{color:var(--t1);border-color:var(--line-2)}
-.btn-solid{background:#fff;color:#09090b}
-.btn-solid:hover{transform:translateY(-1px);box-shadow:0 12px 32px -10px rgba(255,255,255,.3)}
-.progress{position:fixed;top:var(--header-h);left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,var(--brand),var(--ok));z-index:70}
-
-main{position:relative;z-index:1}
-.wrap{max-width:1280px;margin:0 auto;padding:0 26px}
-.hero{padding:clamp(74px,10vw,124px) 0 clamp(38px,5vw,60px)}
-.kicker{display:inline-flex;align-items:center;gap:11px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--t3)}
-.kicker s{width:26px;height:1px;background:linear-gradient(90deg,var(--brand),transparent);text-decoration:none}
-h1{font-family:var(--f-head);font-stretch:120%;font-size:clamp(40px,6vw,72px);font-weight:700;letter-spacing:-.035em;line-height:1;margin-top:20px;max-width:16ch}
-.sub{color:var(--t2);font-size:17px;line-height:1.72;margin-top:24px;max-width:620px}
-.meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
-.meta i{width:3px;height:3px;border-radius:50%;background:linear-gradient(90deg,var(--brand),var(--ok))}
-
-.tldr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
-.tldr div{position:relative;border:1px solid var(--line);border-radius:18px;padding:20px 22px;background:linear-gradient(165deg,rgba(255,255,255,.035),rgba(255,255,255,.005) 62%);overflow:hidden}
-.tldr div::after{content:'';position:absolute;inset-inline:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(139,107,255,.5),transparent)}
-.tldr h4{font-family:var(--f-head);font-stretch:118%;font-size:14.5px;font-weight:700;letter-spacing:.01em}
-.tldr p{font-size:13.6px;color:var(--t2);line-height:1.62;margin-top:7px}
-
-.layout{display:grid;grid-template-columns:var(--side-w) 1fr;gap:52px;align-items:start;padding-bottom:110px}
-.side{position:sticky;top:calc(var(--header-h) + 34px);max-height:calc(100vh - var(--header-h) - 60px);overflow-y:auto;padding-right:8px}
-.side::-webkit-scrollbar{width:5px}
-.side::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
-.side h5{font-family:var(--f-head);font-stretch:125%;font-size:11px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--t2);padding-bottom:12px;border-bottom:1px solid var(--line)}
-.side ol{list-style:none;counter-reset:s;margin-top:12px}
-.side a{display:flex;gap:10px;padding:7px 10px;border-radius:9px;font-size:13.4px;color:var(--t3);transition:color .2s,background .2s}
-.side a b{font-family:var(--f-mono);font-size:11px;opacity:.6;padding-top:2px}
-.side a:hover{color:var(--t1);background:rgba(255,255,255,.04)}
-.side a.active{color:var(--t1);background:rgba(139,107,255,.11)}
-.side a.active b{color:var(--brand-soft);opacity:1}
-.side-foot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:12.6px;color:var(--t3);line-height:1.66}
-.side-foot a{display:inline;padding:0;color:var(--brand-soft);border-bottom:1px solid rgba(166,139,255,.3)}
-.side-foot a:hover{background:none}
-
-.doc{max-width:800px;min-width:0}
-section.sec{scroll-margin-top:96px;padding:44px 0;border-bottom:1px solid rgba(255,255,255,.055)}
-section.sec:first-child{padding-top:6px}
-section.sec:last-child{border-bottom:none}
-section.sec>h2{display:flex;align-items:baseline;gap:16px;font-family:var(--f-head);font-stretch:120%;font-size:clamp(23px,3vw,30px);font-weight:700;letter-spacing:-.025em;line-height:1.12}
-section.sec>h2 .n{font-family:var(--f-mono);font-size:26px;font-weight:500;color:transparent;-webkit-text-stroke:1px rgba(166,139,255,.45);flex-shrink:0}
-section.sec:nth-of-type(even)>h2 .n{-webkit-text-stroke-color:rgba(0,230,195,.4)}
-.doc h3{font-family:var(--f-head);font-stretch:114%;font-size:17px;font-weight:700;letter-spacing:-.01em;margin-top:30px}
-.doc p{color:var(--t2);font-size:15.2px;line-height:1.78;margin-top:14px}
-.doc p.lead{color:rgba(244,244,246,.8);font-size:16.4px;margin-top:16px}
-.doc b,.doc strong{color:var(--t1);font-weight:600}
-.doc a.link{color:var(--brand-soft);border-bottom:1px solid rgba(166,139,255,.32);transition:border-color .2s}
-.doc a.link:hover{border-color:var(--brand-soft)}
-.list{margin-top:14px;display:flex;flex-direction:column;gap:9px;list-style:none;padding-left:0}
-.list li{position:relative;padding-left:20px;color:var(--t2);font-size:15px;line-height:1.7}
-.list li::before{content:'';position:absolute;left:0;top:11px;width:8px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brand),var(--ok))}
-ol.list{counter-reset:li}
-ol.list li{counter-increment:li}
-ol.list li{padding-left:38px;min-height:26px}ol.list li::before{content:counter(li,decimal-leading-zero);background:rgba(139,107,255,.10);border:1px solid var(--line-2);border-radius:9px;width:26px;height:26px;top:1px;left:0;display:grid;place-items:center;font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--brand-soft)}
-code{font-family:var(--f-mono);font-size:13px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--t1);white-space:nowrap}
-
-.note{position:relative;margin-top:20px;padding:2px 0 2px 20px;border-left:2px solid rgba(139,107,255,.55)}
-.note .tag{font-family:var(--f-head);font-stretch:124%;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brand-soft)}
-.note>p,.note{color:var(--t2);font-size:14.6px;line-height:1.74}
-.note .tag+*{margin-top:6px}
-.note.ok{border-left-color:rgba(0,230,195,.6)}
-.note.ok .tag{color:var(--ok)}
-.note.warn{border-left-color:rgba(255,204,102,.6)}
-.note.warn .tag{color:var(--warn)}
-.note.bad{border-left-color:rgba(255,107,107,.6)}
-.note.bad .tag{color:var(--bad)}
-
-.table-wrap{margin-top:20px;border:1px solid var(--line);border-radius:16px;overflow:hidden;overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:14.2px;min-width:520px}
-th{font-family:var(--f-head);font-stretch:120%;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--t3);text-align:left;padding:14px 18px;background:rgba(255,255,255,.028);border-bottom:1px solid var(--line)}
-td{padding:14px 18px;color:var(--t2);border-bottom:1px solid rgba(255,255,255,.045);vertical-align:top}
-tbody tr:last-child td{border-bottom:none}
-td b{color:var(--t1)}
-
-.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
-.card{position:relative;border:1px solid var(--line);border-radius:16px;padding:20px 22px;background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,.004) 60%)}
-.card.ok{border-color:rgba(0,230,195,.22)}
-.card.bad{border-color:rgba(255,107,107,.22)}
-.card h4{font-family:var(--f-head);font-stretch:116%;font-size:14.5px;font-weight:700}
-.card p{font-size:13.8px;color:var(--t2);line-height:1.66;margin-top:8px}
-.card ul{margin-top:10px;display:flex;flex-direction:column;gap:7px}
-.card li{position:relative;padding-left:17px;font-size:13.6px;color:var(--t2);line-height:1.6}
-.card li::before{content:'';position:absolute;left:0;top:9px;width:7px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--brand),var(--ok))}
-.card.bad li::before{background:var(--bad)}
-.card.ok li::before{background:var(--ok)}
-
-.cta{margin-top:56px;border:1px solid var(--line);border-radius:22px;padding:30px 32px;background:linear-gradient(165deg,rgba(139,107,255,.08),rgba(255,255,255,.006) 65%);display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap}
-.cta h3{font-family:var(--f-head);font-stretch:118%;font-size:19px;font-weight:700;margin:0}
-.cta p{margin-top:7px;font-size:14.2px;color:var(--t2);max-width:52ch}
-
-footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:38px 0;background:var(--bg-soft)}
-footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--t3)}
-footer a{color:var(--t2);transition:color .2s}
-footer a:hover{color:var(--t1)}
-
-@media(max-width:1080px){
-  .layout{grid-template-columns:1fr;gap:0}
-  .side{position:static;max-height:none;margin-bottom:34px;padding:20px 22px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.02)}
-  .side ol{columns:2;column-gap:18px}
-  .tldr{grid-template-columns:1fr}
-  .hnav{display:none}
-}
-@media(max-width:700px){
-  .split{grid-template-columns:1fr}
-  .side ol{columns:1}
-  .hbtns .btn-ghost{display:none}
-  .hbtns .btn-tg{display:inline-flex;padding:8px 12px}
-  section.sec>h2{gap:12px}
-  .cta{padding:24px}
-}
-
-.tg{margin-top:20px;display:flex;align-items:center;gap:16px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(120deg,rgba(42,171,238,.12),rgba(139,107,255,.05));text-decoration:none;color:inherit;transition:border-color .3s var(--ease),transform .3s var(--ease),background .3s var(--ease)}.tg:hover{border-color:rgba(42,171,238,.5);transform:translateY(-2px);background:linear-gradient(120deg,rgba(42,171,238,.18),rgba(139,107,255,.07))}.tg-ic{width:48px;height:48px;border-radius:15px;flex-shrink:0;display:grid;place-items:center;background:linear-gradient(140deg,#2aabee,#229ed9);box-shadow:0 10px 26px rgba(34,158,217,.28)}.tg-ic svg{width:26px;height:26px;display:block}.tg-txt b{display:block;font-family:var(--f-head);font-variation-settings:'wdth' 112;font-size:16px;font-weight:600;letter-spacing:-.01em;color:var(--t1)}.tg-txt span{display:block;margin-top:3px;font-family:var(--f-mono);font-size:13px;color:var(--t2)}.tg-go{margin-left:auto;font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);white-space:nowrap}@media(max-width:560px){.tg-go{display:none}}
-
-.btn-tg{gap:8px}.btn-tg svg{width:15px;height:15px;display:block;color:#2aabee}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Inter:wght@400;500&family=Unbounded:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="site.css">
 </head>
-<body>
+<body class="page">
+
+<div class="grain" aria-hidden="true"></div>
 <div class="progress" id="progress"></div>
-<header><div class="hrow">
-<a class="logo" href="index.html"><span class="logo-mark"><img src="wawity.ico" alt="" onerror="this.parentNode.classList.add('fallback')"><svg class="logo-fb" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="7" fill="#8b6bff"/><path d="M5.5 8.5l2.3 7L12 9.5l4.2 6L18.5 8.5" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>wawity<i>.</i></a>
-<nav class="hnav"><a href="docs.html">Документация</a><a href="terms.html">Условия</a><a class="on" href="privacy.html">Приватность</a></nav>
-<div class="hbtns"><a class="btn btn-ghost btn-tg" href="https://t.me/wawityvpn" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.94 4.3 18.7 19.4c-.24 1.07-.88 1.33-1.78.83l-4.92-3.63-2.37 2.29c-.27.26-.49.48-1 .48l.35-5.05 9.16-8.28c.4-.35-.09-.55-.62-.2L6.2 13.02 1.35 11.5c-1.05-.33-1.07-1.05.22-1.55L20.58 2.9c.88-.32 1.65.2 1.36 1.4z"/></svg>Telegram</a><a class="btn btn-ghost" href="index.html">На главную</a><a class="btn btn-solid" href="index.html#download">Скачать</a></div>
+
+<header class="site-header solid"><div class="wrap nav-row">
+  <a class="brand" href="index.html"><span class="logo-mark"><img src="wawity.ico" alt=""></span>wawity<i>.</i></a>
+  <nav class="nav-links">
+    <a href="docs.html">Документация</a>
+    <a href="terms.html">Условия</a>
+    <a class="on" href="privacy.html">Приватность</a>
+    <a href="index.html#faq">FAQ</a>
+  </nav>
+  <div class="nav-right">
+    <div class="split-btn">
+      <a class="sb-main" href="index.html#download">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+      <a class="sb-side" href="https://t.me/wawityvpn" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.3 18.7 19.4c-.24 1.07-.88 1.33-1.78.83l-4.92-3.63-2.37 2.29c-.27.26-.49.48-1 .48l.35-5.05 9.16-8.28c.4-.35-.09-.55-.62-.2L6.2 13.02 1.35 11.5c-1.05-.33-1.07-1.05.22-1.55L20.58 2.9c.88-.32 1.65.2 1.36 1.4z"/></svg></a>
+    </div>
+  </div>
 </div></header>
 
-<main>
+<main class="page-shell">
 <div class="wrap">
-  <div class="hero">
-    <div class="kicker"><s></s>Правовое · документ 2 из 2</div>
+
+  <div class="page-hero">
+    <p class="crumbs">Legal / 02 <span class="sep">—</span> Правовые документы <span class="sep">·</span> редакция 24.07.2026</p>
     <h1>Политика приватности</h1>
     <p class="sub">У wawity нет сервера, куда могли бы уходить ваши данные. Ниже — точный список всего, что клиент пишет на диск и куда он вообще выходит в сеть.</p>
-    <div class="meta"><span>Редакция 24.07.2026</span><i></i><span>Клиент 0.1.0</span><i></i><span>Без аккаунтов и телеметрии</span></div>
+    <div class="meta-row"><span>Клиент 0.2.0</span><span>Без аккаунтов и телеметрии</span><span>Документ 2 из 2</span></div>
     <div class="tldr">
-      <div><h4>Нет аккаунтов</h4><p>Регистрации нет вообще. Мы не знаем ни вашего имени, ни почты, ни факта установки.</p></div>
-      <div><h4>Всё локально</h4><p>Подписки, настройки и логи лежат только на вашем диске, в обычных файлах.</p></div>
-      <div><h4>Трафик не читается</h4><p>Клиент видит только счётчики байт на адаптере — ни истории, ни содержимого.</p></div>
+      <div><b>/01</b><h4>Нет аккаунтов</h4><p>Регистрации нет вообще. Мы не знаем ни вашего имени, ни почты, ни факта установки.</p></div>
+      <div><b>/02</b><h4>Всё локально</h4><p>Подписки, настройки и логи лежат только на вашем диске, в обычных файлах.</p></div>
+      <div><b>/03</b><h4>Трафик не читается</h4><p>Клиент видит только счётчики байт на адаптере — ни истории, ни содержимого.</p></div>
     </div>
   </div>
 
-  <div class="layout">
-    <aside class="side">
+  <div class="doc-layout">
+    <aside class="side-nav">
       <h5>Разделы</h5>
       <ol>
-        <li><a href="#p1"><b>01</b>Коротко</a></li>
-        <li><a href="#p2"><b>02</b>Чего мы не делаем</a></li>
-        <li><a href="#p3"><b>03</b>Что хранится локально</a></li>
-        <li><a href="#p4"><b>04</b>Сетевые запросы</a></li>
-        <li><a href="#p5"><b>05</b>Анонимная статистика</a></li>
-        <li><a href="#p6"><b>06</b>Discord Rich Presence</a></li>
-        <li><a href="#p7"><b>07</b>Логи и диагностика</a></li>
-        <li><a href="#p8"><b>08</b>Ваш провайдер</a></li>
-        <li><a href="#p9"><b>09</b>Сайт проекта</a></li>
-        <li><a href="#p10"><b>10</b>Как всё удалить</a></li>
-        <li><a href="#p11"><b>11</b>Изменения политики</a></li>
+        <li><a href="#p1">01 — Коротко</a></li>
+        <li><a href="#p2">02 — Чего мы не делаем</a></li>
+        <li><a href="#p3">03 — Что хранится локально</a></li>
+        <li><a href="#p4">04 — Сетевые запросы</a></li>
+        <li><a href="#p5">05 — Анонимная статистика</a></li>
+        <li><a href="#p6">06 — Discord Rich Presence</a></li>
+        <li><a href="#p7">07 — Логи и диагностика</a></li>
+        <li><a href="#p8">08 — Ваш провайдер</a></li>
+        <li><a href="#p9">09 — Сайт проекта</a></li>
+        <li><a href="#p10">10 — Как всё удалить</a></li>
+        <li><a href="#p11">11 — Изменения политики</a></li>
       </ol>
       <div class="side-foot">Правила использования — в <a href="terms.html">условиях</a>. Технические подробности — в <a href="docs.html#files">документации</a>.</div>
     </aside>
 
     <div class="doc">
       <section class="sec" id="p1">
-        <h2><span class="n">01</span>Коротко</h2>
-        <p class="lead"><b>Мы не собираем ваши данные.</b> У проекта нет аккаунтов, нет облака и нет сервера, на который клиент отправлял бы телеметрию.</p>
+        <h2><span class="n">/01</span>Коротко</h2>
+        <p class="lead"><b>Мы не собираем ваши данные без спроса.</b> Аккаунтов и облака у проекта нет, а анонимная статистика по умолчанию выключена: клиент не отправляет ничего, пока вы сами не включите тумблер в настройках.</p>
         <p>Всё, что нужно клиенту для работы — подписки, настройки, состояние соединения — хранится в обычных файлах на вашем компьютере. Их можно открыть блокнотом и удалить в любой момент.</p>
         <p>Политика действует для всех трёх редакций: десктопной, CLI и серверной установки.</p>
       </section>
 
       <section class="sec" id="p2">
-        <h2><span class="n">02</span>Чего мы не делаем</h2>
+        <h2><span class="n">/02</span>Чего мы не делаем</h2>
         <ul class="list">
           <li>Не требуем регистрации, почты или номера телефона.</li>
           <li>Не ведём журналы посещённых сайтов, DNS-запросов и соединений.</li>
@@ -217,13 +87,13 @@ footer a:hover{color:var(--t1)}
           <li>Не читаем и не анализируем содержимое трафика внутри туннеля.</li>
         </ul>
         <div class="note ok">
-          <div class="tag">почему этому можно верить</div>
+          <span class="tag">Почему этому можно верить</span>
           <p>Клиент не скрывает сетевую активность: весь его трафик виден в любом сниффере, а файлы конфигурации — обычный JSON. Проверить утверждения выше можно самостоятельно.</p>
         </div>
       </section>
 
       <section class="sec" id="p3">
-        <h2><span class="n">03</span>Что хранится локально</h2>
+        <h2><span class="n">/03</span>Что хранится локально</h2>
         <p>Всё нижеперечисленное лежит только на вашей машине и никуда не синхронизируется.</p>
         <div class="table-wrap">
           <table>
@@ -239,13 +109,13 @@ footer a:hover{color:var(--t1)}
         </div>
         <p>В этих файлах нет истории посещений и нет содержимого трафика — только ваши же настройки, адреса серверов из подписки и технические сообщения.</p>
         <div class="note warn">
-          <div class="tag">внимание</div>
+          <span class="tag">Внимание</span>
           <p>Файл подписок содержит вашу ссылку целиком. Не выкладывайте его в публичный доступ и не прикладывайте к багрепортам без маскирования.</p>
         </div>
       </section>
 
       <section class="sec" id="p4">
-        <h2><span class="n">04</span>Сетевые запросы</h2>
+        <h2><span class="n">/04</span>Сетевые запросы</h2>
         <p>Клиент выходит в сеть только тогда, когда вы его об этом попросили.</p>
         <div class="table-wrap">
           <table>
@@ -262,18 +132,19 @@ footer a:hover{color:var(--t1)}
       </section>
 
       <section class="sec" id="p5">
-        <h2><span class="n">05</span>Анонимная статистика</h2>
+        <h2><span class="n">/05</span>Анонимная статистика</h2>
         <p>В настройках есть переключатель <b>«Анонимная статистика»</b> в группе «Приватность». По умолчанию он <b>выключен</b>, и мы не включаем его за вас ни при установке, ни при обновлении.</p>
         <ul class="list">
           <li>Если переключатель выключен — клиент не отправляет никаких статистических данных.</li>
-          <li>Если вы его включите — собираются только обезличенные технические события: версия клиента, редакция, факт успешного или неудачного подключения и код ошибки.</li>
-          <li>Никогда не передаются: ссылка подписки, адреса серверов, ваш IP, имя пользователя, списки приложений и объёмы трафика.</li>
+          <li>Если вы его включите — уходят только обезличенные технические события: версия клиента, ОС, случайный идентификатор сессии и код ошибки.</li>
+          <li>Вместе с ними — отчёты об ошибках интерфейса и падениях (текст ошибки и стек) через Sentry, чтобы мы могли чинить сбои. Содержимое трафика туда не попадает никогда.</li>
+          <li>Никогда не передаются: ссылка подписки, адреса серверов, имя пользователя, списки приложений и объёмы трафика. IP как поле не записывается — это стандартная техническая информация любого сетевого запроса.</li>
           <li>Отключить можно в любой момент тем же переключателем — эффект мгновенный.</li>
         </ul>
       </section>
 
       <section class="sec" id="p6">
-        <h2><span class="n">06</span>Discord Rich Presence</h2>
+        <h2><span class="n">/06</span>Discord Rich Presence</h2>
         <p>Если вы включили интеграцию с Discord, клиент общается с локальным приложением Discord на вашем компьютере и показывает статус в вашем профиле.</p>
         <ul class="list">
           <li>Функция выключена по умолчанию.</li>
@@ -282,13 +153,13 @@ footer a:hover{color:var(--t1)}
           <li>Дальнейшая судьба показанного статуса регулируется политикой Discord, а не нашей.</li>
         </ul>
         <div class="note warn">
-          <div class="tag">учтите</div>
+          <span class="tag">Учтите</span>
           <p>С включённым показом сервера ваши друзья в Discord увидят, через какую страну вы сидите. Если это лишнее — оставьте только общий статус или выключите интеграцию.</p>
         </div>
       </section>
 
       <section class="sec" id="p7">
-        <h2><span class="n">07</span>Логи и диагностика</h2>
+        <h2><span class="n">/07</span>Логи и диагностика</h2>
         <p>Лог <code>%TEMP%\wawity.log</code> пишется только локально и никуда не отправляется автоматически. Он нужен, чтобы вы сами могли понять, почему соединение не поднялось.</p>
         <ul class="list">
           <li>В лог попадают события ядра, ошибки маршрутизации и адреса серверов, к которым шло подключение.</li>
@@ -298,7 +169,7 @@ footer a:hover{color:var(--t1)}
       </section>
 
       <section class="sec" id="p8">
-        <h2><span class="n">08</span>Ваш провайдер и третьи стороны</h2>
+        <h2><span class="n">/08</span>Провайдер и третьи стороны</h2>
         <p>wawity — это клиент, а не VPN-сервис. Серверы принадлежат тому, чью подписку вы добавили.</p>
         <ul class="list">
           <li>Ваш провайдер видит факт подключения, ваш IP и объём трафика. Что он с этим делает — описано в его собственной политике, а не в этой.</li>
@@ -308,13 +179,13 @@ footer a:hover{color:var(--t1)}
       </section>
 
       <section class="sec" id="p9">
-        <h2><span class="n">09</span>Сайт проекта</h2>
+        <h2><span class="n">/09</span>Сайт проекта</h2>
         <p>Этот сайт — статические страницы. Мы не ставим рекламных пикселей и не просим регистрацию, чтобы скачать клиент.</p>
         <p>Хостинг и CDN могут вести стандартные технические журналы запросов (IP, время, User-Agent) — это обычная практика любого веб-сервера, мы их не анализируем и не связываем с установленными клиентами.</p>
       </section>
 
       <section class="sec" id="p10">
-        <h2><span class="n">10</span>Как всё удалить</h2>
+        <h2><span class="n">/10</span>Как всё удалить</h2>
         <p>У нас нет ваших данных, поэтому удаление — это просто уборка на вашей машине.</p>
         <ol class="list">
           <li>Отключите VPN и выключите блокировку Always-On.</li>
@@ -323,27 +194,31 @@ footer a:hover{color:var(--t1)}
           <li>Если остались следы в сети — выполните <code>wawity repair</code> или «Экстренное восстановление сети» до удаления.</li>
         </ol>
         <div class="note ok">
-          <div class="tag">после этого</div>
+          <span class="tag">После этого</span>
           <p>На диске не остаётся ни подписок, ни настроек, ни правил брандмауэра с префиксом <code>WawityFW_</code>. Аккаунт удалять нечего — его никогда не было.</p>
         </div>
       </section>
 
       <section class="sec" id="p11">
-        <h2><span class="n">11</span>Изменения политики</h2>
+        <h2><span class="n">/11</span>Изменения политики</h2>
         <p>Если в клиенте появится функция, которая работает с данными иначе, эта страница будет обновлена до её выхода. Дата редакции всегда указана в шапке.</p>
-        <p>Если что-то в этом документе осталось непонятным — спросите напрямую, и мы дополним его конкретикой.</p><a class="tg" href="https://t.me/wawityvpn" target="_blank" rel="noopener"><span class="tg-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M21.94 4.3 18.7 19.4c-.24 1.07-.88 1.33-1.78.83l-4.92-3.63-2.37 2.29c-.27.26-.49.48-1 .48l.35-5.05 9.16-8.28c.4-.35-.09-.55-.62-.2L6.2 13.02 1.35 11.5c-1.05-.33-1.07-1.05.22-1.55L20.58 2.9c.88-.32 1.65.2 1.36 1.4z"/></svg></span><span class="tg-txt"><b>Связаться в Telegram</b><span>t.me/wawityvpn</span></span><span class="tg-go">открыть</span></a>
+        <p>Если что-то в этом документе осталось непонятным — спросите напрямую, и мы дополним его конкретикой.</p>
+        <a class="tg" href="https://t.me/wawityvpn" target="_blank" rel="noopener"><span class="tg-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.5 4.5 18.5 19l-5.2-3.8-2.6 2.6-.7-3.9L19.4 5 8.3 13.2l-4.9-1.7z"/></svg></span><span class="tg-txt"><b>Связаться в Telegram</b><span>t.me/wawityvpn</span></span><span class="tg-go">открыть →</span></a>
+      </section>
+    </div>
+  </div>
 </div>
 </main>
 
-<footer><div class="wrap">
-<span>© 2026 wawity. Собрано на Rust и sing-box.</span>
-<span><a href="index.html">Главная</a> · <a href="docs.html">Документация</a> · <a href="terms.html">Условия</a> · <a href="privacy.html">Приватность</a> · <a href="https://t.me/wawityvpn" target="_blank" rel="noopener">Telegram</a></span>
+<footer class="sub-footer"><div class="wrap">
+<span>© 2026 wawity · собрано на rust × sing-box</span>
+<span><a href="index.html">главная</a> / <a href="docs.html">документация</a> / <a href="terms.html">условия</a> / <a href="privacy.html">приватность</a> / <a href="https://t.me/wawityvpn" target="_blank" rel="noopener">telegram</a></span>
 </div></footer>
 
 <script>
 (function(){
   var bar = document.getElementById('progress');
-  var links = Array.prototype.slice.call(document.querySelectorAll('.side a[href^="#"]'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('.side-nav a[href^="#"]'));
   var secs = Array.prototype.slice.call(document.querySelectorAll('section.sec'));
 
   function onScroll(){
