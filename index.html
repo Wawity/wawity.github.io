@@ -17,6 +17,11 @@
 <noscript><style>
 .loader,.grain{display:none}
 .hero-fade,.poster .line-inner,[data-reveal]{opacity:1 !important;transform:none !important}
+.ex-viz i,.ex-viz b,.ex-viz em,.ex-viz .fz-step{opacity:1 !important;transform:none !important}
+.ex-viz .vz-track i{width:var(--w) !important}
+.ex-viz .fl,.ex-viz .fbar,.ex-viz .blk{stroke-dashoffset:0 !important}
+.ex-viz .fx line,.ex-viz .fv,.ex-viz .fv2{opacity:1 !important}
+.ex-viz .fz-link{transform:scaleY(1) !important}
 </style></noscript>
 </head>
 <body>
@@ -68,6 +73,15 @@
 </div>
 
 <section class="hero">
+  <div class="rel-line hero-fade">
+    <div class="wrap rel-row">
+      <span class="rl-prompt">$</span>
+      <span class="rl-cmd" data-text="wawity update 0.2.1">wawity update 0.2.1</span>
+      <span class="rl-sep" aria-hidden="true"></span>
+      <span class="rl-feats">extra-хаб · panic-клавиша · стример-режим</span>
+      <a class="rl-go" href="#extra">что нового →</a>
+    </div>
+  </div>
   <div class="hero-bg" aria-hidden="true">
     <img src="earth/night.jpg" alt="" onerror="this.remove()">
   </div>
@@ -352,6 +366,155 @@ Name                Enabled Action
   </div>
 </section>
 
+<section class="ex" id="extra">
+  <div class="wrap">
+  <div class="ex-head">
+    <p class="mono-label">extra-хаб · new в 0.2.1</p>
+    <h2 class="display">Восемь инструментов.<br><em>Ноль внешних сайтов.</em></h2>
+    <p class="body">Весь набор диагностики теперь живёт прямо в клиенте: от замера скорости и поиска утечек до бенчмарка резолверов, пульса нод, аудита портов и готовых сниппетов починки. У каждого инструмента — раскрывающийся блок «Как это работает».</p>
+  </div>
+
+  <div class="ex-stage" data-reveal>
+      <img class="ex-map" src="ex-map.svg" alt="" aria-hidden="true" onerror="this.closest('.ex-stage').classList.add('no-map')">
+      <div class="ex-pin p-below pin-main" style="left:52.53%;top:25.98%" tabindex="0" aria-label="Сервер Frankfurt, пинг 23 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Frankfurt · 23ms</span></div>
+      <div class="ex-pin p-left" style="left:51.01%;top:24.25%;--d:.6s" tabindex="0" aria-label="Сервер Amsterdam, пинг 41 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Amsterdam · 41ms</span></div>
+      <div class="ex-pin" style="left:57.58%;top:15.59%;--d:1.2s" tabindex="0" aria-label="Сервер Helsinki, пинг 58 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Helsinki · 58ms</span></div>
+      <div class="ex-pin p-right" style="left:56.06%;top:24.25%;--d:1.8s" tabindex="0" aria-label="Сервер Warszawa, пинг 67 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Warszawa · 67ms</span></div>
+      <div class="ex-pin" style="left:26.77%;top:34.64%;--d:2.4s" tabindex="0" aria-label="Сервер Ashburn, пинг 112 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Ashburn · 112ms</span></div>
+    </div>
+
+    <div class="ex-grid">
+      <article class="ex-card w3" data-reveal>
+        <span class="ex-gh" aria-hidden="true">01</span>
+        <div class="ex-top"><span class="ex-name">reachability</span></div>
+        <h3>Серверы отвечают сразу</h3>
+        <p>Reachability простукивает каждый узел подписки, пока ты выбираешь, куда подключаться. Молчащие видно сразу.</p>
+        <div class="ex-viz">
+          <div class="vz-eq"><i style="--h:46%"></i><i style="--h:72%"></i><i style="--h:34%;--d:.2s"></i><i style="--h:88%;--d:.35s"></i><i style="--h:58%;--d:.5s"></i></div>
+          <p class="vz-cap">5 из 5 узлов отвечают</p>
+        </div>
+      </article>
+
+      <article class="ex-card w3" data-reveal>
+        <span class="ex-gh" aria-hidden="true">02</span>
+        <div class="ex-top"><span class="ex-name">speed test</span></div>
+        <h3>Скорость без сюрпризов</h3>
+        <p>Замер загрузки и отдачи через Cloudflare — прямо через туннель, без сторонних сайтов и рекламы.</p>
+        <div class="ex-viz">
+          <div class="vz-speed">
+            <div class="sp-row"><b>загрузка</b><span class="sp-line sp-d"></span><em>940 Мбит</em></div>
+            <div class="sp-row"><b>отдача</b><span class="sp-line sp-u" style="--l:62%"></span><em>510 Мбит</em></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="ex-card" data-reveal>
+        <span class="ex-gh" aria-hidden="true">03</span>
+        <div class="ex-top"><span class="ex-name">leaks</span></div>
+        <h3>Ноль утечек</h3>
+        <p>Leaks проверяет DNS и IP: весь трафик идёт строго через туннель — и это проверяется в один клик.</p>
+        <div class="ex-viz">
+          <svg class="vz-svg" viewBox="0 0 220 50" fill="none" aria-hidden="true">
+            <polyline class="ck" points="4,27 20,43 48,10"/>
+            <text class="fv" x="64" y="30">0 утечек</text>
+            <text class="fv2" x="64" y="45">dns · ip · webrtc</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="ex-card" data-reveal>
+        <span class="ex-gh" aria-hidden="true">04</span>
+        <div class="ex-top"><span class="ex-name">dns-бенчмарк</span></div>
+        <h3>Быстрейший резолвер — одним тапом</h3>
+        <p>Cloudflare, Google, Quad9, AdGuard и твой собственный DoH замеряются через текущий маршрут — с учётом туннеля. Победитель применяется одной кнопкой.</p>
+        <div class="ex-viz">
+          <div class="vz-dns">
+            <div class="vz-row win"><span class="vz-label">cloudflare</span><span class="vz-track"><i style="--w:88%"></i></span><span class="vz-val">11ms</span></div>
+            <div class="vz-row"><span class="vz-label">google</span><span class="vz-track"><i style="--w:68%"></i></span><span class="vz-val">14ms</span></div>
+            <div class="vz-row"><span class="vz-label">quad9</span><span class="vz-track"><i style="--w:48%"></i></span><span class="vz-val">19ms</span></div>
+            <div class="vz-row"><span class="vz-label">adguard</span><span class="vz-track"><i style="--w:38%"></i></span><span class="vz-val">21ms</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="ex-card" data-reveal>
+        <span class="ex-gh" aria-hidden="true">05</span>
+        <div class="ex-top"><span class="ex-name">пульс нод</span></div>
+        <h3>Мёртвые узлы видны сразу</h3>
+        <p>Массовая проверка всех серверов подписки: живой, деградация, мёртвый. Мёртвые перечёркиваются в списках и больше не тратят твой пинг.</p>
+        <div class="ex-viz">
+          <div class="vz-pulse">
+            <span class="vz-line"></span>
+            <span class="vz-node ok" style="left:9%"><i></i><b>de-01</b><em>23ms</em></span>
+            <span class="vz-node ok" style="left:33%;--d:.15s"><i></i><b>nl-03</b><em>41ms</em></span>
+            <span class="vz-node warn" style="left:57%;--d:.3s"><i></i><b>fi-01</b><em>210ms</em></span>
+            <span class="vz-node dead" style="left:85%;--d:.45s"><i></i><b>us-07</b><em>мёртв</em></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="ex-card" data-reveal>
+        <span class="ex-gh" aria-hidden="true">06</span>
+        <div class="ex-top"><span class="ex-name">аудит портов</span></div>
+        <h3>Стелс подтверждён</h3>
+        <p>Внешний скан своего IP по всем TCP-портам — с VPN и без. Вердикт и разница между режимами — на экране.</p>
+        <div class="ex-viz">
+          <svg class="vz-svg" viewBox="0 0 280 84" fill="none" aria-hidden="true">
+            <line class="fl" x1="0" y1="18" x2="196" y2="18"/>
+            <line class="fl" x1="0" y1="42" x2="196" y2="42"/>
+            <line class="fl" x1="0" y1="66" x2="196" y2="66"/>
+            <line class="fbar" x1="204" y1="4" x2="204" y2="80"/>
+            <g class="fx">
+              <line x1="200" y1="14" x2="208" y2="22"/><line x1="208" y1="14" x2="200" y2="22"/>
+              <line x1="200" y1="38" x2="208" y2="46"/><line x1="208" y1="38" x2="200" y2="46"/>
+              <line x1="200" y1="62" x2="208" y2="70"/><line x1="208" y1="62" x2="200" y2="70"/>
+            </g>
+            <text class="fv" x="216" y="38">стелс</text>
+            <text class="fv2" x="216" y="52">0 / tcp</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="ex-card" data-reveal>
+        <span class="ex-gh" aria-hidden="true">07</span>
+        <div class="ex-top"><span class="ex-name">брандмауэр</span></div>
+        <h3>Правила — как на ладони</h3>
+        <p>Живой список правил Wawity и sing-box в Windows Firewall. Кнопка «Починить правила» пересоздаёт набор за секунду.</p>
+        <div class="ex-viz">
+          <svg class="vz-svg" viewBox="0 0 280 84" fill="none" aria-hidden="true">
+            <line class="pass" x1="0" y1="26" x2="280" y2="26"/>
+            <line class="blk" x1="0" y1="58" x2="196" y2="58"/>
+            <line class="fbar" x1="204" y1="8" x2="204" y2="20"/>
+            <line class="fbar" x1="204" y1="32" x2="204" y2="76"/>
+            <g class="fx">
+              <line x1="200" y1="54" x2="208" y2="62"/><line x1="208" y1="54" x2="200" y2="62"/>
+            </g>
+            <text class="fv" x="214" y="29">allow</text>
+            <text class="fv2" x="214" y="61">block</text>
+          </svg>
+        </div>
+      </article>
+
+      <article class="ex-card" data-reveal>
+        <span class="ex-gh" aria-hidden="true">08</span>
+        <div class="ex-top"><span class="ex-name">сниппеты починки</span></div>
+        <h3>Починка — из буфера</h3>
+        <p>Проверенные команды сброса сети с человеческими описаниями: скопировал, вставил в консоль администратора, готово.</p>
+        <div class="ex-viz">
+          <div class="vz-flow">
+            <span class="fz-step"><span class="c-p">$</span> netsh int ip reset</span>
+            <span class="fz-link"></span>
+            <span class="fz-step"><span class="c-p">$</span> netsh winsock reset</span>
+            <span class="fz-link"></span>
+            <span class="fz-step"><span class="c-p">$</span> ipconfig /flushdns</span>
+            <span class="fz-link fz-arrow"></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
 <section class="section ks split" id="split">
   <div class="wrap">
     <div class="section-head center" data-reveal>
@@ -476,8 +639,8 @@ Name                Enabled Action
           <span>Поиск игр для обхода туннеля</span>
           <span>Discord Rich Presence</span>
         </div>
-        <div class="dl-file"><span>WawitySetup-Desktop.exe</span><span>~28 МБ</span></div>
-        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/release/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+        <div class="dl-file"><span>WawitySetup-Desktop.exe</span><span>~24 МБ</span></div>
+        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/wawity/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
         <p class="dl-doc"><a href="docs.html">Установка и первый запуск →</a></p>
       </div>
 
@@ -553,10 +716,10 @@ Name                Enabled Action
     <h2 class="display h-section">Поставь и забудь,<br>что он включён.</h2>
     <p class="body">Единственное, что вы заметите после установки — сервер в игре стал ближе. Всё остальное wawity делает тихо.</p>
     <div class="hero-actions">
-      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/release/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/wawity/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
       <a class="btn btn-dark btn-lg" href="https://github.com/wawity/wawity-desktop">Исходники на GitHub</a>
     </div>
-    <p class="hero-meta"><span>~28 МБ</span><span>без регистрации</span><span>удаление в два клика</span></p>
+    <p class="hero-meta"><span>~24 МБ</span><span>без регистрации</span><span>удаление в два клика</span></p>
   </div>
 </section>
 
@@ -573,6 +736,7 @@ Name                Enabled Action
         <a href="#protocols">Протоколы</a>
         <a href="#killswitch">Kill switch</a>
         <a href="#split">Сплит-туннелинг</a>
+        <a href="#extra">Extra-хаб</a>
         <a href="#compare">Сравнение</a>
         <a href="#download">Загрузка</a>
       </div>
@@ -751,6 +915,37 @@ if(hasGsap&&!reduced){
     }});
   });
 
+  var rlCmd=$('.rl-cmd');
+  if(rlCmd&&window.ScrambleTextPlugin){
+    gsap.to(rlCmd,{duration:1.5,ease:'none',delay:1.7,scrambleText:{text:rlCmd.getAttribute('data-text'),chars:'01<>/{}#$&@%!;:',speed:.4}});
+  }
+
+  var exStage=$('.ex-stage');
+  if(exStage&&window.fetch&&!reduced){
+    fetch('ex-map.svg').then(function(r){return r.text()}).then(function(txt){
+      var holder=d.createElement('div');
+      holder.className='ex-map-inline';
+      holder.setAttribute('aria-hidden','true');
+      holder.innerHTML=txt;
+      var img=$('.ex-map',exStage);
+      if(img)img.remove();
+      exStage.insertBefore(holder,exStage.firstChild);
+      if(hasGsap){
+        var dots=$$('circle',holder);
+        setInterval(function(){
+          for(var i=0;i<7;i++){
+            var c=dots[Math.floor(Math.random()*dots.length)];
+            var base=c.getAttribute('fill');
+            var hot=Math.random()<.16;
+            gsap.timeline({overwrite:true})
+              .to(c,{attr:{fill:hot?'#fe2c02':'#7d786d'},duration:.4,ease:'power2.out'})
+              .to(c,{attr:{fill:base},duration:.9,ease:'power2.out'});
+          }
+        },380);
+      }
+    }).catch(function(){});
+  }
+
   $$('.cnt').forEach(function(el){
     var to=parseFloat(el.getAttribute('data-to')),pre=el.getAttribute('data-prefix')||'';
     var obj={v:0};
@@ -795,6 +990,15 @@ if(!reduced&&fine){
     });
     card.addEventListener('pointerleave',function(){card.style.transform=''});
   });
+}
+
+if(!('IntersectionObserver' in window)){
+  $$('.ex-viz').forEach(function(v){v.classList.add('live')});
+}else{
+  var vizIO=new IntersectionObserver(function(en){
+    en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('live');vizIO.unobserve(x.target)}});
+  },{threshold:.3});
+  $$('.ex-viz').forEach(function(v){vizIO.observe(v)});
 }
 
 if(!reduced&&fine){
