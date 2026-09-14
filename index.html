@@ -76,15 +76,13 @@
   <div class="rel-line hero-fade">
     <div class="wrap rel-row">
       <span class="rl-prompt">$</span>
-      <span class="rl-cmd" data-text="wawity 0.2.1 extended">wawity 0.2.1 extended</span>
+      <span class="rl-cmd" data-text="wawity 0.3.0">wawity 0.3.0</span>
       <span class="rl-sep" aria-hidden="true"></span>
       <span class="rl-feats">dns-калибровка · авто-фейловер · анти-RKN детект</span>
       <a class="rl-go" href="#extra">что нового →</a>
     </div>
   </div>
-  <div class="hero-bg" aria-hidden="true">
-    <img src="earth/night.jpg" alt="" onerror="this.remove()">
-  </div>
+  <canvas class="hero-hole" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
 
   <div class="wrap hero-inner">
@@ -110,73 +108,54 @@
     <span class="tray-cap">трей клиента · как есть</span>
     <div class="tray-demo">
       <div class="tray-head">
-        <span class="tdot"></span>
+        <span class="orb"><span class="orb-core"></span></span>
         <div class="tray-head-text">
           <span class="tray-status">Подключено</span>
-          <span class="tray-server tmono">Frankfurt №4 · VLESS Reality</span>
+          <span class="tray-server">Frankfurt №4 · VLESS Reality</span>
         </div>
-        <button class="head-btn" type="button" tabindex="-1"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
       </div>
 
       <div class="tray-subs">
-        <button class="sub-pill sub-pill--active" type="button" tabindex="-1"><span class="sub-pill-name">Основная</span></button>
-        <button class="sub-pill" type="button" tabindex="-1"><span class="sub-pill-name">Game-Fast</span></button>
-        <button class="sub-pill sub-pill--dead" type="button" tabindex="-1"><span class="sub-pill-name">Запасная</span><span class="sub-pill-x">Истекла</span></button>
+        <span class="sub-chip sub-chip--active">Основная</span>
+        <span class="sub-chip">Game-Fast</span>
+        <span class="sub-chip sub-chip--dead">Запасная · истекла</span>
       </div>
 
       <div class="tray-list">
         <div class="srv-row srv-row--active">
           <span class="flag-box"><img src="flags/de.svg" alt=""></span>
-          <div class="srv-text">
-            <span class="srv-name">Frankfurt №4</span>
-            <span class="srv-meta tmono">de-01.wawity.lol</span>
-          </div>
-          <span class="srv-ping tmono" data-base="23">23ms</span>
+          <span class="srv-name">Frankfurt №4</span>
+          <span class="srv-ping tmono tier-good" data-base="23">23ms</span>
           <svg class="srv-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
         <div class="srv-row">
           <span class="flag-box"><img src="flags/nl.svg" alt=""></span>
-          <div class="srv-text">
-            <span class="srv-name">Amsterdam №2</span>
-            <span class="srv-meta tmono">nl-03.wawity.lol</span>
-          </div>
-          <span class="srv-ping tmono" data-base="41">41ms</span>
+          <span class="srv-name">Amsterdam №2</span>
+          <span class="srv-ping tmono tier-good" data-base="41">41ms</span>
         </div>
         <div class="srv-row">
           <span class="flag-box"><img src="flags/fi.svg" alt=""></span>
-          <div class="srv-text">
-            <span class="srv-name">Helsinki №1</span>
-            <span class="srv-meta tmono">fi-01.wawity.lol</span>
-          </div>
-          <span class="srv-ping tmono" data-base="58">58ms</span>
+          <span class="srv-name">Helsinki №1</span>
+          <span class="srv-ping tmono tier-good" data-base="58">58ms</span>
         </div>
         <div class="srv-row">
           <span class="flag-box"><img src="flags/pl.svg" alt=""></span>
-          <div class="srv-text">
-            <span class="srv-name">Warszawa №2</span>
-            <span class="srv-meta tmono">pl-02.wawity.lol</span>
-          </div>
-          <span class="srv-ping tmono" data-base="67">67ms</span>
+          <span class="srv-name">Warszawa №2</span>
+          <span class="srv-ping tmono tier-good" data-base="67">67ms</span>
         </div>
         <div class="srv-row">
           <span class="flag-box"><img src="flags/us.svg" alt=""></span>
-          <div class="srv-text">
-            <span class="srv-name">Ashburn №1</span>
-            <span class="srv-meta tmono">us-01.wawity.lol</span>
-          </div>
-          <span class="srv-ping tmono" data-base="112">112ms</span>
+          <span class="srv-name">Ashburn №1</span>
+          <span class="srv-ping tmono tier-ok" data-base="112">112ms</span>
         </div>
       </div>
 
-      <div class="tray-actions">
-        <button class="act-btn" type="button" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg><span>Переподключиться</span></button>
-        <button class="act-btn" type="button" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Починить сеть</span></button>
-      </div>
-
       <div class="tray-foot">
-        <button class="foot-btn foot-btn--accent" type="button" tabindex="-1">Отключиться</button>
-        <button class="foot-btn" type="button" tabindex="-1">Открыть Wawity</button>
-        <button class="foot-btn foot-btn--danger" type="button" tabindex="-1">Выход</button>
+        <button class="connect-btn" type="button" tabindex="-1">Отключиться</button>
+        <button class="icon-btn" type="button" title="Переподключиться" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+        <button class="icon-btn" type="button" title="Починить сеть" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></button>
+        <button class="icon-btn" type="button" title="Открыть Wawity" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+        <button class="icon-btn icon-btn--danger" type="button" title="Выход" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
       </div>
     </div>
   </aside>
@@ -369,9 +348,11 @@ Name                Enabled Action
 <section class="ex" id="extra">
   <div class="wrap">
   <div class="ex-head">
-    <p class="mono-label">extra-хаб · new в 0.2.1</p>
-    <h2 class="display">Восемь инструментов.<br><em>Ноль внешних сайтов.</em></h2>
-    <p class="body">Весь набор диагностики теперь живёт прямо в клиенте: от замера скорости и поиска утечек до бенчмарка резолверов, пульса нод, аудита портов и готовых сниппетов починки. У каждого инструмента — раскрывающийся блок «Как это работает».</p>
+    <h2 class="display">Сеть, которая<br>чинит себя сама.</h2>
+    <div class="ex-aside">
+      <p class="body">Пять механизмов релиза 0.3.0: калибровка DNS, авто-фейловер, детект блокировок, честный пинг и бенчмарк резолверов. Всё внутри клиента, всё считается локально.</p>
+      <p class="ex-note">wawity 0.3.0</p>
+    </div>
   </div>
 
   <div class="ex-stage" data-reveal>
@@ -383,157 +364,86 @@ Name                Enabled Action
       <div class="ex-pin" style="left:26.77%;top:34.64%;--d:2.4s" tabindex="0" aria-label="Сервер Ashburn, пинг 112 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Ashburn · 112ms</span></div>
     </div>
 
-    <div class="ex-list">
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">01</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">reachability</span><h3>Серверы отвечают сразу</h3></div>
-          <p>Простукивает каждый узел подписки, пока ты выбираешь, куда подключаться. Молчащие видно сразу.</p>
-        </div>
-        <span class="ex-side">tcp probe · 5 nodes</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">02</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">speed test</span><h3>Скорость без сюрпризов</h3></div>
-          <p>Замер загрузки и отдачи через Cloudflare — прямо через туннель, без сторонних сайтов и рекламы.</p>
-        </div>
-        <span class="ex-side">cloudflare · mbps</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">03</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">leaks</span><h3>Ноль утечек</h3></div>
-          <p>Проверяет DNS и IP: весь трафик идёт строго через туннель — и это подтверждается в один клик.</p>
-        </div>
-        <span class="ex-side">dns · ip · webrtc</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">04</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">dns-бенчмарк</span><h3>Быстрейший резолвер — одним тапом</h3></div>
-          <p>Cloudflare, Google, Quad9, AdGuard и свой DoH замеряются через текущий маршрут. Победитель применяется кнопкой.</p>
-        </div>
-        <span class="ex-side">doh · rtt race</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">05</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">пульс нод</span><h3>Мёртвые узлы видны сразу</h3></div>
-          <p>Массовая проверка всех серверов подписки: живой, деградация, мёртвый. Мёртвые не тратят твой пинг.</p>
-        </div>
-        <span class="ex-side">mass scan · status</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">06</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">аудит портов</span><h3>Стелс подтверждён</h3></div>
-          <p>Внешний скан своего IP по всем TCP-портам — с VPN и без. Вердикт и разница режимов на экране.</p>
-        </div>
-        <span class="ex-side">tcp · stealth</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">07</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">брандмауэр</span><h3>Правила — как на ладони</h3></div>
-          <p>Живой список правил Wawity и sing-box в Windows Firewall. «Починить правила» пересоздаёт набор за секунду.</p>
-        </div>
-        <span class="ex-side">wfp · live rules</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">08</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">сниппеты починки</span><h3>Починка — из буфера</h3></div>
-          <p>Проверенные команды сброса сети с человеческими описаниями: скопировал, вставил в консоль, готово.</p>
-        </div>
-        <span class="ex-side">netsh · admin</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
-      <a class="ex-row" data-reveal href="#download">
-        <span class="ex-num">09</span>
-        <div class="ex-row-main">
-          <div class="ex-row-top"><span class="ex-name">dns-калибровка<span class="ex-new">new</span></span><h3>Оживший DNS — сам</h3></div>
-          <p>Провайдер глушит резолвер? Калибровка переберёт связки «резолвер × bootstrap × DPI», найдёт живую и применит. Запомненная пара включается мгновенно.</p>
-        </div>
-        <span class="ex-side">auto-heal · dpi</span><svg class="ex-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-6-6m6 6-6 6"/></svg>
-      </a>
+    <div class="ex-ed">
+      <span class="ex-ghostword" aria-hidden="true">extra</span>
+
+      <div class="ex-item" data-reveal>
+        <span class="ex-idx">01</span>
+        <h3>DNS-калибровка</h3>
+        <p>Провайдер глушит резолвер? Клиент перебирает связки «резолвер × bootstrap × DPI», находит живую и применяет. Запомненная пара включается мгновенно.</p>
+      </div>
+
+      <div class="ex-item" data-reveal>
+        <span class="ex-idx">02</span>
+        <h3>Авто-фейловер</h3>
+        <p>Сервер начал деградировать? Трафик молча переезжает на живую ноду — без разрыва сессий и без твоего участия.</p>
+      </div>
+
+      <div class="ex-item" data-reveal>
+        <span class="ex-idx">03</span>
+        <h3>Анти-RKN детект</h3>
+        <p>Блокировки и душение маршрута замечаются раньше тебя — транспорт перестраивается, пока игра продолжает идти.</p>
+      </div>
+
+      <div class="ex-item" data-reveal>
+        <span class="ex-idx">04</span>
+        <h3>Честный пинг</h3>
+        <p>Пробы привязаны к физическому адаптеру: задержки одинаковые с включённым VPN и без него. Цифрам можно верить.</p>
+      </div>
+
+      <div class="ex-item" data-reveal>
+        <span class="ex-idx">05</span>
+        <h3>Бенчмарк резолверов</h3>
+        <p>Двенадцать DNS — от Cloudflare до Comss — гоняются по JSON- и DoH-пробам. Победитель применяется одной кнопкой.</p>
+      </div>
+    </div>
     </div>    </div>
   </div>
 </section>
 
 <section class="section ks split" id="split">
   <div class="wrap">
-    <div class="section-head center" data-reveal>
+
+    <div class="section-head" data-reveal>
       <p class="mono-label">сплит-туннелинг</p>
-      <h2 class="display h-section">Один ПК.<br>Два маршрута.</h2>
-      <p class="body">wawity решает судьбу каждого приложения ещё до подключения: игры и античиты выходят в сеть напрямую, всё остальное идёт через туннель. Ниже — маршруты, которыми это делается.</p>
+      <h2 class="display h-section">Один поток.<br>Два пути.</h2>
+      <p class="body">wawity делит трафик ещё до подключения: игры уходят напрямую с родного IP и приоритетом DSCP 46, всё остальное — через шифрованный канал VLESS Reality.</p>
     </div>
 
-    <div class="ks-track">
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">DIRECT</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">маршрут 01 · игры</p>
-          <h3>Игра выходит наружу напрямую</h3>
-          <p>Трафик игры даже не попадает в туннель: пакеты уходят в обычную сеть с твоего IP. Сервер общается с игроком, как будто VPN вообще нет — и пинг тот же.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> wawity route set cs2.exe --verdict direct
-  cs2.exe    out via wi-fi · <span class="c-k">ваш ip</span>
-  ping       11ms · <span class="c-k">без туннеля</span></pre>
-        </div>
-      </div>
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">DIRECT</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">маршрут 02 · античиты</p>
-          <h3>Античит исключён до запуска игры</h3>
-          <p>BattlEye, EAC и Vanguard находит сканер — автоматически, одним списком. Античит видит обычную сеть, потому что она и есть обычная.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> wawity scan --anticheat
-  battleye   найден  → <span class="c-k">direct</span>
-  easyantic  найден  → <span class="c-k">direct</span>
-  vanguard   найден  → <span class="c-k">direct</span>
-  <span class="c-s">3 процесса вне туннеля</span></pre>
-        </div>
-      </div>
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">TUNNEL</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">маршрут 03 · всё остальное</p>
-          <h3>Браузер и загрузки — через туннель</h3>
-          <p>Всё, что не игра, идёт через Frankfurt: торренты, стриминги, гео-сервисы. Скорость канала видна на живом графике в клиенте, а не на ощупь.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> wawity route set * --verdict tun
-  chrome      → tun · Frankfurt №4
-  discord     → tun · Frankfurt №4
-  qbittorrent → tun · <span class="c-k">Frankfurt №4</span></pre>
-        </div>
-      </div>
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">46</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">маршрут 04 · приоритет</p>
-          <h3>Роутер ставит игру в начало очереди</h3>
-          <p>Пакетам игры выставляется DSCP 46 — тег приоритета, который роутер понимает без настроек. Когда сеть забита, очередь расступается перед игрой.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> New-NetQosPolicy -Name <span class="c-s">"wawity · games"</span> `
-    -AppPathMatch cs2.exe -<span class="c-k">DSCPAction 46</span>
-  <span class="c-s">политика создана · DSCP 46</span>
-  <span class="c-k">приоритет</span> <span class="c-s">в очереди роутера</span></pre>
-        </div>
-      </div>
-
+    <div class="spl-fork" data-reveal aria-hidden="true">
+      <svg viewBox="0 0 1200 280" preserveAspectRatio="xMidYMax meet" fill="none">
+        <path class="spl-fk-stem" d="M600 0 V64"/>
+        <path class="spl-fk-branch" d="M600 64 C600 172 300 150 300 280"/>
+        <path class="spl-fk-branch spl-fk-branch--ember" d="M600 64 C600 172 900 150 900 280"/>
+        <circle class="spl-fk-pkt" r="4">
+          <animateMotion dur="3.4s" repeatCount="indefinite" path="M600 0 V64 C600 172 300 150 300 280"/>
+        </circle>
+        <circle class="spl-fk-pkt spl-fk-pkt--ember" r="4">
+          <animateMotion dur="3.4s" begin="1.7s" repeatCount="indefinite" path="M600 0 V64 C600 172 900 150 900 280"/>
+        </circle>
+      </svg>
     </div>
+
+    <div class="spl-worlds" data-reveal>
+      <div class="spl-world">
+        <span class="spl-w-idx">01 · direct</span>
+        <h3 class="spl-w-name">DIRECT</h3>
+        <p class="spl-w-proc">cs2.exe — easyantic.exe — beservice.exe</p>
+        <p class="spl-w-desc">Игры и античиты уходят в сеть напрямую: BattlEye и EAC видят обычную сеть, потому что она и есть обычная. Очередь роутера расступается — пакетам игры выставлен приоритет DSCP 46.</p>
+      </div>
+      <span class="spl-seam" aria-hidden="true"></span>
+      <div class="spl-world spl-world--tunnel">
+        <span class="spl-w-idx">02 · tunnel</span>
+        <h3 class="spl-w-name spl-w-name--outline">TUNNEL</h3>
+        <p class="spl-w-proc">chrome.exe — discord.exe — qbittorrent.exe</p>
+        <p class="spl-w-desc">Всё остальное идёт через шифрованный канал: трафик неотличим от обычного TLS к крупному CDN, DNS не утекает мимо, а стриминги видят Frankfurt и полную скорость.</p>
+      </div>
+    </div>
+
+    <p class="spl-foot" data-reveal>правила пересобираются на лету — <span>без переподключения</span></p>
+
   </div>
 </section>
-
 <section class="section" id="compare" style="padding-top:0">
   <div class="wrap">
     <div class="section-head center" data-reveal>
@@ -585,7 +495,7 @@ Name                Enabled Action
           <span>Discord Rich Presence</span>
         </div>
         <div class="dl-file"><span>WawitySetup-Desktop.exe</span><span>~24 МБ</span></div>
-        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/extended/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
         <p class="dl-doc"><a href="docs.html">Установка и первый запуск →</a></p>
       </div>
 
@@ -661,7 +571,7 @@ Name                Enabled Action
     <h2 class="display h-section">Поставь и забудь,<br>что он включён.</h2>
     <p class="body">Единственное, что вы заметите после установки — сервер в игре стал ближе. Всё остальное wawity делает тихо.</p>
     <div class="hero-actions">
-      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/extended/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
       <a class="btn btn-dark btn-lg" href="https://github.com/wawity/wawity-desktop">Исходники на GitHub</a>
     </div>
     <p class="hero-meta"><span>~24 МБ</span><span>без регистрации</span><span>удаление в два клика</span></p>
@@ -714,6 +624,7 @@ Name                Enabled Action
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+<script src="blackhole.js" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
 "use strict";
@@ -969,7 +880,7 @@ if(pings.length){
       if(Math.random()<.65){
         var v=Math.max(4,p.base+Math.round(Math.random()*10-5));
         p.el.textContent=v+'ms';
-        p.el.style.color=Math.random()<.12?'#4cc2ff':'';
+        p.el.style.color=v<90?'#6ccb5f':v<180?'#f0d36a':'#ff9f6b';
       }
     });
   },2200);
