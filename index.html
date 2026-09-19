@@ -17,11 +17,6 @@
 <noscript><style>
 .loader,.grain{display:none}
 .hero-fade,.poster .line-inner,[data-reveal]{opacity:1 !important;transform:none !important}
-.ex-viz i,.ex-viz b,.ex-viz em,.ex-viz .fz-step{opacity:1 !important;transform:none !important}
-.ex-viz .vz-track i{width:var(--w) !important}
-.ex-viz .fl,.ex-viz .fbar,.ex-viz .blk{stroke-dashoffset:0 !important}
-.ex-viz .fx line,.ex-viz .fv,.ex-viz .fv2{opacity:1 !important}
-.ex-viz .fz-link{transform:scaleY(1) !important}
 </style></noscript>
 </head>
 <body>
@@ -79,8 +74,6 @@
       <span class="rl-cmd" data-text="wawity 0.3.0">wawity 0.3.0</span>
       <span class="rl-sep" aria-hidden="true"></span>
       <span class="rl-feats">dns-калибровка · авто-фейловер · анти-RKN детект</span>
-      <a class="rl-go" href="#extra">что нового →</a>
-    </div>
   </div>
   <canvas class="hero-hole" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
@@ -345,102 +338,31 @@ Name                Enabled Action
   </div>
 </section>
 
-<section class="ex" id="extra">
-  <div class="wrap">
-  <div class="ex-head">
-    <h2 class="display">Сеть, которая<br>чинит себя сама.</h2>
-    <div class="ex-aside">
-      <p class="body">Пять механизмов релиза 0.3.0: калибровка DNS, авто-фейловер, детект блокировок, честный пинг и бенчмарк резолверов. Всё внутри клиента, всё считается локально.</p>
-      <p class="ex-note">wawity 0.3.0</p>
-    </div>
-  </div>
 
-  <div class="ex-stage" data-reveal>
-      <img class="ex-map" src="ex-map.svg" alt="" aria-hidden="true" onerror="this.closest('.ex-stage').classList.add('no-map')">
-      <div class="ex-pin p-below pin-main" style="left:52.53%;top:25.98%" tabindex="0" aria-label="Сервер Frankfurt, пинг 23 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Frankfurt · 23ms</span></div>
-      <div class="ex-pin p-left" style="left:51.01%;top:24.25%;--d:.6s" tabindex="0" aria-label="Сервер Amsterdam, пинг 41 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Amsterdam · 41ms</span></div>
-      <div class="ex-pin" style="left:57.58%;top:15.59%;--d:1.2s" tabindex="0" aria-label="Сервер Helsinki, пинг 58 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Helsinki · 58ms</span></div>
-      <div class="ex-pin p-right" style="left:56.06%;top:24.25%;--d:1.8s" tabindex="0" aria-label="Сервер Warszawa, пинг 67 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Warszawa · 67ms</span></div>
-      <div class="ex-pin" style="left:26.77%;top:34.64%;--d:2.4s" tabindex="0" aria-label="Сервер Ashburn, пинг 112 мс"><span class="ex-ring"></span><span class="ex-dot"></span><span class="ex-tag">Ashburn · 112ms</span></div>
-    </div>
-
-    <div class="ex-ed">
-      <span class="ex-ghostword" aria-hidden="true">extra</span>
-
-      <div class="ex-item" data-reveal>
-        <span class="ex-idx">01</span>
-        <h3>DNS-калибровка</h3>
-        <p>Провайдер глушит резолвер? Клиент перебирает связки «резолвер × bootstrap × DPI», находит живую и применяет. Запомненная пара включается мгновенно.</p>
-      </div>
-
-      <div class="ex-item" data-reveal>
-        <span class="ex-idx">02</span>
-        <h3>Авто-фейловер</h3>
-        <p>Сервер начал деградировать? Трафик молча переезжает на живую ноду — без разрыва сессий и без твоего участия.</p>
-      </div>
-
-      <div class="ex-item" data-reveal>
-        <span class="ex-idx">03</span>
-        <h3>Анти-RKN детект</h3>
-        <p>Блокировки и душение маршрута замечаются раньше тебя — транспорт перестраивается, пока игра продолжает идти.</p>
-      </div>
-
-      <div class="ex-item" data-reveal>
-        <span class="ex-idx">04</span>
-        <h3>Честный пинг</h3>
-        <p>Пробы привязаны к физическому адаптеру: задержки одинаковые с включённым VPN и без него. Цифрам можно верить.</p>
-      </div>
-
-      <div class="ex-item" data-reveal>
-        <span class="ex-idx">05</span>
-        <h3>Бенчмарк резолверов</h3>
-        <p>Двенадцать DNS — от Cloudflare до Comss — гоняются по JSON- и DoH-пробам. Победитель применяется одной кнопкой.</p>
-      </div>
-    </div>
-    </div>    </div>
-  </div>
-</section>
-
-<section class="section ks split" id="split">
+<section class="section split" id="split">
   <div class="wrap">
 
-    <div class="section-head" data-reveal>
-      <p class="mono-label">сплит-туннелинг</p>
-      <h2 class="display h-section">Один поток.<br>Два пути.</h2>
-      <p class="body">wawity делит трафик ещё до подключения: игры уходят напрямую с родного IP и приоритетом DSCP 46, всё остальное — через шифрованный канал VLESS Reality.</p>
+    <div class="cut-head">
+      <h2 class="display h-section">Твой трафик.<br>Не общий маршрут.</h2>
+      <p class="body cut-intro">Сплит-туннелинг разделяет маршруты. Игры идут напрямую, выбранные приложения — через VPN. Ты решаешь, что отправить в туннель.</p>
     </div>
 
-    <div class="spl-fork" data-reveal aria-hidden="true">
-      <svg viewBox="0 0 1200 280" preserveAspectRatio="xMidYMax meet" fill="none">
-        <path class="spl-fk-stem" d="M600 0 V64"/>
-        <path class="spl-fk-branch" d="M600 64 C600 172 300 150 300 280"/>
-        <path class="spl-fk-branch spl-fk-branch--ember" d="M600 64 C600 172 900 150 900 280"/>
-        <circle class="spl-fk-pkt" r="4">
-          <animateMotion dur="3.4s" repeatCount="indefinite" path="M600 0 V64 C600 172 300 150 300 280"/>
-        </circle>
-        <circle class="spl-fk-pkt spl-fk-pkt--ember" r="4">
-          <animateMotion dur="3.4s" begin="1.7s" repeatCount="indefinite" path="M600 0 V64 C600 172 900 150 900 280"/>
-        </circle>
-      </svg>
+    <div class="cut-poster">
+      <h3 class="cut-word">НАПРЯМУЮ</h3>
+      <div class="cut-band"><span class="cut-band-inner">ЧЕРЕЗ VPN</span></div>
+      <p class="cut-postscript">ТОЛЬКО НУЖНОЕ.</p>
     </div>
 
-    <div class="spl-worlds" data-reveal>
-      <div class="spl-world">
-        <span class="spl-w-idx">01 · direct</span>
-        <h3 class="spl-w-name">DIRECT</h3>
-        <p class="spl-w-proc">cs2.exe — easyantic.exe — beservice.exe</p>
-        <p class="spl-w-desc">Игры и античиты уходят в сеть напрямую: BattlEye и EAC видят обычную сеть, потому что она и есть обычная. Очередь роутера расступается — пакетам игры выставлен приоритет DSCP 46.</p>
+    <div class="cut-notes">
+      <div class="cut-note">
+        <h3>Играм — прямой путь.</h3>
+        <p>Игры в обходе туннеля используют твой обычный IP от провайдера. Их трафик не проходит через VPN-сервер.</p>
       </div>
-      <span class="spl-seam" aria-hidden="true"></span>
-      <div class="spl-world spl-world--tunnel">
-        <span class="spl-w-idx">02 · tunnel</span>
-        <h3 class="spl-w-name spl-w-name--outline">TUNNEL</h3>
-        <p class="spl-w-proc">chrome.exe — discord.exe — qbittorrent.exe</p>
-        <p class="spl-w-desc">Всё остальное идёт через шифрованный канал: трафик неотличим от обычного TLS к крупному CDN, DNS не утекает мимо, а стриминги видят Frankfurt и полную скорость.</p>
+      <div class="cut-note cut-note--apps">
+        <h3>Приложениям — свой маршрут.</h3>
+        <p>Отправь выбранные приложения через VPN: их трафик пойдёт по зашифрованному туннелю до сервера, отдельно от игр.</p>
       </div>
     </div>
-
-    <p class="spl-foot" data-reveal>правила пересобираются на лету — <span>без переподключения</span></p>
 
   </div>
 </section>
@@ -591,7 +513,6 @@ Name                Enabled Action
         <a href="#protocols">Протоколы</a>
         <a href="#killswitch">Kill switch</a>
         <a href="#split">Сплит-туннелинг</a>
-        <a href="#extra">Extra-хаб</a>
         <a href="#compare">Сравнение</a>
         <a href="#download">Загрузка</a>
       </div>
@@ -776,32 +697,6 @@ if(hasGsap&&!reduced){
     gsap.to(rlCmd,{duration:1.5,ease:'none',delay:1.7,scrambleText:{text:rlCmd.getAttribute('data-text'),chars:'01<>/{}#$&@%!;:',speed:.4}});
   }
 
-  var exStage=$('.ex-stage');
-  if(exStage&&window.fetch&&!reduced){
-    fetch('ex-map.svg').then(function(r){return r.text()}).then(function(txt){
-      var holder=d.createElement('div');
-      holder.className='ex-map-inline';
-      holder.setAttribute('aria-hidden','true');
-      holder.innerHTML=txt;
-      var img=$('.ex-map',exStage);
-      if(img)img.remove();
-      exStage.insertBefore(holder,exStage.firstChild);
-      if(hasGsap){
-        var dots=$$('circle',holder);
-        setInterval(function(){
-          for(var i=0;i<7;i++){
-            var c=dots[Math.floor(Math.random()*dots.length)];
-            var base=c.getAttribute('fill');
-            var hot=Math.random()<.16;
-            gsap.timeline({overwrite:true})
-              .to(c,{attr:{fill:hot?'#fe2c02':'#7d786d'},duration:.4,ease:'power2.out'})
-              .to(c,{attr:{fill:base},duration:.9,ease:'power2.out'});
-          }
-        },380);
-      }
-    }).catch(function(){});
-  }
-
   $$('.cnt').forEach(function(el){
     var to=parseFloat(el.getAttribute('data-to')),pre=el.getAttribute('data-prefix')||'';
     var obj={v:0};
@@ -846,15 +741,6 @@ if(!reduced&&fine){
     });
     card.addEventListener('pointerleave',function(){card.style.transform=''});
   });
-}
-
-if(!('IntersectionObserver' in window)){
-  $$('.ex-viz').forEach(function(v){v.classList.add('live')});
-}else{
-  var vizIO=new IntersectionObserver(function(en){
-    en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('live');vizIO.unobserve(x.target)}});
-  },{threshold:.3});
-  $$('.ex-viz').forEach(function(v){vizIO.observe(v)});
 }
 
 if(!reduced&&fine){
