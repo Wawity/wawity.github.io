@@ -69,10 +69,9 @@
 <section class="hero">
   <div class="rel-line hero-fade">
     <div class="wrap rel-row">
-      <span class="rl-prompt">$</span>
-      <span class="rl-cmd" data-text="wawity 0.3.0">wawity 0.3.0</span>
-      <span class="rl-sep" aria-hidden="true"></span>
-      <span class="rl-feats">dns-калибровка · авто-фейловер · анти-RKN детект</span>
+      <div class="rel-brand"><strong>wawity</strong><span>0.3.0</span></div>
+      <div class="rel-capabilities"><span>dns-калибровка</span><span>авто-фейловер</span><span>анти-RKN детект</span></div>
+    </div>
   </div>
   <canvas class="hero-hole" aria-hidden="true"></canvas>
   <div class="hero-glow" aria-hidden="true"></div>
@@ -154,15 +153,9 @@
 </section>
 
 <div class="proto-strip" id="protocols">
-  <div class="wrap proto-row">
-    <span>VLESS</span><span class="sep">·</span>
-    <span>Reality</span><span class="sep">·</span>
-    <span>Hysteria 2</span><span class="sep">·</span>
-    <span>TUIC v5</span><span class="sep">·</span>
-    <span>Trojan</span><span class="sep">·</span>
-    <span>Shadowsocks</span><span class="sep">·</span>
-    <span>VMess</span><span class="sep">·</span>
-    <span>ShadowTLS</span>
+  <div class="wrap proto-type">
+    <span>маршрут важнее</span>
+    <strong>протокола</strong>
   </div>
 </div>
 
@@ -193,22 +186,22 @@
       <p class="body">Никаких «игровых режимов» из маркетинга — только системные механизмы Windows, которые реально влияют на задержку и безопасность.</p>
     </div>
 
-    <div class="feat-grid" data-reveal>
-      <div class="feat-card wide">
-        <div class="feat-wtxt">
-          <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M13.2 3 6.8 12.4h4.1l-1.1 8.6 6.9-9.9h-4.5L13.2 3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M19.9 7.4A9.3 9.3 0 0 0 14 3" stroke="#fe2c02" stroke-width="1.2" stroke-linecap="round"/><circle cx="20.4" cy="8.6" r="1.05" fill="#fe2c02"/><path d="M4.1 16.6a9.3 9.3 0 0 0 5.9 4.4" stroke="#fe2c02" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg></div>
+    <div class="capability-index" data-reveal>
+      <div class="capability-hero">
+        <div class="capability-hero-copy">
+          <span class="capability-label">маршрут</span>
           <h3>Пинг как без VPN</h3>
-          <p>Игровой трафик выходит наружу напрямую, минуя туннель, и помечается DSCP&nbsp;46 — очередь роутера начинает играть на твоей стороне. BattlEye и EAC не видят ничего подозрительного.</p>
+          <p>Игровой трафик выходит наружу напрямую, минуя туннель, и получает приоритет прямо в роутере. Античиты видят обычную сеть.</p>
         </div>
-        <figure class="shot" data-swap>
+        <figure class="capability-shot" data-swap>
           <div class="shot-stack">
             <img class="shot-img is-active" src="screen-servers.jpg" alt="Выбор сервера по замеренному пингу" loading="lazy" onerror="this.closest('figure').remove()">
             <img class="shot-img" src="screen-servers-material.jpg" alt="Выбор сервера по замеренному пингу — тема material" onerror="this.closest('[data-swap]').classList.add('no-alt');this.remove()">
           </div>
         </figure>
       </div>
-
-      <div class="feat-card">
+    <div class="feat-grid" data-reveal>
+      <div class="feat-card feat-card--span">
         <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.6" y="10.2" width="14.8" height="9.6" rx="2.2" stroke="currentColor" stroke-width="1.4"/><path d="M8.2 10V6.8a3.8 3.8 0 0 1 7.6 0V10" stroke="currentColor" stroke-width="1.4" opacity=".45"/><circle cx="8.2" cy="6.8" r="1" fill="#fe2c02"/><circle cx="15.8" cy="6.8" r="1" fill="#fe2c02"/><circle cx="12" cy="14.1" r="1.7" stroke="#fe2c02" stroke-width="1.3"/><path d="M12 15.8v2.4" stroke="#fe2c02" stroke-width="1.3" stroke-linecap="round"/></svg></div>
         <h3>Kill switch уровня системы</h3>
         <p>Правила живут в Windows Firewall: BLOCK всему, ALLOW только туннелю. Убей процесс из диспетчера задач — трафик всё равно никуда не уйдёт.</p>
@@ -238,6 +231,7 @@
         <p>Steam, Epic, Riot и Battle.net сканируются автоматически — найденные игры и античиты выводятся в обход туннеля одним списком.</p>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -262,10 +256,12 @@
     <div class="section-head" data-reveal>
       <p class="mono-label">kill switch</p>
       <h2 class="display h-section">Вырви кабель.<br>Ничего не утечёт.</h2>
-      <p class="body">Kill switch живёт в Windows Firewall, а не в процессе клиента. Ниже — реальный сценарий обрыва, секунда за секундой, командами, которые его обеспечивают. Клиент можно убить из диспетчера задач — защита останется.</p>
+      <p class="body">Kill switch живет в Windows Firewall, а не в процессе клиента. Даже если окно исчезнет, системный маршрут останется закрытым — трафик не сможет уйти мимо туннеля.</p>
     </div>
 
-    <figure class="ks-stage" role="img" aria-label="Окно настроек wawity, вкладка «Безопасность»: включённый тумблер Kill switch">
+    <div class="ks-oversize">
+      <div class="ks-oversize-word" aria-hidden="true">KILL<br>SWITCH</div>
+      <figure class="ks-stage" role="img" aria-label="Окно настроек wawity, вкладка «Безопасность»: включённый тумблер Kill switch">
       <div class="ks-stage-fade" aria-hidden="true">
         <div class="ui-window" aria-hidden="true">
           <div class="ui-titlebar">
@@ -378,83 +374,47 @@
       </div>
 
     </figure>
-    </div>
-
-    <div class="ks-track">
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">02:14:03</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">шаг 01 · вооружение</p>
-          <h3>Четыре правила уже в файрволе</h3>
-          <p>Правила ставятся при первом запуске и живут в ActiveStore — вне процесса клиента. Весь исходящий трафик блокируется, разрешение есть только у туннеля.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> netsh advfirewall firewall add rule `
-    name=<span class="c-s">"wawity · deny all"</span> dir=out action=<span class="c-k">block</span>
-<span class="c-p">$</span> netsh advfirewall firewall add rule `
-    name=<span class="c-s">"wawity · allow tun"</span> dir=out action=allow `
-    program=<span class="c-s">"...\wawity\tun.exe"</span>
-<span class="c-s">Ok.</span></pre>
-        </div>
-      </div>
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">02:14:31</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">шаг 02 · обрыв</p>
-          <h3>Сорок миллисекунд — и контур закрыт</h3>
-          <p>Wi-Fi пропал — реагировать нечему и незачем: правила уже стоят. Пакеты наружу не уходят, приложения об этом даже не узнают.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> Get-NetFirewallRule wawity-* `
-    -PolicyStore ActiveStore
-
-Name                Enabled Action
-<span class="c-s">wawity · deny all   True   </span> <span class="c-k">Block</span>
-<span class="c-s">wawity · allow tun  True    Allow</span></pre>
-        </div>
-      </div>
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">02:15:02</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">шаг 03 · проверка на прочность</p>
-          <h3>Убей процесс. Правила останутся</h3>
-          <p>Самая честная проверка kill switch — диспетчер задач. Правила привязаны к файрволу, а не к процессу: пока маршруты не откатятся, наружу не уйдёт ничего.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> taskkill /F /IM wawity.exe
-<span class="c-s">SUCCESS: процесс завершён.</span>
-
-<span class="c-p">$</span> netsh wfp show filters
-<span class="c-s">… wawity: 4 filters ·</span> <span class="c-k">policy persists</span></pre>
-        </div>
-      </div>
-
-      <div class="ks-step" data-reveal>
-        <span class="ks-ghost" aria-hidden="true">02:15:47</span>
-        <div class="ks-body">
-          <p class="mono-label neutral">шаг 04 · возврат</p>
-          <h3>Сеть вернулась — всё откатилось само</h3>
-          <p>Туннель поднят, временные правила смыты, маршруты возвращены. Интернет не «теряется» молча — ни на одну секунду.</p>
-        </div>
-        <div class="ks-code">
-<pre><span class="c-p">$</span> wawity reconnect --auto
-<span class="c-s">handshake 0.8s · Frankfurt №4 · 23ms</span>
-
-<span class="c-p">$</span> netsh advfirewall firewall delete rule `
-    name=<span class="c-s">"wawity · deny all"</span>
-<span class="c-s">Deleted.</span></pre>
-        </div>
-      </div>
-
+      <p class="ks-oversize-note">Если клиент исчезнет, маршрут уже закрыт.</p>
     </div>
   </div>
 </section>
 
 
 <section class="section split" id="split">
+  <div class="split-trail" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="none" focusable="false">
+      <defs>
+        <linearGradient id="splitTrailGradient" x1="0" y1="100" x2="0" y2="900" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#0f0d0d" stop-opacity="1"/>
+          <stop offset="0.48" stop-color="#0f0d0d" stop-opacity="1"/>
+          <stop offset="0.76" stop-color="#0f0d0d" stop-opacity="1"/>
+          <stop offset="1" stop-color="#0f0d0d" stop-opacity="1"/>
+        </linearGradient>
+        <filter id="splitTrailGlow" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="softGlow"/>
+          <feComponentTransfer in="softGlow" result="dimGlow">
+            <feFuncA type="linear" slope="0.45"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="SourceGraphic"/>
+            <feMergeNode in="dimGlow"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <path d="
+        M 0,900
+        L 90,900
+        L 90,260
+        C 90,158 188,100 360,100
+        L 720,100
+        L 1080,100
+        C 1270,100 1350,158 1350,260
+        L 1350,900
+        L 1440,900
+        Z" fill="url(#splitTrailGradient)"/>
+    </svg>
+  </div>
+
   <div class="wrap">
 
     <div class="cut-head">
@@ -799,7 +759,6 @@ if(hasGsap&&!reduced){
   gsap.registerPlugin(ScrollTrigger);
   if(window.ScrambleTextPlugin)gsap.registerPlugin(ScrambleTextPlugin);
 }
-
 var loader=$('#loader'),loadStarted=false;
 function startPoster(){
   var poster=$('.poster');
