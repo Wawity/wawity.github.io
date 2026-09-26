@@ -3,1029 +3,463 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>wawity.</title>
+<title>wawity. VPN, которого не видно в пинге</title>
 <meta name="description" content="Нативный VPN-клиент на Rust для Windows. Игровой трафик идёт мимо туннеля с приоритетом DSCP 46, античиты не видят VPN, kill switch работает на уровне файрвола. ~24 МБ.">
-<meta property="og:title" content="wawity — VPN, которого не видно в пинге">
+<meta property="og:title" content="wawity: VPN, которого не видно в пинге">
 <meta property="og:description" content="Нативный клиент на Rust поверх sing-box: обход игр и античитов, системный QoS, kill switch в файрволе Windows. ~24 МБ без Electron.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#0f0d0d">
+<meta name="theme-color" content="#110e0d">
 <link rel="icon" href="wawity.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@300;400;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="home.css">
-<noscript><style>
-.loader,.grain{display:none}
-.hero-fade,.poster .line-inner,[data-reveal]{opacity:1 !important;transform:none !important}
-</style></noscript></head>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Unbounded:wght@500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="promo.css">
+<noscript><style>.ch,[data-rv]{opacity:1!important;transform:none!important;filter:none!important}.intro{display:none}</style></noscript>
+</head>
 <body>
 
-<div class="loader" id="loader" aria-hidden="true">
-  <div class="loader-box">
-    <span class="loader-logo"><img src="wawity.ico" alt="">wawity<i>.</i></span>
-    <span class="loader-ring"></span>
-  </div>
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-mark"><img src="wawity.ico" alt=""><span>wawity<i>.</i></span></div>
+  <div class="intro-count"><span id="introNum">00</span><span>/ 100</span></div>
+  <div class="intro-line"><i id="introBar"></i></div>
 </div>
-<div class="grain" aria-hidden="true"></div>
-<div class="progress" id="scrollBar" aria-hidden="true"></div>
 
 <header class="nav" id="nav">
-  <div class="wrap nav-row">
-    <a class="brand" href="#">
-      <span class="logo-mark"><img src="wawity.ico" alt=""></span>
-      wawity<i>.</i>
-    </a>
-    <nav class="nav-links" aria-label="Разделы">
-      <a href="#features">Возможности</a>
-      <a href="#protocols">Протоколы</a>
-      <a href="#killswitch">Kill switch</a>
-      <a href="#compare">Сравнение</a>
-      <a href="#download">Загрузка</a>
-      <a href="#faq">FAQ</a>
-    </nav>
-    <div class="nav-right">
-      <div class="split-btn">
-        <a class="sb-main" href="#download">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
-        <a class="sb-side" href="https://t.me/wawityvpn" target="_blank" rel="noopener" aria-label="Telegram">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.94 4.3 18.7 19.4c-.24 1.07-.88 1.33-1.78.83l-4.92-3.63-2.37 2.29c-.27.26-.49.48-1 .48l.35-5.05 9.16-8.28c.4-.35-.09-.55-.62-.2L6.2 13.02 1.35 11.5c-1.05-.33-1.07-1.05.22-1.55L20.58 2.9c.88-.32 1.65.2 1.36 1.4z"/></svg>
-        </a>
-      </div>
-      <button class="burger" id="burgerBtn" aria-label="Меню" aria-expanded="false" aria-controls="mobileMenu">
-        <svg class="ic-lines" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 15h16"/></svg>
-        <svg class="ic-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-      </button>
-    </div>
+  <a class="brand" href="#top" aria-label="wawity, наверх"><img src="wawity.ico" alt="">wawity<i>.</i></a>
+  <nav class="nav-links" aria-label="Разделы">
+    <a href="#connect">Подключение</a>
+    <a href="#servers">Серверы</a>
+    <a href="#split">Сплит</a>
+    <a href="#killswitch">Kill switch</a>
+    <a href="#compare">Сравнение</a>
+    <a href="docs.html">Документация</a>
+  </nav>
+  <div class="nav-r">
+    <a class="nav-tg" href="https://t.me/wawityvpn" target="_blank" rel="noopener" aria-label="Telegram"><i data-i="send"></i></a>
+    <a class="btn btn-sm" href="#download">Скачать</a>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
   </div>
 </header>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#features">Возможности</a>
-  <a href="#protocols">Протоколы</a>
-  <a href="#killswitch">Kill switch</a>
-  <a href="#compare">Сравнение</a>
-  <a href="#faq">FAQ</a>
-  <a class="btn btn-light" href="#download">Скачать для Windows</a>
+<div class="mmenu" id="mmenu">
+  <a href="#connect">Подключение</a><a href="#servers">Серверы</a><a href="#split">Сплит-туннелинг</a><a href="#killswitch">Kill switch</a><a href="#compare">Сравнение</a><a href="#download">Загрузка</a><a href="#faq">FAQ</a><a href="docs.html">Документация</a>
 </div>
 
+<main id="top">
+
+<!-- HERO -->
 <section class="hero">
-  <div class="rel-line hero-fade">
-    <div class="wrap rel-row">
-      <div class="rel-brand"><strong>wawity</strong><span>0.3.0</span></div>
-      <div class="rel-capabilities"><span>dns-калибровка</span><span>авто-фейловер</span><span>анти-RKN детект</span></div>
-    </div>
-  </div>
   <canvas class="hero-hole" aria-hidden="true"></canvas>
-  <div class="hero-glow" aria-hidden="true"></div>
-
-  <div class="wrap hero-inner">
-    <div class="hero-center">
-      <h1 class="display poster">
-        <span class="line"><span class="line-inner">VPN, с которым</span></span>
-        <span class="line"><span class="line-inner">ты не заметишь</span></span>
-        <span class="line"><span class="line-inner"><em>пинг</em> в играх.</span></span>
-      </h1>
-      <p class="body sub hero-fade d1">Игровой трафик идёт в обход туннеля и получает приоритет прямо в роутере. Античиты видят обычную сеть. Kill switch живёт в файрволе Windows — а не в обещаниях приложения.</p>
-      <div class="hero-actions hero-fade d2">
-        <a class="btn btn-light btn-lg" href="#download">
-          Скачать для Windows
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg>
-        </a>
-        <a class="btn btn-dark btn-lg" href="#features">Как это устроено</a>
-      </div>
-      <p class="hero-meta hero-fade d3"><span>~24 МБ</span><span>Windows 10 / 11 · x64</span><span>без регистрации</span></p>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-meta">
+    <span class="tag-live"><i></i>0.3.0 вышла</span>
+    <span>dns-калибровка</span><span>авто-фейловер</span><span>анти-RKN детект</span>
+  </div>
+  <div class="hero-body">
+    <h1 class="hero-h" id="heroH">VPN, которого<br>не видно в пинге.</h1>
+    <p class="hero-sub" data-rv>Игры идут мимо туннеля с приоритетом в роутере. Античиты видят обычную сеть. Kill switch живёт в файрволе Windows, а не в обещаниях приложения.</p>
+    <div class="ask" data-rv>
+      <i data-i="link" class="ask-ic"></i>
+      <span class="ask-field"><span class="ask-ph" id="askPh">вставь ссылку подписки</span><span class="ask-txt" id="askTxt"></span><span class="ask-caret"></span></span>
+      <span class="ask-ok" id="askOk"><i data-i="check"></i><b>8 серверов</b></span>
+      <a class="ask-go" href="#download" id="askGo" aria-label="Скачать"><i data-i="arrowUp"></i></a>
+    </div>
+    <div class="hero-foot" data-rv>
+      <a class="btn" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe"><i data-i="download"></i>Скачать для Windows</a>
+      <span class="mono dim">~24 МБ · Windows 10 / 11 · без регистрации</span>
     </div>
   </div>
-
-  <aside class="tray-wrap" aria-hidden="true">
-    <span class="tray-cap">трей клиента · как есть</span>
-    <div class="tray-demo">
-      <div class="tray-head">
-        <span class="orb"><span class="orb-core"></span></span>
-        <div class="tray-head-text">
-          <span class="tray-status">Подключено</span>
-          <span class="tray-server">Frankfurt №4 · VLESS Reality</span>
-        </div>
-      </div>
-
-      <div class="tray-subs">
-        <span class="sub-chip sub-chip--active">Основная</span>
-        <span class="sub-chip">Game-Fast</span>
-        <span class="sub-chip sub-chip--dead">Запасная · истекла</span>
-      </div>
-
-      <div class="tray-list">
-        <div class="srv-row srv-row--active">
-          <span class="flag-box"><img src="flags/de.svg" alt=""></span>
-          <span class="srv-name">Frankfurt №4</span>
-          <span class="srv-ping tmono tier-good" data-base="23">23ms</span>
-          <svg class="srv-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </div>
-        <div class="srv-row">
-          <span class="flag-box"><img src="flags/nl.svg" alt=""></span>
-          <span class="srv-name">Amsterdam №2</span>
-          <span class="srv-ping tmono tier-good" data-base="41">41ms</span>
-        </div>
-        <div class="srv-row">
-          <span class="flag-box"><img src="flags/fi.svg" alt=""></span>
-          <span class="srv-name">Helsinki №1</span>
-          <span class="srv-ping tmono tier-good" data-base="58">58ms</span>
-        </div>
-        <div class="srv-row">
-          <span class="flag-box"><img src="flags/pl.svg" alt=""></span>
-          <span class="srv-name">Warszawa №2</span>
-          <span class="srv-ping tmono tier-good" data-base="67">67ms</span>
-        </div>
-        <div class="srv-row">
-          <span class="flag-box"><img src="flags/us.svg" alt=""></span>
-          <span class="srv-name">Ashburn №1</span>
-          <span class="srv-ping tmono tier-ok" data-base="112">112ms</span>
-        </div>
-      </div>
-
-      <div class="tray-foot">
-        <button class="connect-btn" type="button" tabindex="-1">Отключиться</button>
-        <button class="icon-btn" type="button" title="Переподключиться" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
-        <button class="icon-btn" type="button" title="Починить сеть" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></button>
-        <button class="icon-btn" type="button" title="Открыть Wawity" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
-        <button class="icon-btn icon-btn--danger" type="button" title="Выход" tabindex="-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
-      </div>
-    </div>
-  </aside>
+  <a class="scroll-cue" href="#manifest" aria-label="Листать вниз"><span>листай</span><i></i></a>
 </section>
 
-<div class="proto-strip" id="protocols">
-  <div class="wrap proto-type">
-    <span>маршрут важнее</span>
-    <strong>протокола</strong>
+<!-- MARQUEE -->
+<div class="marq" id="protocols" aria-label="Протоколы">
+  <div class="marq-track" id="marq">
+    <span>VLESS</span><span>Reality</span><span>Hysteria 2</span><span>TUIC</span><span>Trojan</span><span>VMess</span><span>Shadowsocks</span><span>ShadowTLS</span>
   </div>
 </div>
 
-<section class="section" style="padding-bottom:clamp(60px,7vw,90px)">
-  <div class="wrap">
-    <div class="stats-grid" data-reveal>
-      <div class="stat">
-        <b>&lt;1<i>сек</i></b>
-        <p>холодный старт клиента — быстрее, чем запускается лаунчер игры</p>
-      </div>
-      <div class="stat">
-        <b><span class="cnt" data-to="24" data-prefix="~">~24</span><i>мб</i></b>
-        <p>установщик целиком. Нативный Rust — без Electron и его зависимостей</p>
-      </div>
-      <div class="stat">
-        <b><span class="cnt" data-to="8">8</span><i>шт</i></b>
-        <p>современных протоколов из одной ссылки подписки — без ручных конфигов</p>
-      </div>
-    </div>
-  </div>
+<!-- MANIFEST -->
+<section class="manifest" id="manifest">
+  <p class="mono-k">// маршрут важнее протокола</p>
+  <p class="scrub" data-scrub>Никаких «игровых режимов» из маркетинга. Только системные механизмы Windows, которые реально влияют на задержку и безопасность. Меньше секунды на старт. Двадцать четыре мегабайта целиком. Восемь протоколов из одной ссылки.</p>
 </section>
 
-<section class="section" id="features" style="padding-top:clamp(48px,6vw,72px)">
-  <div class="wrap">
-    <div class="section-head" data-reveal>
-      <p class="mono-label">возможности</p>
-      <h2 class="display h-section">Тихо делает свою работу.<br>Громко — результат.</h2>
-      <p class="body">Никаких «игровых режимов» из маркетинга — только системные механизмы Windows, которые реально влияют на задержку и безопасность.</p>
+<span id="features" aria-hidden="true"></span>
+<!-- SCENE 1: CONNECT -->
+<section class="scene" id="connect" data-scene="connect" style="--len:460vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>01</b> / подключение</p>
+      <h2 class="cap-h">Одна кнопка.<br>Ноль конфигов.</h2>
+      <ol class="cap-steps">
+        <li>Подписка уже внутри: сервер выбран по пингу.</li>
+        <li>Клик. Никаких мастеров настройки.</li>
+        <li>Шесть проверок, пока ты моргаешь.</li>
+        <li>IP скрыт. Kill switch уже в файрволе.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
     </div>
-
-    <div class="capability-index" data-reveal>
-      <div class="capability-hero">
-        <div class="capability-hero-copy">
-          <span class="capability-label">маршрут</span>
-          <h3>Пинг как без VPN</h3>
-          <p>Игровой трафик выходит наружу напрямую, минуя туннель, и получает приоритет прямо в роутере. Античиты видят обычную сеть.</p>
-        </div>
-        <figure class="capability-shot" data-swap>
-          <div class="shot-stack">
-            <img class="shot-img is-active" src="screen-servers.jpg" alt="Выбор сервера по замеренному пингу" loading="lazy" onerror="this.closest('figure').remove()">
-            <img class="shot-img" src="screen-servers-material.jpg" alt="Выбор сервера по замеренному пингу — тема material" onerror="this.closest('[data-swap]').classList.add('no-alt');this.remove()">
-          </div>
-        </figure>
-      </div>
-    <div class="feat-grid" data-reveal>
-      <div class="feat-card feat-card--span">
-        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4.6" y="10.2" width="14.8" height="9.6" rx="2.2" stroke="currentColor" stroke-width="1.4"/><path d="M8.2 10V6.8a3.8 3.8 0 0 1 7.6 0V10" stroke="currentColor" stroke-width="1.4" opacity=".45"/><circle cx="8.2" cy="6.8" r="1" fill="#fe2c02"/><circle cx="15.8" cy="6.8" r="1" fill="#fe2c02"/><circle cx="12" cy="14.1" r="1.7" stroke="#fe2c02" stroke-width="1.3"/><path d="M12 15.8v2.4" stroke="#fe2c02" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Kill switch уровня системы</h3>
-        <p>Правила живут в Windows Firewall: BLOCK всему, ALLOW только туннелю. Убей процесс из диспетчера задач — трафик всё равно никуда не уйдёт.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11.5" cy="12.5" r="8" stroke="currentColor" stroke-width="1.4"/><ellipse cx="11.5" cy="12.5" rx="3.4" ry="8" stroke="currentColor" stroke-width="1" opacity=".45"/><path d="M3.8 10h15.4M3.8 15h15.4" stroke="currentColor" stroke-width="1" opacity=".45"/><path d="M11.5 12.5l7-5.7" stroke="#fe2c02" stroke-width="1.2" stroke-linecap="round"/><circle cx="18.9" cy="6.4" r="1.05" fill="#fe2c02"/></svg></div>
-        <h3>Серверы по цифрам</h3>
-        <p>Весь список подписки пингуется параллельно за пару секунд. Видно, где меньше задержка — или доверься авто-выбору.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.8 12S6.2 6 12 6s9.2 6 9.2 6-3.4 6-9.2 6S2.8 12 2.8 12z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.1" stroke="currentColor" stroke-width="1.4"/><path d="M9.5 12h1l.8-1.9 1.3 3.8.8-1.9h1.1" stroke="#fe2c02" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Сеть перед глазами</h3>
-        <p>Живые графики скорости и задержки, список приложений в туннеле и QoS-приоритеты — на одном экране.</p>
-      </div>
-
-      <div class="feat-card accent">
-        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.6 18.4A8.7 8.7 0 1 1 18.4 18.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M8.3 16a5.3 5.3 0 1 1 7.4 0" stroke="currentColor" stroke-width="1.2" opacity=".45" stroke-linecap="round"/><circle cx="12" cy="10.9" r="1.8" stroke="#fe2c02" stroke-width="1.3"/><path d="M12 12.7v4.3" stroke="#fe2c02" stroke-width="1.3" stroke-linecap="round"/></svg></div>
-        <h3>Приватность без оговорок</h3>
-        <p>Аккаунтов и облака нет. Статистика использования выключена по умолчанию и не содержит IP, истории или содержимого трафика — включается одним тумблером.</p>
-      </div>
-
-      <div class="feat-card">
-        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.2 8.8h7.6a4.6 4.6 0 0 1 4.5 5.5l-.6 3a2.3 2.3 0 0 1-3.98.94L14.1 15.6H9.9l-1.62 2.64a2.3 2.3 0 0 1-3.98-.94l-.6-3A4.6 4.6 0 0 1 8.2 8.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M8.7 11.6h2.6M10 10.3v2.6" stroke="currentColor" stroke-width="1.15" stroke-linecap="round"/><circle cx="14.6" cy="11.2" r=".95" fill="#fe2c02"/><circle cx="16.5" cy="13.1" r=".95" fill="#fe2c02" opacity=".5"/><path d="M9.4 5.6a3.9 3.9 0 0 1 5.2 0" stroke="#fe2c02" stroke-width="1.2" stroke-linecap="round" opacity=".75"/></svg></div>
-        <h3>Игры находит сам</h3>
-        <p>Steam, Epic, Riot и Battle.net сканируются автоматически — найденные игры и античиты выводятся в обход туннеля одним списком.</p>
-      </div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<section class="showcase">
-  <div class="wrap">
-    <figure data-reveal data-swap>
-      <div class="showcase-frame shot-stack">
-        <img class="shot-img is-active" src="screen-main.jpg" alt="Главный экран wawity desktop" loading="lazy" onerror="this.closest('figure').remove()">
-        <img class="shot-img" src="screen-main-material.jpg" alt="Главный экран wawity desktop — тема material" onerror="this.closest('[data-swap]').classList.add('no-alt');this.remove()">
-      </div>
-      <figcaption class="showcase-cap">
-        <span>wawity desktop — главное окно</span>
-        <span>подключение в один клик · статистика в реальном времени</span>
-      </figcaption>
-    </figure>
-  </div>
-</section>
-
-<section class="section ks" id="killswitch">
-
-  <div class="wrap">
-    <div class="section-head" data-reveal>
-      <p class="mono-label">kill switch</p>
-      <h2 class="display h-section">Вырви кабель.<br>Ничего не утечёт.</h2>
-      <p class="body">Kill switch живет в Windows Firewall, а не в процессе клиента. Даже если окно исчезнет, системный маршрут останется закрытым — трафик не сможет уйти мимо туннеля.</p>
-    </div>
-
-    <div class="ks-oversize">
-      <div class="ks-oversize-word" aria-hidden="true">KILL<br>SWITCH</div>
-      <figure class="ks-stage" role="img" aria-label="Окно настроек wawity, вкладка «Безопасность»: включённый тумблер Kill switch">
-      <div class="ks-stage-fade" aria-hidden="true">
-        <div class="ui-window" aria-hidden="true">
-          <div class="ui-titlebar">
-            <span class="ui-tb-left">
-              <img class="ui-tb-ico" src="wawity.ico" alt="" loading="lazy">
-              <span class="ui-tb-name">wawity</span>
-              <span class="ui-tb-search"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"/></svg></span>
-            </span>
-            <span class="ui-tb-controls">
-              <span class="ui-ctrl"><svg width="10" height="10" viewBox="0 0 10 1" fill="none"><rect width="10" height="1" rx="0.5" fill="currentColor"/></svg></span>
-              <span class="ui-ctrl"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x="0.5" y="0.5" width="8" height="8" rx="1.5" stroke="currentColor"/></svg></span>
-              <span class="ui-ctrl ui-ctrl--close"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-            </span>
-          </div>
-
-          <div class="ui-body">
-            <aside class="ui-side">
-              <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6a7.75 7.75 0 1 0 10 0m-5-2v8"/></svg>Подключение</span>
-              <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h4l3 8l4-16l3 8h4"/></svg>Анализ</span>
-              <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M7 9a4 4 0 1 0 8 0a4 4 0 0 0-8 0"/><path d="M5.75 15A8.015 8.015 0 1 0 15 2m-4 15v4m-4 0h8"/></g></svg>Серверы</span>
-              <span class="ui-nav-item ui-nav-item--active"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/></g></svg>Настройки</span>
-              <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"/></svg>Дополнительно<svg class="ui-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 6l6 6l-6 6"/></svg></span>
-              <span class="ui-side-version">v0.3.0</span>
-            </aside>
-
-            <div class="ui-main">
-              <div class="ui-page-head">
-                <div class="ui-page-title">Настройки</div>
-                <div class="ui-page-sub">Настройте, как Wawity вас защищает</div>
-              </div>
-
-              <div class="ui-seg">
-                <span class="ui-seg-btn ui-seg-btn--active"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.252 20.601q-.613.233-1.252.399A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.19 7.357M22 22l-5-5m0 5l5-5"/></svg><span class="ui-seg-label">Безопасность</span></span>
-                <span class="ui-seg-btn" title="Подключение"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6a7.75 7.75 0 1 0 10 0m-5-2v8"/></svg></span>
-                <span class="ui-seg-btn" title="Приватность"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M7 9a4 4 0 1 0 8 0a4 4 0 0 0-8 0"/><path d="M5.75 15A8.015 8.015 0 1 0 15 2m-4 15v4m-4 0h8"/></g></svg></span>
-                <span class="ui-seg-btn" title="Внешний вид"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"/></svg></span>
-                <span class="ui-seg-btn" title="Раздельное туннелирование"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm3 1h.01M9 8h.01"/></svg></span>
-                <span class="ui-seg-btn" title="О приложении"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"/><path d="M11 12h1v4h1"/></g></svg></span>
-              </div>
-
-              <div class="ui-card ui-card--rows">
-                <div class="ks-set-row">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 9a6 6 0 1 0 12 0A6 6 0 0 0 6 9"/><path d="M12 3q2 .5 2 6c0 5.5-.667 5.667-2 6m0-12q-2 .5-2 6c0 5.5.667 5.667 2 6M6 9h12M3 20h7m4 0h7m-11 0a2 2 0 1 0 4 0a2 2 0 0 0-4 0m2-5v3"/></g></svg>
-                    <span class="ui-row-text"><b>Профиль обхода DPI</b><i>Без доработок. Самый быстрый вариант для чистых сетей</i></span>
-                  </span>
-                  <span class="ks-shot-pill"><span class="ks-pill is-on">Выкл</span><span class="ks-pill">Мягкий</span><span class="ks-pill">Средний</span><span class="ks-pill">Жёсткий</span></span>
-                </div>
-
-                <div class="ks-set-row ks-set-row--danger">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon ks-shot-danger-ico" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.252 20.601q-.613.233-1.252.399A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.19 7.357M22 22l-5-5m0 5l5-5"/></svg>
-                    <span class="ui-row-text"><b>Kill switch</b><i>Блокирует весь сетевой трафик при обрыве VPN. Предотвращает утечку IP</i></span>
-                  </span>
-                  <span class="ui-toggle ui-toggle--on ks-shot-glow"><span class="ui-thumb ui-thumb--on"></span></span>
-                </div>
-
-                <div class="ks-set-row ks-set-row--danger">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon ks-shot-danger-ico" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4"/></g></svg>
-                    <span class="ui-row-text"><b>Подключение Always-On</b><i>Операционная система не поднимет сеть сама, когда VPN отключён</i></span>
-                  </span>
-                  <span class="ui-toggle ui-toggle--on"><span class="ui-thumb ui-thumb--on"></span></span>
-                </div>
-
-                <div class="ks-set-row">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 12v.01m7.071-7.081c-1.562-1.562-6 .337-9.9 4.243c-3.905 3.905-5.804 8.337-4.242 9.9c1.562 1.561 6-.338 9.9-4.244c3.905-3.905 5.804-8.337 4.242-9.9"/><path d="M4.929 4.929c-1.562 1.562.337 6 4.243 9.9c3.905 3.905 8.337 5.804 9.9 4.242c1.561-1.562-.338-6-4.244-9.9c-3.905-3.905-8.337-5.804-9.9-4.242"/></g></svg>
-                    <span class="ui-row-text"><b>Квантовоустойчивое шифрование</b><i>Гибридный обмен ключами X25519 + ML-KEM768, устойчивый к будущей квантовой криптографии</i></span>
-                  </span>
-                  <span class="ui-toggle ui-toggle--violet"><span class="ui-thumb ui-thumb--on"></span></span>
-                </div>
-
-                <div class="ks-set-row">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4"/></g></svg>
-                    <span class="ui-row-text"><b>Строгая маршрутизация</b><i>Каждый пакет только через туннель, мимо не пройдёт ничего</i></span>
-                  </span>
-                  <span class="ui-toggle ui-toggle--violet"><span class="ui-thumb ui-thumb--on"></span></span>
-                </div>
-
-                <div class="ks-set-row">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 18h.01m-2.838-2.828a4 4 0 0 1 5.656 0m-8.485-2.829a8 8 0 0 1 11.314 0"/><path d="M3.515 9.515c4.686-4.687 12.284-4.687 17 0"/></g></svg>
-                    <span class="ui-row-text"><b>Защита от DNS-утечек</b><i>Блокирует LAN DNS, LLMNR, mDNS и NetBIOS при подключении</i></span>
-                  </span>
-                  <span class="ui-toggle ui-toggle--violet"><span class="ui-thumb ui-thumb--on"></span></span>
-                </div>
-
-                <div class="ks-set-row">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
-                    <span class="ui-row-text"><b>Трафик приложения через туннель</b><i>Подписки обновляются через VPN — провайдер не видит домен панели</i></span>
-                  </span>
-                  <span class="ui-toggle"><span class="ui-thumb"></span></span>
-                </div>
-
-                <div class="ks-set-row">
-                  <span class="ui-row-left">
-                    <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.252 20.601q-.613.233-1.252.399A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.19 7.357M22 22l-5-5m0 5l5-5"/></svg>
-                    <span class="ui-row-text"><b>Разрешить небезопасный TLS</b><i>Подчиняться allowInsecure из ссылок подписки</i></span>
-                  </span>
-                  <span class="ui-toggle"><span class="ui-thumb"></span></span>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="640">
+          <div class="win">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i on"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c1">
+                  <div class="c1-wm"><img src="wawity.ico" alt=""><b>wawity</b></div>
+                  <div class="pw-wrap">
+                    <span class="ring-s"></span><span class="ring-p"></span><span class="arc"></span><span class="burst"></span>
+                    <span class="pw" data-t="power"><i data-i="power" class="pw-ic"></i><span class="pw-l">Подключиться</span></span>
+                  </div>
+                  <div class="pills">
+                    <span class="pill on" data-t="ks"><i data-i="shield"></i>Kill switch вкл</span>
+                    <span class="pill on"><i data-i="lock"></i>Always-On вкл</span>
+                    <span class="pill"><i data-i="shuffle"></i>Мульти-хоп выкл</span>
+                    <span class="tip" id="ksTip">Правила уже в Windows Firewall</span>
+                  </div>
+                  <div class="srv-card" data-t="srv">
+                    <span class="srv-m"><span class="flag"><img src="flags/de.svg" alt=""></span><span class="srv-i"><b>Frankfurt №4</b><em>vless-reality · 185.23.48.117</em></span><i data-i="chev" class="srv-ch"></i></span>
+                    <span class="srv-cp"><i data-i="copy"></i></span>
+                  </div>
+                  <div class="st-grid">
+                    <span class="st"><i data-i="signal"></i><b id="c1ping">—</b><em>пинг</em></span>
+                    <span class="st"><i data-i="down" class="st-dn"></i><b id="c1down">0 Б/с</b><em>вниз</em></span>
+                    <span class="st"><i data-i="up"></i><b id="c1up">0 Б/с</b><em>вверх</em></span>
+                    <span class="st"><i data-i="timer"></i><b id="c1time">00:00:00</b><em>сессия</em></span>
+                  </div>
+                  <span class="ip"><span class="ip-orb"><i data-i="eyeoff" class="ip-eye"></i><span class="orb"></span></span><span class="ip-t" id="c1ip">IP открыт</span></span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
         </div>
       </div>
-
-    </figure>
-      <p class="ks-oversize-note">Если клиент исчезнет, маршрут уже закрыт.</p>
     </div>
   </div>
 </section>
 
-
-<section class="section split" id="split">
-  <div class="split-trail" aria-hidden="true">
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="none" focusable="false">
-      <defs>
-        <linearGradient id="splitTrailGradient" x1="0" y1="100" x2="0" y2="900" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#0f0d0d" stop-opacity="1"/>
-          <stop offset="0.48" stop-color="#0f0d0d" stop-opacity="1"/>
-          <stop offset="0.76" stop-color="#0f0d0d" stop-opacity="1"/>
-          <stop offset="1" stop-color="#0f0d0d" stop-opacity="1"/>
-        </linearGradient>
-        <filter id="splitTrailGlow" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="softGlow"/>
-          <feComponentTransfer in="softGlow" result="dimGlow">
-            <feFuncA type="linear" slope="0.45"/>
-          </feComponentTransfer>
-          <feMerge>
-            <feMergeNode in="SourceGraphic"/>
-            <feMergeNode in="dimGlow"/>
-          </feMerge>
-        </filter>
-      </defs>
-      <path d="
-        M 0,900
-        L 90,900
-        L 90,260
-        C 90,158 188,100 360,100
-        L 720,100
-        L 1080,100
-        C 1270,100 1350,158 1350,260
-        L 1350,900
-        L 1440,900
-        Z" fill="url(#splitTrailGradient)"/>
-    </svg>
-  </div>
-
-  <div class="wrap">
-
-    <div class="cut-head">
-      <h2 class="cut-title">Не всё<br>в туннель.</h2>
-      <p class="body cut-intro">Отметь процессы — и они пойдут напрямую, с твоим IP и без просадок в играх. Всё остальное останется в шифрованном туннеле. Правила пересобираются на лету, без переподключения.</p>
+<!-- SCENE 2: SERVERS -->
+<section class="scene" id="servers" data-scene="servers" style="--len:480vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>02</b> / серверы</p>
+      <h2 class="cap-h">Серверы<br>по цифрам.</h2>
+      <ol class="cap-steps">
+        <li>Весь список подписки в одном табло.</li>
+        <li>Пингуется параллельно, за пару секунд.</li>
+        <li>Сортировка по реальной задержке.</li>
+        <li>Лучший выберется сам. Или тобой.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
     </div>
-
-    <figure class="ui-stage" role="img" aria-label="Окно настроек wawity, вкладка «Раздельное туннелирование»">
-
-      <div class="ui-window" aria-hidden="true">
-        <div class="ui-titlebar">
-          <span class="ui-tb-left">
-            <img class="ui-tb-ico" src="wawity.ico" alt="" loading="lazy">
-            <span class="ui-tb-name">wawity</span>
-            <span class="ui-tb-search"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6"/></svg></span>
-          </span>
-          <span class="ui-tb-controls">
-            <span class="ui-ctrl"><svg width="10" height="10" viewBox="0 0 10 1" fill="none"><rect width="10" height="1" rx="0.5" fill="currentColor"/></svg></span>
-            <span class="ui-ctrl"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><rect x="0.5" y="0.5" width="8" height="8" rx="1.5" stroke="currentColor"/></svg></span>
-            <span class="ui-ctrl ui-ctrl--close"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-          </span>
-        </div>
-
-        <div class="ui-body">
-          <aside class="ui-side">
-            <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6a7.75 7.75 0 1 0 10 0m-5-2v8"/></svg>Подключение</span>
-            <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h4l3 8l4-16l3 8h4"/></svg>Анализ</span>
-            <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M7 9a4 4 0 1 0 8 0a4 4 0 0 0-8 0"/><path d="M5.75 15A8.015 8.015 0 1 0 15 2m-4 15v4m-4 0h8"/></g></svg>Серверы</span>
-            <span class="ui-nav-item ui-nav-item--active"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0-6 0"/></g></svg>Настройки</span>
-            <span class="ui-nav-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"/></svg>Дополнительно<svg class="ui-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 6l6 6l-6 6"/></svg></span>
-            <span class="ui-side-version">v0.3.0</span>
-          </aside>
-
-          <div class="ui-main">
-            <div class="ui-page-head">
-              <div class="ui-page-title">Настройки</div>
-              <div class="ui-page-sub">Настройте, как Wawity вас защищает</div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="640">
+          <div class="win">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
             </div>
-
-            <div class="ui-seg">
-              <span class="ui-seg-btn" title="Безопасность"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.252 20.601q-.613.233-1.252.399A12 12 0 0 1 3.5 6A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-.19 7.357M22 22l-5-5m0 5l5-5"/></svg></span>
-              <span class="ui-seg-btn" title="Подключение"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 6a7.75 7.75 0 1 0 10 0m-5-2v8"/></svg></span>
-              <span class="ui-seg-btn" title="Приватность"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M7 9a4 4 0 1 0 8 0a4 4 0 0 0-8 0"/><path d="M5.75 15A8.015 8.015 0 1 0 15 2m-4 15v4m-4 0h8"/></g></svg></span>
-              <span class="ui-seg-btn" title="Внешний вид"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6"/></svg></span>
-              <span class="ui-seg-btn ui-seg-btn--active"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm3 1h.01M9 8h.01"/></svg><span class="ui-seg-label">Раздельное туннелирование</span></span>
-              <span class="ui-seg-btn" title="О приложении"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01"/><path d="M11 12h1v4h1"/></g></svg></span>
-            </div>
-
-            <div class="ui-card">
-              <p class="ui-desc">Приложения из списка обходят VPN-туннель и используют ваш реальный IP.</p>
-
-              <div class="ui-steam">
-                <span class="ui-row-left">
-                  <svg class="ui-row-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 3v7h6l-8 11v-7H5z"/></svg>
-                  <span class="ui-row-text"><b>Не работает Steam?</b><i>Фикс в один тап: выводит Steam из туннеля и отключает DNS-фильтры, которые могут его ломать</i></span>
-                </span>
-                <span class="ui-toggle ui-toggle--on"><span class="ui-thumb ui-thumb--on"></span></span>
-              </div>
-
-              <div class="ui-mode-block">
-                <div class="ui-mode-pill">
-                  <span class="ui-mode-btn" title="Отключён"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.67 17.667A12 12 0 0 1 12 21A12 12 0 0 1 3.5 6c.794.036 1.583-.006 2.357-.124m3.128-.926A12 12 0 0 0 12 3a12 12 0 0 0 8.5 3a12 12 0 0 1-1.116 9.376M3 3l18 18"/></svg></span>
-                  <span class="ui-mode-btn ui-mode-btn--active" title="Всё через VPN, кроме выбранного"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v2.172a2 2 0 0 1-.586 1.414L15 12v7l-6 2v-8.5L4.52 7.572A2 2 0 0 1 4 6.227z"/></svg></span>
-                  <span class="ui-mode-btn" title="Только выбранное через VPN"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2m8-16h2a2 2 0 0 1 2 2v2m-4 12h2a2 2 0 0 0 2-2v-2M9 12h6m-3-3v6"/></svg></span>
-                  <span class="ui-mode-btn" title="VPN только на заблокированное"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M15.51 15.56A5 5 0 1 0 12 17"/><path d="M18.832 17.86A9 9 0 1 0 12 21m0-9v9"/></g></svg></span>
-                </div>
-                <div class="ui-mode-explain"><b>Всё через VPN, кроме выбранного</b><i>Выбранные приложения, домены и IP идут напрямую с реальным IP. Остальной трафик — в туннеле.</i></div>
-              </div>
-
-              <div class="ui-templates">
-                <span class="ui-list-title">Готовые правила</span>
-                <div class="ui-tpl-row ui-tpl-row--on">
-                  <span class="ui-tpl-check ui-tpl-check--on"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/></svg></span>
-                  <span class="ui-tpl-label">Торрент-клиенты не нагружают сеть</span>
-                  <span class="ui-tpl-help"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9 4v.01"/><path d="M12 13a2 2 0 0 0 .914-3.782a1.98 1.98 0 0 0-2.414.483"/></g></svg></span>
-                </div>
-                <div class="ui-tpl-row">
-                  <span class="ui-tpl-check"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/></svg></span>
-                  <span class="ui-tpl-label">Банки, госуслуги и MAX, VK — напрямую</span>
-                  <span class="ui-tpl-help"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9 4v.01"/><path d="M12 13a2 2 0 0 0 .914-3.782a1.98 1.98 0 0 0-2.414.483"/></g></svg></span>
-                </div>
-              </div>
-
-              <div class="ui-subtabs">
-                <span class="ui-subtab"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 19l2.757-7.351A1 1 0 0 1 8.693 11H21a1 1 0 0 1 .986 1.164l-.996 5.211A2 2 0 0 1 19.026 19za2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h4l3 3h7a2 2 0 0 1 2 2v2"/></svg>Из файла</span>
-                <span class="ui-subtab ui-subtab--active"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm3 1h.01M9 8h.01"/></svg>Установленные приложения</span>
-                <span class="ui-subtab"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm4 4h4m-2-2v4m7-3v.01M18 13v.01"/></svg>Найти игры</span>
-                <span class="ui-subtab"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m.6-3h16.8M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 0 18"/></g></svg>Домены</span>
-                <span class="ui-subtab"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 9a6 6 0 1 0 12 0A6 6 0 0 0 6 9"/><path d="M12 3q2 .5 2 6c0 5.5-.667 5.667-2 6m0-12q-2 .5-2 6c0 5.5.667 5.667 2 6M6 9h12M3 20h7m4 0h7m-11 0a2 2 0 1 0 4 0a2 2 0 0 0-4 0m2-5v3"/></g></svg>IP</span>
-              </div>
-
-              <ul class="ui-rules">
-                <li class="ui-rule">
-                  <svg class="ui-rule-ico" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M9 9h6v6H9zm-6 1h2m-2 4h2m5-11v2m4-2v2m7 5h-2m2 4h-2m-5 7v-2m-4 2v-2"/></g></svg>
-                  <span class="ui-rule-value">cs2.exe</span>
-                  <span class="ui-rule-x"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg></span>
-                </li>
-                <li class="ui-rule">
-                  <svg class="ui-rule-ico" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M9 9h6v6H9zm-6 1h2m-2 4h2m5-11v2m4-2v2m7 5h-2m2 4h-2m-5 7v-2m-4 2v-2"/></g></svg>
-                  <span class="ui-rule-value">easyantic.exe</span>
-                  <span class="ui-rule-x"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg></span>
-                </li>
-                <li class="ui-rule">
-                  <svg class="ui-rule-ico" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M9 9h6v6H9zm-6 1h2m-2 4h2m5-11v2m4-2v2m7 5h-2m2 4h-2m-5 7v-2m-4 2v-2"/></g></svg>
-                  <span class="ui-rule-value">beservice.exe</span>
-                  <span class="ui-rule-x"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg></span>
-                </li>
-              </ul>
-
-              <div class="ui-bypass">
-                <p class="ui-list-title">Приложения в обходе (2)</p>
-                <div class="ui-bypass-item">
-                  <svg class="ui-bypass-ico" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm3 1h.01M9 8h.01"/></svg>
-                  <span class="ui-bypass-name">steam.exe</span>
-                  <span class="ui-bypass-path">C:\Program Files (x86)\Steam\steam.exe</span>
-                  <span class="ui-rule-x"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg></span>
-                </div>
-                <div class="ui-bypass-item">
-                  <svg class="ui-bypass-ico" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zm3 1h.01M9 8h.01"/></svg>
-                  <span class="ui-bypass-name">riotclient.exe</span>
-                  <span class="ui-bypass-path">C:\Riot Games\Riot Client\riotclient.exe</span>
-                  <span class="ui-rule-x"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg></span>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i on"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c2">
+                  <div class="pg-head">
+                    <div><div class="pg-t">Серверы</div><div class="pg-s">Основная · 11 серверов</div></div>
+                    <div class="c2-sel">выбран: <b id="c2sel">Frankfurt №4</b></div>
+                  </div>
+                  <div class="c2-tools">
+                    <span class="c2-search"><i data-i="search"></i>Поиск по серверам</span>
+                    <span class="c2-chip on">Основная</span><span class="c2-chip">Game-Fast</span>
+                    <span class="c2-ping" data-t="pingall"><i data-i="zap"></i><span id="c2pl">Пинговать все</span></span>
+                  </div>
+                  <div class="c2-cols"><span>сервер</span><span>протокол</span><span>задержка</span></div>
+                  <div class="c2-list" data-t="list"><div class="c2-in" id="c2in"></div></div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
         </div>
       </div>
-    </figure>
-
-    <div class="cut-poster" aria-hidden="true">
-      <div class="cut-word">НАПРЯМУЮ</div>
-      <div class="cut-band"><span class="cut-band-inner">ЧЕРЕЗ VPN</span></div>
-      <p class="cut-postscript">ТОЛЬКО НУЖНОЕ.</p>
-    </div>
-
-    <div class="cut-notes">
-      <div class="cut-note">
-        <h3>Играм — прямой путь.</h3>
-        <p>Игры в обходе туннеля используют твой обычный IP от провайдера. Их трафик не проходит через VPN-сервер, а приоритет DSCP&nbsp;46 расступается в очередях роутера.</p>
-      </div>
-      <div class="cut-note cut-note--apps">
-        <h3>Приложениям — свой маршрут.</h3>
-        <p>Выбранные приложения идут по шифрованному каналу до сервера: стриминги видят нужную страну, DNS не утекает мимо, история — только твой.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-<section class="section" id="compare" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head center" data-reveal>
-      <p class="mono-label">разница</p>
-      <h2 class="display h-section">Обычный VPN против<br>инструмента для игр</h2>
-    </div>
-    <div class="cmp-panel" data-reveal>
-      <div class="cmp-col us cmp-us">
-        <h3><span class="logo-mark" style="width:20px;height:20px"><img src="wawity.ico" alt=""></span>wawity</h3>
-        <ul>
-          <li><span class="cmp-mark">+</span><span><b>8 протоколов:</b> VLESS, Reality, Hysteria 2, TUIC — клиент сам найдёт рабочий</span></li>
-          <li><span class="cmp-mark">+</span><span><b>Игры идут напрямую</b> с приоритетом DSCP 46 — пинг как без VPN</span></li>
-          <li><span class="cmp-mark">+</span><span><b>Античиты находятся сами</b> и выводятся из туннеля одним списком</span></li>
-          <li><span class="cmp-mark">+</span><span><b>Kill switch + Always-On в файрволе Windows</b> — переживают смерть процесса и перезагрузку</span></li>
-          <li><span class="cmp-mark">+</span><span><b>DNS-центр:</b> 12 резолверов и автопереход, если провайдер глушит</span></li>
-          <li><span class="cmp-mark">+</span><span><b>Готовые правила для РФ:</b> банки, госуслуги и MAX — напрямую одним тумблером</span></li>
-          <li><span class="cmp-mark">+</span><span><b>Стример-режим:</b> под OBS блюрится IP, серверы и трафик</span></li>
-          <li><span class="cmp-mark">+</span><span><b>~24 МБ</b> нативного Rust × sing-box. Старт быстрее секунды</span></li>
-        </ul>
-        <p class="cmp-note">// нативный rust × sing-box</p>
-      </div>
-      <div class="cmp-col them cmp-them">
-        <h3>Типичный VPN</h3>
-        <ul>
-          <li><span class="cmp-mark">×</span><span>WireGuard или OpenVPN — и всё</span></li>
-          <li><span class="cmp-mark">×</span><span>Весь трафик в туннель, «игровой режим» — галочка в интерфейсе</span></li>
-          <li><span class="cmp-mark">×</span><span>Про античиты узнают от тебя в поддержке</span></li>
-          <li><span class="cmp-mark">×</span><span>Kill switch внутри приложения — легко обходится</span></li>
-          <li><span class="cmp-mark">×</span><span>200–300 МБ Electron-клиента</span></li>
-        </ul>
-      </div>
     </div>
   </div>
 </section>
-<section class="section" id="download" style="padding-top:0">
-  <div class="wrap">
-    <div class="section-head" data-reveal>
-      <p class="mono-label">загрузка</p>
-      <h2 class="display h-section">Одно ядро.<br>Три формы.</h2>
-      <p class="body">Десктоп с окном, консоль для терминала и тихая установка на сервер. Отличается только способ управления — защита везде одинаковая.</p>
-    </div>
 
-    <div class="dl-grid" data-reveal>
-      <div class="dl-card">
-        <span class="tag">рекомендуем</span>
-        <h3>Desktop</h3>
-        <p>Окно с картой серверов, графиками трафика и треем. Для тех, кто хочет просто нажать «Подключиться» и зайти в игру.</p>
-        <div class="dl-list">
-          <span>Массовый пинг и автовыбор сервера</span>
-          <span>Поиск игр для обхода туннеля</span>
-          <span>Discord Rich Presence</span>
+<!-- SCENE 3: SPLIT -->
+<section class="scene" id="split" data-scene="split" style="--len:500vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>03</b> / сплит-туннелинг</p>
+      <h2 class="cap-h">Не всё<br>в туннель.</h2>
+      <ol class="cap-steps">
+        <li>Steam, Epic, Riot и Battle.net сканируются сами.</li>
+        <li>Игры и античиты находятся одним списком.</li>
+        <li>Отметь, что пустить напрямую. Без переподключения.</li>
+        <li>Игре прямой путь и DSCP 46. Остальному туннель.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
+    </div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="840">
+          <div class="win" style="height:680px">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i on"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c3">
+                  <div class="pg-head"><div><div class="pg-t">Настройки</div><div class="pg-s">Настройте, как Wawity вас защищает</div></div></div>
+                  <div class="seg">
+                    <span class="seg-b"><i data-i="shield"></i></span><span class="seg-b"><i data-i="power"></i></span><span class="seg-b"><i data-i="eyeoff"></i></span><span class="seg-b"><i data-i="sparkles"></i></span>
+                    <span class="seg-b on"><i data-i="app"></i>Раздельное туннелирование</span><span class="seg-b"><i data-i="info"></i></span>
+                  </div>
+                  <div class="c3-card">
+                    <div class="c3-mode"><i data-i="filter"></i><span><b>Всё через VPN, кроме выбранного</b><em>Выбранные приложения, домены и IP идут напрямую с реальным IP.</em></span></div>
+                    <div class="subtabs">
+                      <span class="subt">Из файла</span>
+                      <span class="subt on" data-st="apps">Установленные приложения</span>
+                      <span class="subt" data-t="games" data-st="games"><i data-i="gamepad"></i>Найти игры</span>
+                      <span class="subt">Домены</span><span class="subt">IP</span>
+                    </div>
+                    <div class="c3-body">
+                      <div class="c3-apps" id="c3apps">
+                        <span class="app-r"><i data-i="app"></i><b>chrome.exe</b><em>C:\Program Files\Google\Chrome\Application</em></span>
+                        <span class="app-r"><i data-i="app"></i><b>Discord.exe</b><em>C:\Users\me\AppData\Local\Discord</em></span>
+                        <span class="app-r"><i data-i="app"></i><b>Telegram.exe</b><em>C:\Users\me\AppData\Roaming\Telegram Desktop</em></span>
+                        <span class="app-r"><i data-i="app"></i><b>obs64.exe</b><em>C:\Program Files\obs-studio\bin\64bit</em></span>
+                      </div>
+                      <div class="c3-scan" id="c3scan">
+                        <div class="scan-top"><span id="c3launcher">Сканирую Steam…</span><span class="mono" id="c3pct">0%</span></div>
+                        <div class="scan-bar"><i id="c3bar"></i></div>
+                        <div class="games" id="c3games"></div>
+                      </div>
+                    </div>
+                    <div class="c3-foot"><span>В обходе туннеля: <b id="c3n">0</b></span><span class="mono dim">правила пересобираются на лету</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="route" id="route">
+            <div class="lane lane-d" id="laneD">
+              <span class="node"><i data-i="gamepad"></i>cs2.exe</span>
+              <span class="track"><span class="track-l">напрямую · DSCP 46</span></span>
+              <span class="node">игровой сервер</span>
+            </div>
+            <div class="lane lane-t">
+              <span class="node"><i data-i="app"></i>chrome.exe</span>
+              <span class="track"><span class="track-l">туннель · vless reality</span></span>
+              <span class="node">Frankfurt №4</span>
+            </div>
+          </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
         </div>
-        <div class="dl-file"><span>WawitySetup-Desktop.exe</span><span>~24 МБ</span></div>
-        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
-        <p class="dl-doc"><a href="docs.html">Установка и первый запуск →</a></p>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="dl-card">
-        <span class="tag">консоль</span>
-        <h3>CLI</h3>
-        <p>Команда <code style="font-family:var(--f-mono);font-size:.9em">wawity</code> в любом терминале и интерактивная консоль. Для слабых машин, SSH-сессий и скриптов.</p>
-        <div class="dl-list">
-          <span>Фоновый режим без окна</span>
-          <span>Вывод --json для автоматизации</span>
-          <span>TUI-дашборд из девяностых — в хорошем смысле</span>
+<!-- SCENE 4: KILL SWITCH -->
+<section class="scene" id="killswitch" data-scene="kill" style="--len:520vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>04</b> / kill switch</p>
+      <h2 class="cap-h">Убей процесс.<br>Ничего не утечёт.</h2>
+      <ol class="cap-steps">
+        <li>Kill switch и Always-On: два тумблера.</li>
+        <li>Правила уходят в Windows Firewall.</li>
+        <li>Снимаем задачу. Клиента больше нет.</li>
+        <li>Маршрут всё ещё закрыт. Утекло 0 байт.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
+    </div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="640">
+          <div class="fw" id="fw">
+            <div class="fw-head"><span><i data-i="shield"></i>Брандмауэр Защитника Windows · исходящие правила</span><span class="mono" id="fwClock">процесс wawity-app.exe: нет</span></div>
+            <div class="fw-rules">
+              <div class="fw-r"><span>WAWITY_BLOCK_ALL</span><span>любой адрес</span><span>все программы</span><b class="bad">Блокировать</b></div>
+              <div class="fw-r"><span>WAWITY_ALLOW_TUN</span><span>wintun</span><span>sing-box.exe</span><b class="good">Разрешить</b></div>
+              <div class="fw-r"><span>WAWITY_ALLOW_LAN</span><span>192.168.0.0/16</span><span>локальная сеть</span><b class="good">Разрешить</b></div>
+            </div>
+            <div class="fw-field" id="fwField">
+              <div class="fw-src"><span>chrome.exe</span><span>steam.exe</span><span>Telegram.exe</span><span>svchost.exe</span></div>
+              <div class="fw-wall"><span>BLOCK *</span></div>
+              <div class="fw-dst">интернет</div>
+            </div>
+            <div class="fw-stats"><span>заблокировано пакетов <b class="mono" id="fwN">0</b></span><span>ушло мимо туннеля <b class="mono good">0 байт</b></span></div>
+          </div>
+          <div class="win" id="k4win">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i on"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c3">
+                  <div class="pg-head"><div><div class="pg-t">Настройки</div><div class="pg-s">Настройте, как Wawity вас защищает</div></div></div>
+                  <div class="seg">
+                    <span class="seg-b on"><i data-i="shield"></i>Безопасность</span><span class="seg-b"><i data-i="power"></i></span><span class="seg-b"><i data-i="eyeoff"></i></span><span class="seg-b"><i data-i="sparkles"></i></span><span class="seg-b"><i data-i="app"></i></span><span class="seg-b"><i data-i="info"></i></span>
+                  </div>
+                  <div class="c3-card rows">
+                    <div class="row"><i data-i="globe"></i><span><b>Профиль обхода DPI</b><em>Без доработок. Самый быстрый вариант для чистых сетей</em></span><span class="seg-mini"><i class="on">Выкл</i><i>Мягкий</i><i>Средний</i><i>Жёсткий</i></span></div>
+                    <div class="row" id="rowKs"><i data-i="shield"></i><span><b>Kill switch</b><em>Блокирует весь сетевой трафик при обрыве VPN. Предотвращает утечку IP</em></span><span class="tg" data-t="tgks"><i></i></span></div>
+                    <div class="row" id="rowAo"><i data-i="lock"></i><span><b>Подключение Always-On</b><em>Система не поднимет сеть сама, когда VPN отключён</em></span><span class="tg" data-t="tgao"><i></i></span></div>
+                    <div class="row"><i data-i="atom"></i><span><b>Квантовоустойчивое шифрование</b><em>Гибридный обмен ключами X25519 + ML-KEM768</em></span><span class="tg on v"><i></i></span></div>
+                    <div class="row"><i data-i="wifi"></i><span><b>Защита от DNS-утечек</b><em>Блокирует LAN DNS, LLMNR, mDNS и NetBIOS при подключении</em></span><span class="tg on v"><i></i></span></div>
+                    <div class="row"><i data-i="lock"></i><span><b>Строгая маршрутизация</b><em>Каждый пакет только через туннель</em></span><span class="tg on v"><i></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tm" id="tm">
+            <div class="tm-bar"><span><i data-i="activity"></i>Диспетчер задач</span><span class="wb-c"><i class="wc-min"></i><i class="wc-x" data-i="x"></i></span></div>
+            <div class="tm-cols"><span>Имя</span><span>ЦП</span><span>Память</span></div>
+            <div class="tm-r" id="tmW" data-t="tmw"><span><img src="wawity.ico" alt="">wawity-app.exe</span><span>0.4%</span><span>48,2 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>sing-box.exe</span><span>0.8%</span><span>31,0 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>cs2.exe</span><span>21.6%</span><span>2 104 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>steam.exe</span><span>1.1%</span><span>212 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>Discord.exe</span><span>0.9%</span><span>386 МБ</span></div>
+            <div class="tm-foot"><span class="tm-end" data-t="tmend">Снять задачу</span></div>
+          </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
         </div>
-        <div class="dl-file"><span>WawitySetup-CLI.exe</span><span>~18 МБ</span></div>
-        <a class="btn btn-dark" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI.exe">Скачать CLI<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
-        <p class="dl-doc"><a href="docs.html#cli-intro">Команды и флаги →</a></p>
-      </div>
-
-      <div class="dl-card">
-        <span class="tag">сервер</span>
-        <h3>Server install</h3>
-        <p>Тихая установка без окон и ярлыков. Для Windows Server, VDS и машин, где рабочий стол не нужен вовсе.</p>
-        <div class="dl-list">
-          <span>Ни одного диалогового окна</span>
-          <span>Свой каталог через -dir</span>
-          <span>Готово к автозапуску службами</span>
-        </div>
-        <div class="dl-file"><span>WawitySetup-CLI-serverinstall.exe</span><span>~18 МБ</span></div>
-        <a class="btn btn-dark" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI-serverinstall.exe">Для сервера<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
-        <p class="dl-doc"><a href="docs.html#install-server">Флаги установки →</a></p>
-      </div>
-    </div>
-
-    <div class="dl-foot" data-reveal>
-      <span>Windows 10 / 11</span><span>x64</span><span>kill switch из коробки</span><span><a href="docs.html#requirements">требования</a></span><span><a href="docs.html#uninstall">как удалить</a></span>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="faq" style="border-top:1px solid var(--hairline)">
-  <div class="wrap">
-    <div class="section-head center" data-reveal>
-      <p class="mono-label">вопросы</p>
-      <h2 class="display h-section">Коротко о важном</h2>
-    </div>
-    <div class="faq-wrap" data-reveal>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Нужен ли свой VPN-провайдер?<span class="faq-plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><div><p>Да. wawity — клиент, а не провайдер: нужна подписка любого сервиса с поддержкой VLESS, Reality, Hysteria 2 или другого из восьми протоколов. Вставляете ссылку — клиент настраивает всё сам.</p></div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">А античиты точно не заметят?<span class="faq-plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><div><p>Клиент находит процессы BattlEye, EAC и других и выводит их трафик из туннеля до того, как он вообще туда попадёт. Для античита ваша сеть выглядит как обычно — потому что она и есть обычная.</p></div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Что будет при обрыве соединения?<span class="faq-plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><div><p>Правила Windows Firewall заблокируют весь исходящий трафик, кроме туннеля. Даже если завершить процесс клиента принудительно, маршруты и правила откатятся сами — интернет не «потеряется» молча.</p></div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Вы собираете мои данные?<span class="faq-plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><div><p>Аккаунтов нет, подписки и настройки лежат локально в обычных файлах. Статистика использования отключена по умолчанию: если включить, уходят только версия клиента, ОС и код ошибки. Всю сетевую активность клиента видно в любом сниффере.</p></div></div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q" aria-expanded="false">Есть ли macOS или Linux?<span class="faq-plus" aria-hidden="true"></span></button>
-        <div class="faq-a"><div><p>Пока только Windows 10/11 x64: kill switch построен на Windows Firewall, а приоритет — на DSCP, это специфика ОС. Другие платформы в планах.</p></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta-band">
-  <div class="wrap cta-inner" data-reveal>
-    <p class="mono-label" style="margin-bottom:34px">бесплатно · открытый код</p>
-    <h2 class="display h-section">Поставь и забудь,<br>что он включён.</h2>
-    <p class="body">Единственное, что вы заметите после установки — сервер в игре стал ближе. Всё остальное wawity делает тихо.</p>
-    <div class="hero-actions">
-      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
-      <a class="btn btn-dark btn-lg" href="https://github.com/wawity/wawity-desktop">Исходники на GitHub</a>
-    </div>
-    <p class="hero-meta"><span>~24 МБ</span><span>без регистрации</span><span>удаление в два клика</span></p>
+<!-- COMPARE -->
+<section class="sec" id="compare">
+  <div class="sec-head" data-rv>
+    <p class="mono-k">// разница</p>
+    <h2 class="sec-h">Обычный VPN против<br>инструмента для игр.</h2>
+  </div>
+  <div class="cmp" data-rv>
+    <div class="cmp-h"><span></span><span><img src="wawity.ico" alt="">wawity</span><span>типичный VPN</span></div>
+    <div class="cmp-r"><span>Протоколы</span><span>8 штук: VLESS, Reality, Hysteria 2, TUIC… клиент сам найдёт рабочий</span><span>WireGuard или OpenVPN, и всё</span></div>
+    <div class="cmp-r"><span>Игры</span><span>Идут напрямую с приоритетом DSCP 46. Пинг как без VPN</span><span>Весь трафик в туннель, «игровой режим» как галочка</span></div>
+    <div class="cmp-r"><span>Античиты</span><span>Находятся сами и выводятся из туннеля одним списком</span><span>Узнают о них от тебя в поддержке</span></div>
+    <div class="cmp-r"><span>Kill switch</span><span>В Windows Firewall. Переживает смерть процесса и перезагрузку</span><span>Внутри приложения, легко обходится</span></div>
+    <div class="cmp-r"><span>DNS</span><span>12 резолверов и автопереход, если провайдер глушит</span><span>Какой дали</span></div>
+    <div class="cmp-r"><span>Для РФ</span><span>Банки, госуслуги и MAX напрямую одним тумблером</span><span>Отключай VPN каждый раз</span></div>
+    <div class="cmp-r"><span>Стрим</span><span>Под OBS блюрятся IP, серверы и трафик</span><span>Надейся, что не спалишь</span></div>
+    <div class="cmp-r"><span>Вес</span><span>~24 МБ нативного Rust × sing-box. Старт меньше секунды</span><span>200–300 МБ Electron</span></div>
   </div>
 </section>
 
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer-cols">
-      <div class="footer-about">
-        <a class="brand" href="#"><span class="logo-mark"><img src="wawity.ico" alt=""></span>wawity<i>.</i></a>
-        <p>VPN-клиент для Windows, который относится к вашему пингу серьёзнее, чем любой «игровой режим».</p>
+<!-- DOWNLOAD -->
+<section class="sec" id="download">
+  <div class="sec-head" data-rv>
+    <p class="mono-k">// загрузка</p>
+    <h2 class="sec-h">Одно ядро.<br>Три формы.</h2>
+    <p class="sec-p">Десктоп с окном, консоль для терминала и тихая установка на сервер. Отличается только способ управления, защита везде одинаковая.</p>
+  </div>
+  <div class="dl">
+    <div class="dl-list" data-rv>
+      <div class="dl-r dl-main">
+        <div class="dl-t"><span class="mono-k">рекомендуем</span><h3>Desktop</h3><p>Окно с картой серверов, графиками трафика и треем. Нажал «Подключиться», зашёл в игру.</p></div>
+        <div class="dl-a"><span class="mono dim">WawitySetup-Desktop.exe · ~24 МБ</span><a class="btn" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe"><i data-i="download"></i>Скачать</a><a class="dl-doc" href="docs.html">Установка и первый запуск →</a></div>
       </div>
-      <div class="footer-col">
-        <h5>Продукт</h5>
-        <a href="#features">Возможности</a>
-        <a href="#protocols">Протоколы</a>
-        <a href="#killswitch">Kill switch</a>
-        <a href="#split">Сплит-туннелинг</a>
-        <a href="#compare">Сравнение</a>
-        <a href="#download">Загрузка</a>
+      <div class="dl-r">
+        <div class="dl-t"><span class="mono-k">консоль</span><h3>CLI</h3><p>Команда <code>wawity</code> в любом терминале и TUI-дашборд. Для слабых машин, SSH и скриптов.</p></div>
+        <div class="dl-a"><span class="mono dim">WawitySetup-CLI.exe · ~18 МБ</span><a class="btn btn-ghost" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI.exe">Скачать CLI</a><a class="dl-doc" href="docs.html#cli-intro">Команды и флаги →</a></div>
       </div>
-      <div class="footer-col">
-        <h5>Ресурсы</h5>
-        <a href="docs.html">Документация</a>
-        <a href="#faq">FAQ</a>
-        <a href="contacts.html">Контакты</a>
-      </div>
-      <div class="footer-col">
-        <h5>Правовое</h5>
-        <a href="terms.html">Условия</a>
-        <a href="privacy.html">Приватность</a>
-      </div>
-      <div class="footer-col">
-        <h5>Связь</h5>
-        <a href="https://t.me/wawityvpn" target="_blank" rel="noopener">Telegram</a>
-        <a href="https://github.com/wawity/wawity-desktop" target="_blank" rel="noopener">GitHub</a>
+      <div class="dl-r">
+        <div class="dl-t"><span class="mono-k">сервер</span><h3>Server install</h3><p>Тихая установка без окон и ярлыков. Для Windows Server и VDS.</p></div>
+        <div class="dl-a"><span class="mono dim">WawitySetup-CLI-serverinstall.exe · ~18 МБ</span><a class="btn btn-ghost" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI-serverinstall.exe">Для сервера</a><a class="dl-doc" href="docs.html#install-server">Флаги установки →</a></div>
       </div>
     </div>
-    <span class="wordmark" aria-hidden="true">wawity.</span>
-    <div class="footer-bottom">
-      <span>© 2026 wawity · собрано на rust × sing-box</span>
-      <a href="#">наверх ↑</a>
+    <div class="term" data-rv id="term">
+      <div class="term-bar"><span><i data-i="terminal"></i>Windows PowerShell</span><span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span></div>
+      <pre class="term-body" id="termBody" aria-label="Пример сессии CLI"></pre>
     </div>
   </div>
+  <p class="dl-foot mono dim" data-rv>Windows 10 / 11 · x64 · kill switch из коробки · <a href="docs.html#requirements">требования</a> · <a href="docs.html#uninstall">как удалить</a></p>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-head" data-rv>
+    <p class="mono-k">// вопросы</p>
+    <h2 class="sec-h">Коротко о важном.</h2>
+  </div>
+  <div class="faq" data-rv>
+    <details><summary>Нужен ли свой VPN-провайдер?<i></i></summary><p>Да. wawity это клиент, а не провайдер: нужна подписка любого сервиса с VLESS, Reality, Hysteria 2 или другим из восьми протоколов. Вставляете ссылку, клиент настраивает всё сам.</p></details>
+    <details><summary>А античиты точно не заметят?<i></i></summary><p>Клиент находит процессы BattlEye, EAC и других и выводит их трафик из туннеля до того, как он туда попадёт. Для античита сеть выглядит обычной, потому что она и есть обычная.</p></details>
+    <details><summary>Что будет при обрыве соединения?<i></i></summary><p>Правила Windows Firewall заблокируют весь исходящий трафик, кроме туннеля. Даже если завершить процесс клиента принудительно, трафик не уйдёт мимо.</p></details>
+    <details><summary>Вы собираете мои данные?<i></i></summary><p>Аккаунтов нет, подписки и настройки лежат локально. Статистика использования выключена по умолчанию: если включить, уходят только версия клиента, ОС и код ошибки.</p></details>
+    <details><summary>Есть ли macOS или Linux?<i></i></summary><p>Пока только Windows 10/11 x64: kill switch построен на Windows Firewall, а приоритет на DSCP. Другие платформы в планах.</p></details>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <p class="mono-k" data-rv>бесплатно · открытый код · MIT</p>
+  <h2 class="cta-h" data-rv>Поставь и забудь,<br>что он включён.</h2>
+  <div class="cta-a" data-rv>
+    <a class="btn btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe"><i data-i="download"></i>Скачать для Windows</a>
+    <a class="btn btn-lg btn-ghost" href="https://github.com/wawity/wawity-desktop" target="_blank" rel="noopener">Исходники на GitHub</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-cols">
+    <div class="foot-about"><a class="brand" href="#top"><img src="wawity.ico" alt="">wawity<i>.</i></a><p>VPN-клиент для Windows, который относится к твоему пингу серьёзнее любого «игрового режима».</p></div>
+    <div class="foot-col"><h5>Продукт</h5><a href="#connect">Подключение</a><a href="#servers">Серверы</a><a href="#split">Сплит-туннелинг</a><a href="#killswitch">Kill switch</a><a href="#download">Загрузка</a></div>
+    <div class="foot-col"><h5>Ресурсы</h5><a href="docs.html">Документация</a><a href="#faq">FAQ</a><a href="contacts.html">Контакты</a></div>
+    <div class="foot-col"><h5>Правовое</h5><a href="terms.html">Условия</a><a href="privacy.html">Приватность</a></div>
+    <div class="foot-col"><h5>Связь</h5><a href="https://t.me/wawityvpn" target="_blank" rel="noopener">Telegram</a><a href="https://github.com/wawity/wawity-desktop" target="_blank" rel="noopener">GitHub</a></div>
+  </div>
+  <div class="foot-word" aria-hidden="true"><span>wawity.</span></div>
+  <div class="foot-bottom mono"><span>© 2026 wawity · rust × sing-box</span><a href="#top">наверх ↑</a></div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrambleTextPlugin.min.js" defer></script>
 <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
 <script src="blackhole.js" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded',function(){
-"use strict";
-var d=document;
-function $(s,c){return (c||d).querySelector(s)}
-function $$(s,c){return [].slice.call((c||d).querySelectorAll(s))}
-var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-var fine=matchMedia('(pointer:fine)').matches;
-var hasGsap=!!(window.gsap&&window.ScrollTrigger);
-if(hasGsap&&!reduced){
-  gsap.registerPlugin(ScrollTrigger);
-  if(window.ScrambleTextPlugin)gsap.registerPlugin(ScrambleTextPlugin);
-}
-var loader=$('#loader'),loadStarted=false;
-function startPoster(){
-  var poster=$('.poster');
-  if(!poster)return;
-  $$('.line-inner',poster).forEach(function(inner){
-    (function splitNode(parent){
-      [].slice.call(parent.childNodes).forEach(function(n){
-        if(n.nodeType===3){
-          var txt=n.textContent;parent.removeChild(n);
-          txt.split('').forEach(function(ch){
-            var s=d.createElement('span');
-            s.className='ch';s.setAttribute('aria-hidden','true');
-            s.textContent=(ch===' '?'\u00A0':ch);
-            parent.appendChild(s);
-          });
-        }else if(n.nodeType===1){parent.appendChild(n);splitNode(n)}
-      });
-    })(inner);
-  });
-  poster.classList.add('chars');
-  $$('.ch',poster).forEach(function(s,i){s.style.animationDelay=(0.15+i*0.03)+'s'});
-}
-function finishLoad(){
-  if(loadStarted)return;loadStarted=true;
-  d.body.classList.add('ready');
-  setTimeout(startPoster,reduced?0:260);
-  if(loader){
-    loader.classList.add('done');
-    setTimeout(function(){if(loader.parentNode)loader.parentNode.removeChild(loader)},1100);
-  }
-}
-if(reduced||!hasGsap||!loader){
-  finishLoad();
-}else{
-  window.addEventListener('load',function(){setTimeout(finishLoad,900)});
-  setTimeout(finishLoad,2400);
-}
-
-var nav=$('#nav'),bar=$('#scrollBar');
-function onScroll(){
-    nav.classList.toggle('scrolled',window.scrollY>40);
-  var h=d.documentElement,max=h.scrollHeight-h.clientHeight;
-  if(bar)bar.style.transform='scaleX('+(max>0?h.scrollTop/max:0)+')';
-}
-addEventListener('scroll',onScroll,{passive:true});onScroll();
-
-var lenis=null;
-if(window.Lenis&&!reduced){
-  lenis=new Lenis({lerp:.09,smoothWheel:true});
-  if(hasGsap){
-    lenis.on('scroll',ScrollTrigger.update);
-    gsap.ticker.add(function(t){lenis.raf(t*1000)});
-    gsap.ticker.lagSmoothing(0);
-  }else{
-    (function raf(t){lenis.raf(t);requestAnimationFrame(raf)})(0);
-  }
-}
-$$('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click',function(e){
-    var href=a.getAttribute('href');
-    if(href.length<2)return;
-    var t=d.querySelector(href);
-    if(!t)return;
-    e.preventDefault();setMenu(false);
-    if(lenis)lenis.scrollTo(t,{offset:-80,duration:1.4});
-    else t.scrollIntoView({behavior:'smooth'});
-  });
-});
-
-var burger=$('#burgerBtn'),menu=$('#mobileMenu');
-function setMenu(open){
-  menu.classList.toggle('open',open);
-  burger.setAttribute('aria-expanded',open?'true':'false');
-}
-burger.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.classList.contains('open'))});
-$$('a',menu).forEach(function(a){a.addEventListener('click',function(){setMenu(false)})});
-d.addEventListener('click',function(e){if(!menu.contains(e.target)&&!burger.contains(e.target))setMenu(false)});
-d.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false)});
-
-$$('.section-head h2').forEach(function(h){
-  var parts=h.innerHTML.split(/<br\s*\/?>/i);
-  if(parts.length===1&&parts[0].indexOf('<')===-1){}
-  h.innerHTML=parts.map(function(p){
-    return '<span class="rline"><span class="rline-in">'+p+'</span></span>';
-  }).join('');
-});
-
-if(hasGsap&&!reduced){
-  gsap.to('.hero-bg img',{yPercent:14,ease:'none',
-    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-  gsap.to('.hero-center',{yPercent:-12,opacity:.2,ease:'none',
-    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-  gsap.to('.tray-wrap',{yPercent:-18,ease:'none',
-    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-
-  var protoRow=$('.proto-row');
-  if(protoRow){
-    var phtml=protoRow.innerHTML;
-    protoRow.classList.add('proto-track');
-    protoRow.innerHTML='<div class="proto-set">'+phtml+'</div><div class="proto-set" aria-hidden="true">'+phtml+'</div>';
-    var mq=gsap.to(protoRow,{xPercent:-50,ease:'none',duration:32,repeat:-1});
-    var skewSet=gsap.quickSetter(protoRow,'skewX','deg');
-    var sk=0,ts=1;
-    ScrollTrigger.create({onUpdate:function(self){
-      var v=self.getVelocity();
-      var ns=gsap.utils.clamp(-9,9,v/-90);
-      if(Math.abs(ns)>Math.abs(sk))sk=ns;
-      var nt=Math.min(4,1+Math.abs(v)/800);
-      if(nt>ts)ts=nt;
-    }});
-    gsap.ticker.add(function(){
-      sk*=.92;ts+=(1-ts)*.05;
-      skewSet(sk);mq.timeScale(ts);
-    });
-  }
-
-  gsap.fromTo('.showcase-frame',{rotateX:15,y:70,transformPerspective:1200},
-    {rotateX:0,y:0,ease:'none',
-     scrollTrigger:{trigger:'.showcase-frame',start:'top bottom',end:'center 55%',scrub:.5}});
-
-  gsap.set('.section-head h2 .rline-in',{yPercent:115});
-  ScrollTrigger.batch('.section-head h2 .rline-in',{
-    start:'top 88%',once:true,
-    onEnter:function(els){gsap.to(els,{yPercent:0,duration:1.1,ease:'power3.out',stagger:.1,overwrite:true})}
-  });
-
-  $$('.mono-label').forEach(function(el){
-    ScrollTrigger.create({trigger:el,start:'top 92%',once:true,onEnter:function(){
-      gsap.to(el,{duration:1.2,ease:'none',scrambleText:{text:el.textContent,chars:'01<>/{}#$&@%!;:',speed:.4}});
-    }});
-  });
-
-  var rlCmd=$('.rl-cmd');
-  if(rlCmd&&window.ScrambleTextPlugin){
-    gsap.to(rlCmd,{duration:1.5,ease:'none',delay:1.7,scrambleText:{text:rlCmd.getAttribute('data-text'),chars:'01<>/{}#$&@%!;:',speed:.4}});
-  }
-
-  $$('.cnt').forEach(function(el){
-    var to=parseFloat(el.getAttribute('data-to')),pre=el.getAttribute('data-prefix')||'';
-    var obj={v:0};
-    ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:function(){
-      gsap.to(obj,{v:to,duration:1.6,ease:'power2.out',
-        onUpdate:function(){el.textContent=pre+Math.round(obj.v)}});
-    }});
-  });
-}else{
-  $$('.rline-in').forEach(function(el){el.style.transform='none'});
-}
-
-$$('.stat').forEach(function(el){
-  if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(en){
-      en.forEach(function(x){if(x.isIntersecting){el.classList.add('lit');io.disconnect()}});
-    },{threshold:.5});
-    io.observe(el);
-  }else el.classList.add('lit');
-});
-
-if(!reduced&&fine){
-  $$('.hero-actions .btn, .split-btn').forEach(function(btn){
-    btn.addEventListener('pointermove',function(e){
-      var r=btn.getBoundingClientRect();
-      var x=(e.clientX-r.left-r.width/2)/r.width;
-      var y=(e.clientY-r.top-r.height/2)/r.height;
-      btn.style.transform='translate('+x*10+'px,'+y*8+'px)';
-    });
-    btn.addEventListener('pointerleave',function(){btn.style.transform=''});
-  });
-}
-
-if(!reduced&&fine){
-  $$('.feat-card').forEach(function(card){
-    card.addEventListener('pointermove',function(e){
-      var r=card.getBoundingClientRect();
-      var px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
-      card.style.setProperty('--mx',(e.clientX-r.left)+'px');
-      card.style.setProperty('--my',(e.clientY-r.top)+'px');
-      card.style.transform='perspective(800px) rotateX('+(-py*3.5)+'deg) rotateY('+(px*3.5)+'deg)';
-    });
-    card.addEventListener('pointerleave',function(){card.style.transform=''});
-  });
-}
-
-if(!reduced&&fine){
-  var bgWrap=$('.hero-bg');
-  if(bgWrap){
-    bgWrap.style.transition='transform .9s cubic-bezier(.2,.6,.2,1)';
-    var pRaf=null;
-    $('.hero').addEventListener('pointermove',function(e){
-      if(pRaf)return;
-      pRaf=requestAnimationFrame(function(){
-        var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
-        bgWrap.style.transform='translate('+(x*-16)+'px,'+(y*-10)+'px)';
-        pRaf=null;
-      });
-    });
-  }
-}
-
-var pings=$$('.srv-ping').map(function(p){return{el:p,base:parseInt(p.getAttribute('data-base'),10)||20}});
-if(pings.length){
-  setInterval(function(){
-    pings.forEach(function(p){
-      if(Math.random()<.65){
-        var v=Math.max(4,p.base+Math.round(Math.random()*10-5));
-        p.el.textContent=v+'ms';
-        p.el.style.color=v<90?'#6ccb5f':v<180?'#f0d36a':'#ff9f6b';
-      }
-    });
-  },2200);
-}
-
-$$('.faq-item').forEach(function(item){
-  $('.faq-q',item).addEventListener('click',function(){
-    var wasOpen=item.classList.contains('open');
-    $$('.faq-item.open').forEach(function(o){o.classList.remove('open');$('.faq-q',o).setAttribute('aria-expanded','false')});
-    if(!wasOpen){item.classList.add('open');$('.faq-q',item).setAttribute('aria-expanded','true')}
-  });
-});
-
-$$('[data-swap]').forEach(function(fig){
-  var stack=$('.shot-stack',fig),imgs=$$('.shot-img',fig);
-  if(!stack||imgs.length<2)return;
-  var bar=d.createElement('div');
-  bar.className='style-toggle';
-  bar.setAttribute('role','group');
-  bar.setAttribute('aria-label','Стиль интерфейса');
-  var btns=[];
-  ['wawity','material'].forEach(function(name,i){
-    var b=d.createElement('button');
-    b.type='button';
-    b.className='st-btn'+(i===0?' is-on':'');
-    b.textContent=name;
-    b.setAttribute('aria-pressed',i===0?'true':'false');
-    b.addEventListener('click',function(){
-      var mat=i===1;
-      if(fig.classList.contains('is-material')===mat)return;
-      fig.classList.toggle('is-material',mat);
-      btns.forEach(function(x,j){
-        x.classList.toggle('is-on',j===i);
-        x.setAttribute('aria-pressed',j===i?'true':'false');
-      });
-    });
-    btns.push(b);
-    bar.appendChild(b);
-  });
-  stack.appendChild(bar);
-});
-
-if(!hasGsap||reduced){
-  if('IntersectionObserver' in window && !reduced){
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(en){
-        if(en.isIntersecting){en.target.classList.add('is-in');io.unobserve(en.target)}
-      });
-    },{rootMargin:'0px 0px -6% 0px',threshold:.05});
-    $$('[data-reveal]').forEach(function(el){io.observe(el)});
-  }else{
-    $$('[data-reveal]').forEach(function(el){el.classList.add('is-in')});
-  }
-}else{
-  gsap.set('[data-reveal]',{opacity:0,y:28});
-  ScrollTrigger.batch('[data-reveal]',{
-    start:'top 90%',once:true,
-    onEnter:function(els){gsap.to(els,{opacity:1,y:0,duration:.9,ease:'power3.out',stagger:.08,overwrite:true})}
-  });
-}
-});
-</script></body>
+<script src="promo.js" defer></script>
+</body>
 </html>
