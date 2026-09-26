@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>wawity. VPN, которого не видно в пинге</title>
+<meta name="description" content="Нативный VPN-клиент на Rust для Windows. Игровой трафик идёт мимо туннеля с приоритетом DSCP 46, античиты не видят VPN, kill switch работает на уровне файрвола. ~24 МБ.">
+<meta property="og:title" content="wawity: VPN, которого не видно в пинге">
+<meta property="og:description" content="Нативный клиент на Rust поверх sing-box: обход игр и античитов, системный QoS, kill switch в файрволе Windows. ~24 МБ без Electron.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#110e0d">
+<link rel="icon" href="wawity.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Unbounded:wght@500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="home.css">
+<noscript><style>.ch,[data-rv]{opacity:1!important;transform:none!important;filter:none!important}.intro{display:none}</style></noscript>
+</head>
+<body>
+
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="intro-mark"><img src="wawity.ico" alt=""><span>wawity<i>.</i></span></div>
+  <div class="intro-count"><span id="introNum">00</span><span>/ 100</span></div>
+  <div class="intro-line"><i id="introBar"></i></div>
+</div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top" aria-label="wawity, наверх"><img src="wawity.ico" alt="">wawity<i>.</i></a>
+  <nav class="nav-links" aria-label="Разделы">
+    <a href="#connect">Подключение</a>
+    <a href="#servers">Серверы</a>
+    <a href="#split">Сплит</a>
+    <a href="#killswitch">Kill switch</a>
+    <a href="#compare">Сравнение</a>
+    <a href="docs.html">Документация</a>
+  </nav>
+  <div class="nav-r">
+    <a class="nav-tg" href="https://t.me/wawityvpn" target="_blank" rel="noopener" aria-label="Telegram"><i data-i="send"></i></a>
+    <a class="btn btn-sm" href="#download">Скачать</a>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
+  </div>
+</header>
+<div class="mmenu" id="mmenu">
+  <a href="#connect">Подключение</a><a href="#servers">Серверы</a><a href="#split">Сплит-туннелинг</a><a href="#killswitch">Kill switch</a><a href="#compare">Сравнение</a><a href="#download">Загрузка</a><a href="#faq">FAQ</a><a href="docs.html">Документация</a>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <canvas class="hero-hole" aria-hidden="true"></canvas>
+  <div class="hero-shade" aria-hidden="true"></div>
+  <div class="hero-meta">
+    <span class="tag-live"><i></i>0.3.0 вышла</span>
+    <span>dns-калибровка</span><span>авто-фейловер</span><span>анти-RKN детект</span>
+  </div>
+  <div class="hero-body">
+    <h1 class="hero-h" id="heroH">VPN, которого<br>не видно в пинге.</h1>
+    <p class="hero-sub" data-rv>Игры идут мимо туннеля с приоритетом в роутере. Античиты видят обычную сеть. Kill switch живёт в файрволе Windows, а не в обещаниях приложения.</p>
+    <div class="ask" data-rv>
+      <i data-i="link" class="ask-ic"></i>
+      <span class="ask-field"><span class="ask-ph" id="askPh">вставь ссылку подписки</span><span class="ask-txt" id="askTxt"></span><span class="ask-caret"></span></span>
+      <span class="ask-ok" id="askOk"><i data-i="check"></i><b>8 серверов</b></span>
+      <a class="ask-go" href="#download" id="askGo" aria-label="Скачать"><i data-i="arrowUp"></i></a>
+    </div>
+    <div class="hero-foot" data-rv>
+      <a class="btn" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe"><i data-i="download"></i>Скачать для Windows</a>
+      <span class="mono dim">~24 МБ · Windows 10 / 11 · без регистрации</span>
+    </div>
+  </div>
+  <a class="scroll-cue" href="#manifest" aria-label="Листать вниз"><span>листай</span><i></i></a>
+</section>
+
+<!-- MARQUEE -->
+<div class="marq" id="protocols" aria-label="Протоколы">
+  <div class="marq-track" id="marq">
+    <span>VLESS</span><span>Reality</span><span>Hysteria 2</span><span>TUIC</span><span>Trojan</span><span>VMess</span><span>Shadowsocks</span><span>ShadowTLS</span>
+  </div>
+</div>
+
+<!-- MANIFEST -->
+<section class="manifest" id="manifest">
+  <p class="mono-k">// маршрут важнее протокола</p>
+  <p class="scrub" data-scrub>Никаких «игровых режимов» из маркетинга. Только системные механизмы Windows, которые реально влияют на задержку и безопасность. Меньше секунды на старт. Двадцать четыре мегабайта целиком. Восемь протоколов из одной ссылки.</p>
+</section>
+
+<span id="features" aria-hidden="true"></span>
+<!-- SCENE 1: CONNECT -->
+<section class="scene" id="connect" data-scene="connect" style="--len:460vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>01</b> / подключение</p>
+      <h2 class="cap-h">Одна кнопка.<br>Ноль конфигов.</h2>
+      <ol class="cap-steps">
+        <li>Подписка уже внутри: сервер выбран по пингу.</li>
+        <li>Клик. Никаких мастеров настройки.</li>
+        <li>Шесть проверок, пока ты моргаешь.</li>
+        <li>IP скрыт. Kill switch уже в файрволе.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
+    </div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="640">
+          <div class="win">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i on"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c1">
+                  <div class="c1-wm"><img src="wawity.ico" alt=""><b>wawity</b></div>
+                  <div class="pw-wrap">
+                    <span class="ring-s"></span><span class="ring-p"></span><span class="arc"></span><span class="burst"></span>
+                    <span class="pw" data-t="power"><i data-i="power" class="pw-ic"></i><span class="pw-l">Подключиться</span></span>
+                  </div>
+                  <div class="pills">
+                    <span class="pill on" data-t="ks"><i data-i="shield"></i>Kill switch вкл</span>
+                    <span class="pill on"><i data-i="lock"></i>Always-On вкл</span>
+                    <span class="pill"><i data-i="shuffle"></i>Мульти-хоп выкл</span>
+                    <span class="tip" id="ksTip">Правила уже в Windows Firewall</span>
+                  </div>
+                  <div class="srv-card" data-t="srv">
+                    <span class="srv-m"><span class="flag"><img src="flags/de.svg" alt=""></span><span class="srv-i"><b>Frankfurt №4</b><em>vless-reality · 185.23.48.117</em></span><i data-i="chev" class="srv-ch"></i></span>
+                    <span class="srv-cp"><i data-i="copy"></i></span>
+                  </div>
+                  <div class="st-grid">
+                    <span class="st"><i data-i="signal"></i><b id="c1ping">—</b><em>пинг</em></span>
+                    <span class="st"><i data-i="down" class="st-dn"></i><b id="c1down">0 Б/с</b><em>вниз</em></span>
+                    <span class="st"><i data-i="up"></i><b id="c1up">0 Б/с</b><em>вверх</em></span>
+                    <span class="st"><i data-i="timer"></i><b id="c1time">00:00:00</b><em>сессия</em></span>
+                  </div>
+                  <span class="ip"><span class="ip-orb"><i data-i="eyeoff" class="ip-eye"></i><span class="orb"></span></span><span class="ip-t" id="c1ip">IP открыт</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 2: SERVERS -->
+<section class="scene" id="servers" data-scene="servers" style="--len:480vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>02</b> / серверы</p>
+      <h2 class="cap-h">Серверы<br>по цифрам.</h2>
+      <ol class="cap-steps">
+        <li>Весь список подписки в одном табло.</li>
+        <li>Пингуется параллельно, за пару секунд.</li>
+        <li>Сортировка по реальной задержке.</li>
+        <li>Лучший выберется сам. Или тобой.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
+    </div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="640">
+          <div class="win">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i on"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c2">
+                  <div class="pg-head">
+                    <div><div class="pg-t">Серверы</div><div class="pg-s">Основная · 11 серверов</div></div>
+                    <div class="c2-sel">выбран: <b id="c2sel">Frankfurt №4</b></div>
+                  </div>
+                  <div class="c2-tools">
+                    <span class="c2-search"><i data-i="search"></i>Поиск по серверам</span>
+                    <span class="c2-chip on">Основная</span><span class="c2-chip">Game-Fast</span>
+                    <span class="c2-ping" data-t="pingall"><i data-i="zap"></i><span id="c2pl">Пинговать все</span></span>
+                  </div>
+                  <div class="c2-cols"><span>сервер</span><span>протокол</span><span>задержка</span></div>
+                  <div class="c2-list" data-t="list"><div class="c2-in" id="c2in"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 3: SPLIT -->
+<section class="scene" id="split" data-scene="split" style="--len:500vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>03</b> / сплит-туннелинг</p>
+      <h2 class="cap-h">Не всё<br>в туннель.</h2>
+      <ol class="cap-steps">
+        <li>Steam, Epic, Riot и Battle.net сканируются сами.</li>
+        <li>Игры и античиты находятся одним списком.</li>
+        <li>Отметь, что пустить напрямую. Без переподключения.</li>
+        <li>Игре прямой путь и DSCP 46. Остальному туннель.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
+    </div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="840">
+          <div class="win" style="height:680px">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i on"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c3">
+                  <div class="pg-head"><div><div class="pg-t">Настройки</div><div class="pg-s">Настройте, как Wawity вас защищает</div></div></div>
+                  <div class="seg">
+                    <span class="seg-b"><i data-i="shield"></i></span><span class="seg-b"><i data-i="power"></i></span><span class="seg-b"><i data-i="eyeoff"></i></span><span class="seg-b"><i data-i="sparkles"></i></span><span class="seg-b on"><i data-i="app"></i>Раздельное туннелирование</span><span class="seg-b"><i data-i="info"></i></span>
+                  </div>
+                  <div class="c3-card">
+                    <div class="c3-mode"><i data-i="filter"></i><span><b>Всё через VPN, кроме выбранного</b><em>Выбранные приложения, домены и IP идут напрямую с реальным IP.</em></span></div>
+                    <div class="subtabs">
+                      <span class="subt">Из файла</span>
+                      <span class="subt on" data-st="apps">Установленные приложения</span>
+                      <span class="subt" data-t="games" data-st="games"><i data-i="gamepad"></i>Найти игры</span>
+                      <span class="subt">Домены</span><span class="subt">IP</span>
+                    </div>
+                    <div class="c3-body">
+                      <div class="c3-apps" id="c3apps">
+                        <span class="app-r"><i data-i="app"></i><b>chrome.exe</b><em>C:\Program Files\Google\Chrome\Application</em></span>
+                        <span class="app-r"><i data-i="app"></i><b>Discord.exe</b><em>C:\Users\me\AppData\Local\Discord</em></span>
+                        <span class="app-r"><i data-i="app"></i><b>Telegram.exe</b><em>C:\Users\me\AppData\Roaming\Telegram Desktop</em></span>
+                        <span class="app-r"><i data-i="app"></i><b>obs64.exe</b><em>C:\Program Files\obs-studio\bin\64bit</em></span>
+                      </div>
+                      <div class="c3-scan" id="c3scan">
+                        <div class="scan-top"><span id="c3launcher">Сканирую Steam…</span><span class="mono" id="c3pct">0%</span></div>
+                        <div class="scan-bar"><i id="c3bar"></i></div>
+                        <div class="games" id="c3games"></div>
+                      </div>
+                    </div>
+                    <div class="c3-foot"><span>В обходе туннеля: <b id="c3n">0</b></span><span class="mono dim">правила пересобираются на лету</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="route" id="route">
+            <div class="lane lane-d" id="laneD">
+              <span class="node"><i data-i="gamepad"></i>cs2.exe</span>
+              <span class="track"><span class="track-l">напрямую · DSCP 46</span></span>
+              <span class="node">игровой сервер</span>
+            </div>
+            <div class="lane lane-t">
+              <span class="node"><i data-i="app"></i>chrome.exe</span>
+              <span class="track"><span class="track-l">туннель · vless reality</span></span>
+              <span class="node">Frankfurt №4</span>
+            </div>
+          </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 4: KILL SWITCH -->
+<section class="scene" id="killswitch" data-scene="kill" style="--len:520vh">
+  <div class="pin">
+    <div class="cap">
+      <p class="cap-k"><b>04</b> / kill switch</p>
+      <h2 class="cap-h">Убей процесс.<br>Ничего не утечёт.</h2>
+      <ol class="cap-steps">
+        <li>Kill switch и Always-On: два тумблера.</li>
+        <li>Правила уходят в Windows Firewall.</li>
+        <li>Снимаем задачу. Клиента больше нет.</li>
+        <li>Маршрут всё ещё закрыт. Утекло 0 байт.</li>
+      </ol>
+      <div class="cap-bar"><i></i></div>
+    </div>
+    <div class="stage">
+      <div class="stage-box">
+        <div class="dz" data-w="1000" data-h="640">
+          <div class="fw" id="fw">
+            <div class="fw-head"><span><i data-i="shield"></i>Брандмауэр Защитника Windows · исходящие правила</span><span class="mono" id="fwClock">процесс wawity-app.exe: нет</span></div>
+            <div class="fw-rules">
+              <div class="fw-r"><span>WAWITY_BLOCK_ALL</span><span>любой адрес</span><span>все программы</span><b class="bad">Блокировать</b></div>
+              <div class="fw-r"><span>WAWITY_ALLOW_TUN</span><span>wintun</span><span>sing-box.exe</span><b class="good">Разрешить</b></div>
+              <div class="fw-r"><span>WAWITY_ALLOW_LAN</span><span>192.168.0.0/16</span><span>локальная сеть</span><b class="good">Разрешить</b></div>
+            </div>
+            <div class="fw-field" id="fwField">
+              <div class="fw-src"><span>chrome.exe</span><span>steam.exe</span><span>Telegram.exe</span><span>svchost.exe</span></div>
+              <div class="fw-wall"><span>BLOCK *</span></div>
+              <div class="fw-dst">интернет</div>
+            </div>
+            <div class="fw-stats"><span>заблокировано пакетов <b class="mono" id="fwN">0</b></span><span>ушло мимо туннеля <b class="mono good">0 байт</b></span></div>
+          </div>
+          <div class="win" id="k4win">
+            <div class="win-bar">
+              <span class="wb-l"><img src="wawity.ico" alt=""><b>wawity</b><i data-i="search" class="wb-s"></i></span>
+              <span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span>
+            </div>
+            <div class="win-body">
+              <aside class="win-side">
+                <span class="nav-i"><i data-i="power"></i>Подключение</span>
+                <span class="nav-i"><i data-i="activity"></i>Анализ</span>
+                <span class="nav-i"><i data-i="globe"></i>Серверы</span>
+                <span class="nav-i on"><i data-i="settings"></i>Настройки</span>
+                <span class="nav-i"><i data-i="sparkles"></i>Дополнительно</span>
+                <span class="side-ver">v0.3.0</span>
+              </aside>
+              <div class="win-main cosmos">
+                <div class="c3">
+                  <div class="pg-head"><div><div class="pg-t">Настройки</div><div class="pg-s">Настройте, как Wawity вас защищает</div></div></div>
+                  <div class="seg">
+                    <span class="seg-b on"><i data-i="shield"></i>Безопасность</span><span class="seg-b"><i data-i="power"></i></span><span class="seg-b"><i data-i="eyeoff"></i></span><span class="seg-b"><i data-i="sparkles"></i></span><span class="seg-b"><i data-i="app"></i></span><span class="seg-b"><i data-i="info"></i></span>
+                  </div>
+                  <div class="c3-card rows">
+                    <div class="row"><i data-i="globe"></i><span><b>Профиль обхода DPI</b><em>Без доработок. Самый быстрый вариант для чистых сетей</em></span><span class="seg-mini"><i class="on">Выкл</i><i>Мягкий</i><i>Средний</i><i>Жёсткий</i></span></div>
+                    <div class="row" id="rowKs"><i data-i="shield"></i><span><b>Kill switch</b><em>Блокирует весь сетевой трафик при обрыве VPN. Предотвращает утечку IP</em></span><span class="tg" data-t="tgks"><i></i></span></div>
+                    <div class="row" id="rowAo"><i data-i="lock"></i><span><b>Подключение Always-On</b><em>Система не поднимет сеть сама, когда VPN отключён</em></span><span class="tg" data-t="tgao"><i></i></span></div>
+                    <div class="row"><i data-i="atom"></i><span><b>Квантовоустойчивое шифрование</b><em>Гибридный обмен ключами X25519 + ML-KEM768</em></span><span class="tg on v"><i></i></span></div>
+                    <div class="row"><i data-i="wifi"></i><span><b>Защита от DNS-утечек</b><em>Блокирует LAN DNS, LLMNR, mDNS и NetBIOS при подключении</em></span><span class="tg on v"><i></i></span></div>
+                    <div class="row"><i data-i="lock"></i><span><b>Строгая маршрутизация</b><em>Каждый пакет только через туннель</em></span><span class="tg on v"><i></i></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tm" id="tm">
+            <div class="tm-bar"><span><i data-i="activity"></i>Диспетчер задач</span><span class="wb-c"><i class="wc-min"></i><i class="wc-x" data-i="x"></i></span></div>
+            <div class="tm-cols"><span>Имя</span><span>ЦП</span><span>Память</span></div>
+            <div class="tm-r" id="tmW" data-t="tmw"><span><img src="wawity.ico" alt="">wawity-app.exe</span><span>0.4%</span><span>48,2 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>sing-box.exe</span><span>0.8%</span><span>31,0 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>cs2.exe</span><span>21.6%</span><span>2 104 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>steam.exe</span><span>1.1%</span><span>212 МБ</span></div>
+            <div class="tm-r"><span><i class="tm-dot"></i>Discord.exe</span><span>0.9%</span><span>386 МБ</span></div>
+            <div class="tm-foot"><span class="tm-end" data-t="tmend">Снять задачу</span></div>
+          </div>
+          <div class="cur"><span class="cur-ring"></span><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M4 2.5v17.2l4.6-4.4 3 6.7 3-1.3-3-6.6h6.4z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="sec" id="compare">
+  <div class="sec-head" data-rv>
+    <p class="mono-k">// разница</p>
+    <h2 class="sec-h">Обычный VPN против<br>инструмента для игр.</h2>
+  </div>
+  <div class="cmp" data-rv>
+    <div class="cmp-h"><span></span><span><img src="wawity.ico" alt="">wawity</span><span>типичный VPN</span></div>
+    <div class="cmp-r"><span>Протоколы</span><span>8 штук: VLESS, Reality, Hysteria 2, TUIC… клиент сам найдёт рабочий</span><span>WireGuard или OpenVPN, и всё</span></div>
+    <div class="cmp-r"><span>Игры</span><span>Идут напрямую с приоритетом DSCP 46. Пинг как без VPN</span><span>Весь трафик в туннель, «игровой режим» как галочка</span></div>
+    <div class="cmp-r"><span>Античиты</span><span>Находятся сами и выводятся из туннеля одним списком</span><span>Узнают о них от тебя в поддержке</span></div>
+    <div class="cmp-r"><span>Kill switch</span><span>В Windows Firewall. Переживает смерть процесса и перезагрузку</span><span>Внутри приложения, легко обходится</span></div>
+    <div class="cmp-r"><span>DNS</span><span>12 резолверов и автопереход, если провайдер глушит</span><span>Какой дали</span></div>
+    <div class="cmp-r"><span>Для РФ</span><span>Банки, госуслуги и MAX напрямую одним тумблером</span><span>Отключай VPN каждый раз</span></div>
+    <div class="cmp-r"><span>Стрим</span><span>Под OBS блюрятся IP, серверы и трафик</span><span>Надейся, что не спалишь</span></div>
+    <div class="cmp-r"><span>Вес</span><span>~24 МБ нативного Rust × sing-box. Старт меньше секунды</span><span>200–300 МБ Electron</span></div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="sec" id="download">
+  <div class="sec-head" data-rv>
+    <p class="mono-k">// загрузка</p>
+    <h2 class="sec-h">Одно ядро.<br>Три формы.</h2>
+    <p class="sec-p">Десктоп с окном, консоль для терминала и тихая установка на сервер. Отличается только способ управления, защита везде одинаковая.</p>
+  </div>
+  <div class="dl">
+    <div class="dl-list" data-rv>
+      <div class="dl-r dl-main">
+        <div class="dl-t"><span class="mono-k">рекомендуем</span><h3>Desktop</h3><p>Окно с картой серверов, графиками трафика и треем. Нажал «Подключиться», зашёл в игру.</p></div>
+        <div class="dl-a"><span class="mono dim">WawitySetup-Desktop.exe · ~24 МБ</span><a class="btn" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe"><i data-i="download"></i>Скачать</a><a class="dl-doc" href="docs.html">Установка и первый запуск →</a></div>
+      </div>
+      <div class="dl-r">
+        <div class="dl-t"><span class="mono-k">консоль</span><h3>CLI</h3><p>Команда <code>wawity</code> в любом терминале и TUI-дашборд. Для слабых машин, SSH и скриптов.</p></div>
+        <div class="dl-a"><span class="mono dim">WawitySetup-CLI.exe · ~18 МБ</span><a class="btn btn-ghost" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI.exe">Скачать CLI</a><a class="dl-doc" href="docs.html#cli-intro">Команды и флаги →</a></div>
+      </div>
+      <div class="dl-r">
+        <div class="dl-t"><span class="mono-k">сервер</span><h3>Server install</h3><p>Тихая установка без окон и ярлыков. Для Windows Server и VDS.</p></div>
+        <div class="dl-a"><span class="mono dim">WawitySetup-CLI-serverinstall.exe · ~18 МБ</span><a class="btn btn-ghost" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI-serverinstall.exe">Для сервера</a><a class="dl-doc" href="docs.html#install-server">Флаги установки →</a></div>
+      </div>
+    </div>
+    <div class="term" data-rv id="term">
+      <div class="term-bar"><span><i data-i="terminal"></i>Windows PowerShell</span><span class="wb-c"><i class="wc-min"></i><i class="wc-max"></i><i class="wc-x" data-i="x"></i></span></div>
+      <pre class="term-body" id="termBody" aria-label="Пример сессии CLI"></pre>
+    </div>
+  </div>
+  <p class="dl-foot mono dim" data-rv>Windows 10 / 11 · x64 · kill switch из коробки · <a href="docs.html#requirements">требования</a> · <a href="docs.html#uninstall">как удалить</a></p>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="faq">
+  <div class="sec-head" data-rv>
+    <p class="mono-k">// вопросы</p>
+    <h2 class="sec-h">Коротко о важном.</h2>
+  </div>
+  <div class="faq" data-rv>
+    <details><summary>Нужен ли свой VPN-провайдер?<i></i></summary><p>Да. wawity это клиент, а не провайдер: нужна подписка любого сервиса с VLESS, Reality, Hysteria 2 или другим из восьми протоколов. Вставляете ссылку, клиент настраивает всё сам.</p></details>
+    <details><summary>А античиты точно не заметят?<i></i></summary><p>Клиент находит процессы BattlEye, EAC и других и выводит их трафик из туннеля до того, как он туда попадёт. Для античита сеть выглядит обычной, потому что она и есть обычная.</p></details>
+    <details><summary>Что будет при обрыве соединения?<i></i></summary><p>Правила Windows Firewall заблокируют весь исходящий трафик, кроме туннеля. Даже если завершить процесс клиента принудительно, трафик не уйдёт мимо.</p></details>
+    <details><summary>Вы собираете мои данные?<i></i></summary><p>Аккаунтов нет, подписки и настройки лежат локально. Статистика использования выключена по умолчанию: если включить, уходят только версия клиента, ОС и код ошибки.</p></details>
+    <details><summary>Есть ли macOS или Linux?<i></i></summary><p>Пока только Windows 10/11 x64: kill switch построен на Windows Firewall, а приоритет на DSCP. Другие платформы в планах.</p></details>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <p class="mono-k" data-rv>бесплатно · открытый код · MIT</p>
+  <h2 class="cta-h" data-rv>Поставь и забудь,<br>что он включён.</h2>
+  <div class="cta-a" data-rv>
+    <a class="btn btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe"><i data-i="download"></i>Скачать для Windows</a>
+    <a class="btn btn-lg btn-ghost" href="https://github.com/wawity/wawity-desktop" target="_blank" rel="noopener">Исходники на GitHub</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-cols">
+    <div class="foot-about"><a class="brand" href="#top"><img src="wawity.ico" alt="">wawity<i>.</i></a><p>VPN-клиент для Windows, который относится к твоему пингу серьёзнее любого «игрового режима».</p></div>
+    <div class="foot-col"><h5>Продукт</h5><a href="#connect">Подключение</a><a href="#servers">Серверы</a><a href="#split">Сплит-туннелинг</a><a href="#killswitch">Kill switch</a><a href="#download">Загрузка</a></div>
+    <div class="foot-col"><h5>Ресурсы</h5><a href="docs.html">Документация</a><a href="#faq">FAQ</a><a href="contacts.html">Контакты</a></div>
+    <div class="foot-col"><h5>Правовое</h5><a href="terms.html">Условия</a><a href="privacy.html">Приватность</a></div>
+    <div class="foot-col"><h5>Связь</h5><a href="https://t.me/wawityvpn" target="_blank" rel="noopener">Telegram</a><a href="https://github.com/wawity/wawity-desktop" target="_blank" rel="noopener">GitHub</a></div>
+  </div>
+  <div class="foot-word" aria-hidden="true"><span>wawity.</span></div>
+  <div class="foot-bottom mono"><span>© 2026 wawity · rust × sing-box</span><a href="#top">наверх ↑</a></div>
+</footer>
+
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js" defer></script>
+<script src="blackhole.js" defer></script>
+<script src="site.js" defer></script>
+</body>
+</html>
