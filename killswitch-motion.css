@@ -3,35 +3,30 @@
 .ks-stage-fade{
   transform-origin:50% 45%;
   will-change:transform;
-  -webkit-mask-image:linear-gradient(180deg,
-    transparent 0%,
-    rgba(0,0,0,.015) 7%,
-    rgba(0,0,0,.04) 14%,
-    rgba(0,0,0,.09) 21%,
-    rgba(0,0,0,.17) 28%,
-    rgba(0,0,0,.29) 35%,
-    rgba(0,0,0,.45) 42%,
-    rgba(0,0,0,.64) 49%,
-    rgba(0,0,0,.82) 56%,
-    #000 63%,
-    #000 68%,
-    rgba(0,0,0,.78) 78%,
-    rgba(0,0,0,.42) 89%,
-    transparent 100%);
-  mask-image:linear-gradient(180deg,
-    transparent 0%,
-    rgba(0,0,0,.015) 7%,
-    rgba(0,0,0,.04) 14%,
-    rgba(0,0,0,.09) 21%,
-    rgba(0,0,0,.17) 28%,
-    rgba(0,0,0,.29) 35%,
-    rgba(0,0,0,.45) 42%,
-    rgba(0,0,0,.64) 49%,
-    rgba(0,0,0,.82) 56%,
-    #000 63%,
-    #000 68%,
-    rgba(0,0,0,.78) 78%,
-    rgba(0,0,0,.42) 89%,
-    transparent 100%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.015) 7%,rgba(0,0,0,.04) 14%,rgba(0,0,0,.09) 21%,rgba(0,0,0,.17) 28%,rgba(0,0,0,.29) 35%,rgba(0,0,0,.45) 42%,rgba(0,0,0,.64) 49%,rgba(0,0,0,.82) 56%,#000 63%,#000 68%,rgba(0,0,0,.78) 78%,rgba(0,0,0,.42) 89%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.015) 7%,rgba(0,0,0,.04) 14%,rgba(0,0,0,.09) 21%,rgba(0,0,0,.17) 28%,rgba(0,0,0,.29) 35%,rgba(0,0,0,.45) 42%,rgba(0,0,0,.64) 49%,rgba(0,0,0,.82) 56%,#000 63%,#000 68%,rgba(0,0,0,.78) 78%,rgba(0,0,0,.42) 89%,transparent 100%);
 }
-@media(prefers-reduced-motion:reduce){.ks-stage-fade{transform:none!important;will-change:auto}}
+/* Visible local fallback, rendered beneath the WebGL canvas when available. */
+.hero{
+  --hole-x:80%;
+  --hole-y:56%;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(ellipse 2.25% 10.8% at var(--hole-x) var(--hole-y),#07070b 0 66%,transparent 72%),
+    radial-gradient(ellipse 3.15% 14.2% at var(--hole-x) var(--hole-y),rgba(238,184,142,.92) 0 12%,rgba(255,117,49,.9) 24%,rgba(193,55,24,.78) 43%,rgba(93,33,38,.32) 62%,transparent 76%),
+    radial-gradient(ellipse 15.5% 4.7% at var(--hole-x) var(--hole-y),rgba(255,164,102,.12) 0 22%,rgba(244,115,58,.66) 31%,rgba(181,60,36,.42) 43%,rgba(86,48,63,.18) 58%,transparent 74%),
+    radial-gradient(ellipse 27% 28% at var(--hole-x) var(--hole-y),rgba(72,53,93,.24),rgba(44,36,66,.14) 43%,transparent 74%);
+  opacity:.92;
+  animation:holeFallbackDrift 18s ease-in-out infinite alternate;
+}
+@keyframes holeFallbackDrift{
+  from{transform:translate3d(-.35%,.25%,0) scale(1)}
+  to{transform:translate3d(.35%,-.25%,0) scale(1.025)}
+}
+@media(max-width:720px){.hero{--hole-x:76%;--hole-y:50%}.hero::before{opacity:.78}}
+@media(prefers-reduced-motion:reduce){
+  .ks-stage-fade{transform:none!important;will-change:auto}
+  .hero::before{animation:none}
+}
