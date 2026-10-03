@@ -88,6 +88,14 @@
 :is(#ks-app,#split-app) .app-add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 :is(#ks-app,#split-app) .bypass-list-wrap { display: flex; flex-direction: column; gap: 6px; }
 :is(#ks-app,#split-app) .bypass-list-title { font-family: var(--font-label); font-size: 9px; font-weight: 400; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(235, 238, 250, 0.4); }
+:is(#ks-app,#split-app) .bypass-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+:is(#ks-app,#split-app) .bypass-item { position: relative; display: flex; align-items: center; gap: 12px; padding: 11px 2px; border-radius: 0px; border: 0px; border-bottom: 1px solid var(--border); background: transparent; font-size: 11px; transition: background 0.18s; }
+:is(#ks-app,#split-app) .bypass-item:hover { background: color-mix(in oklch,var(--foreground) 4%,transparent); }
+:is(#ks-app,#split-app) .bypass-icon-wrap { display: flex; color: var(--muted-foreground); flex-shrink: 0; }
+:is(#ks-app,#split-app) .bypass-icon-wrap img { width: 16px; height: 16px; border-radius: 4px; object-fit: cover; }
+:is(#ks-app,#split-app) .bypass-path { font-family: var(--font-display); font-size: 13.5px; font-weight: 400; letter-spacing: -0.015em; color: var(--foreground); flex-shrink: 0; }
+:is(#ks-app,#split-app) .bypass-full-path { flex: 1 1 0%; min-width: 0px; color: rgba(235, 238, 250, 0.3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+:is(#ks-app,#split-app) .bypass-remove { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 9999px; border: 1px solid transparent; background: transparent; color: rgba(235, 238, 250, 0.4); cursor: pointer; flex-shrink: 0; transition: color 0.14s, background 0.14s; }
 :is(#ks-app,#split-app) .split-mode-block { display: flex; flex-direction: column; gap: 8px; }
 :is(#ks-app,#split-app) .mode-pill { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; padding: 1px; border: 1px solid var(--border); background: var(--border); }
 :is(#ks-app,#split-app) .mode-pill-btn { display: flex; align-items: center; justify-content: center; height: 36px; border-radius: 0px; border: 0px; background: transparent; color: var(--muted-foreground); cursor: pointer; transition: background 0.18s, color 0.18s; }
