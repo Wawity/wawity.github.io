@@ -1,6 +1,7 @@
 /* ===== Promo film block + custom player ===== */
 .promo{padding-bottom:clamp(40px,5vw,64px)}
 .promo .section-head{margin-bottom:clamp(32px,4vw,52px)}
+.promo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.4vw,32px)}
 .promo-stage{position:relative;border-radius:var(--r-card);isolation:isolate}
 .promo-stage::before{content:'';position:absolute;inset:8% 6% -6%;z-index:-1;border-radius:50%;
   background:radial-gradient(closest-side,rgba(254,44,2,.28),rgba(254,44,2,0));filter:blur(40px);opacity:.8;pointer-events:none}
@@ -73,5 +74,6 @@
   white-space:nowrap;color:#fff;opacity:0;pointer-events:none;transition:opacity .15s}
 .pc-scrub:hover .pc-tip{opacity:1}
 html.promo-lock,html.promo-lock body{overflow:hidden}
+@media(max-width:860px){.promo-grid{grid-template-columns:1fr}}
 @media(max-width:620px){.pc-time{min-width:0;font-size:11px}.pc-btn{width:34px;height:34px}.promo-meta i{display:none}}
 @media(prefers-reduced-motion:reduce){.promo-play::before{animation:none}.promo-frame,.promo-backdrop{transition:none}}
