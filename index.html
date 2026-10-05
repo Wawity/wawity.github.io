@@ -185,27 +185,39 @@
   <div class="wrap">
     <div class="section-head" data-reveal>
       <p class="mono-label">в движении</p>
-      <h2 class="display h-section">77 секунд —<br>и всё понятно.</h2>
-      <p class="body">Подключение в один клик, стример-режим, горячие клавиши, Discord RPC, DNS, сплит-туннелинг, kill switch и постквантовое шифрование — коротко и со звуком.</p>
+      <h2 class="display h-section">Демонстрации</h2>
+      <p class="body">Два ролика о клиенте: подробный обзор всех функций и короткое промо — подключение, kill switch, сплит-туннелинг и пинг в играх.</p>
     </div>
-    <div class="promo-stage" data-reveal>
-      <button class="promo-poster" id="promoOpen" type="button" aria-haspopup="dialog" aria-controls="promoModal" aria-label="Смотреть ролик о Wawity">
-        <video src="promo/wawity-teaser.mp4" poster="promo/poster.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true" tabindex="-1"></video>
-        <span class="promo-shade"></span>
-        <span class="promo-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.8v14.4a1 1 0 0 0 1.5.86l11.6-7.2a1 1 0 0 0 0-1.72L8.5 3.94A1 1 0 0 0 7 4.8z"/></svg></span>
-        <span class="promo-meta"><b>Wawity — клиент в движении</b><i>1:17 · со звуком</i></span>
-      </button>
+    <div class="promo-grid">
+      <div class="promo-stage" data-reveal>
+        <button class="promo-poster" type="button" aria-haspopup="dialog" aria-controls="promoModal" aria-label="Смотреть обзор Wawity"
+          data-src="promo/wawity-promo.mp4" data-poster="promo/poster.jpg" data-title="Обзор клиента Wawity"
+          data-chapters="0 Интро|3.6 Клиент|15.5 Стример-режим|19.1 Discord RPC|22.8 Горячие клавиши|28.5 Kill switch|33.3 Защита приложений|38.5 Постквантовое шифрование|42 DNS и Bootstrap|46.3 Сплит-туннелинг|52.8 Кастомизация|62.5 Установка|71 Открытый код">
+          <video src="promo/wawity-teaser.mp4" poster="promo/poster.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true" tabindex="-1"></video>
+          <span class="promo-shade"></span>
+          <span class="promo-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.8v14.4a1 1 0 0 0 1.5.86l11.6-7.2a1 1 0 0 0 0-1.72L8.5 3.94A1 1 0 0 0 7 4.8z"/></svg></span>
+          <span class="promo-meta"><b>Обзор клиента</b><i>1:17 · со звуком</i></span>
+        </button>
+      </div>
+      <div class="promo-stage" data-reveal>
+        <button class="promo-poster" type="button" aria-haspopup="dialog" aria-controls="promoModal" aria-label="Смотреть промо Wawity"
+          data-src="promo/wawity-demo-2.mp4" data-poster="promo/poster-2.jpg" data-title="Промо Wawity"
+          data-chapters="0 Интро|8 Wawity|12 Подключение|18 Kill switch|24 Сплит-туннелинг|30 Протоколы|34 Серверы и пинг|40 Стример-режим|44 Факты|52 Финал">
+          <video src="promo/wawity-demo-2-teaser.mp4" poster="promo/poster-2.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true" tabindex="-1"></video>
+          <span class="promo-shade"></span>
+          <span class="promo-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.8v14.4a1 1 0 0 0 1.5.86l11.6-7.2a1 1 0 0 0 0-1.72L8.5 3.94A1 1 0 0 0 7 4.8z"/></svg></span>
+          <span class="promo-meta"><b>Промо</b><i>0:56 · со звуком</i></span>
+        </button>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="promo-modal" id="promoModal" role="dialog" aria-modal="true" aria-label="Ролик о Wawity" hidden>
+<div class="promo-modal" id="promoModal" role="dialog" aria-modal="true" aria-label="Демонстрация Wawity" hidden>
   <div class="promo-backdrop" data-close></div>
   <canvas class="promo-ambient" width="64" height="36" aria-hidden="true"></canvas>
   <div class="promo-frame">
-    <video id="promoVideo" preload="none" playsinline poster="promo/poster.jpg">
-      <source src="promo/wawity-promo.mp4" type="video/mp4">
-    </video>
+    <video id="promoVideo" preload="none" playsinline></video>
     <div class="promo-flash" aria-hidden="true"></div>
     <button class="promo-x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="promo-ctrl">
@@ -213,7 +225,7 @@
         <svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>
         <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
       </button>
-      <span class="pc-time">0:00 / 1:17</span>
+      <span class="pc-time">0:00 / 0:00</span>
       <div class="pc-scrub" role="presentation">
         <div class="pc-track"><div class="pc-buf"></div><div class="pc-fill"></div></div>
         <div class="pc-chapters"></div>
@@ -669,7 +681,7 @@
           <span>Discord Rich Presence</span>
         </div>
         <div class="dl-file"><span>WawitySetup-Desktop.exe</span><span>~24 МБ</span></div>
-        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+        <a class="btn btn-light" href="https://github.com/Wawity/wawity-desktop/releases/download/0.4.0/WawitySetup-Desktop.exe">Скачать<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
         <p class="dl-doc"><a href="docs.html">Установка и первый запуск →</a></p>
       </div>
 
@@ -745,7 +757,7 @@
     <h2 class="display h-section">Поставь и забудь,<br>что он включён.</h2>
     <p class="body">Единственное, что вы заметите после установки — сервер в игре стал ближе. Всё остальное wawity делает тихо.</p>
     <div class="hero-actions">
-      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/0.3.0/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+      <a class="btn btn-light btn-lg" href="https://github.com/Wawity/wawity-desktop/releases/download/0.4.0/WawitySetup-Desktop.exe">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
       <a class="btn btn-dark btn-lg" href="https://github.com/wawity/wawity-desktop">Исходники на GitHub</a>
     </div>
     <p class="hero-meta"><span>~24 МБ</span><span>без регистрации</span><span>удаление в два клика</span></p>
