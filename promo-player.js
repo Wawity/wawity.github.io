@@ -1,4 +1,4 @@
-/* Demo films: shared modal player with ambient blur */
+
 (function(){
   'use strict';
   var d=document;
