@@ -857,3 +857,50 @@ body.ready .hero-fade.d3{animation-delay:.85s}
   html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
 }
+/* ---------- Wawity Ports download tab ---------- */
+.dl-tabs{display:flex;margin:0 auto 30px;border:1px solid var(--hairline);border-radius:999px;width:max-content;max-width:100%;overflow:hidden;background:rgba(0,0,0,.2)}
+.dl-tab{font-family:var(--f-label);font-size:10.5px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke);background:none;border:0;padding:11px 26px;cursor:pointer;transition:color .2s,background .2s}
+.dl-tab+.dl-tab{border-left:1px solid var(--hairline)}
+.dl-tab:hover{color:var(--paper)}
+.dl-tab.is-on{background:var(--paper);color:#0f0d0d}
+.dl-tab.is-on:hover{color:#0f0d0d}
+#dlPaneVpn[hidden],#dlPanePorts[hidden]{display:none}
+#dlPanePorts{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:26px;align-items:stretch}
+.ports-card{display:flex;flex-direction:column}
+.ports-card h3{margin-bottom:12px}
+.ports-card p{margin:0 0 14px}
+.ports-card .dl-list{margin:0 0 18px}
+.ports-card .dl-file{margin:0 0 18px}
+.ports-card .btn{width:100%;justify-content:center}
+.ports-card .btn-light{margin-top:auto}
+.ports-links{display:flex;margin-top:10px;border:1px solid var(--hairline);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.03)}
+.ports-links a{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;font-size:11px;color:var(--fog);text-decoration:none;transition:color .2s,background .2s}
+.ports-links a+a{border-left:1px solid var(--hairline)}
+.ports-links a svg{width:13px;height:13px;opacity:.8}
+.ports-links a:hover{color:var(--paper);background:rgba(254,44,2,.07)}
+.ports-desc{margin:0;position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:36px;align-items:center;border:1px solid var(--hairline);border-radius:var(--r-card);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.006));padding:36px}
+.ports-copy{position:relative;z-index:1}
+.ports-big{font-family:var(--f-wide);font-weight:400;letter-spacing:-.01em;line-height:1.14;font-size:clamp(23px,2.4vw,34px);color:var(--paper);margin:16px 0 18px}
+.ports-big .pt{color:var(--ember)}
+.ports-lead{margin:0;font-size:14.5px;line-height:1.75;color:var(--ash)}
+.ports-meta{margin-top:20px;display:flex;flex-wrap:wrap;border:1px solid var(--hairline);border-radius:999px;width:max-content;font-family:var(--f-label);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke)}
+.ports-meta span{padding:8px 16px}
+.ports-meta span+span{border-left:1px solid var(--hairline)}
+.ports-ghost{position:absolute;left:14px;bottom:-34px;z-index:0;font-family:var(--f-mono);font-size:clamp(90px,9vw,140px);line-height:1;font-weight:600;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.055);pointer-events:none;user-select:none}
+.ports-shotbox{position:relative;z-index:1}
+.ports-dots{display:flex;gap:5px;padding:0 2px 9px}
+.ports-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.14)}
+.ports-dots i:first-child{background:var(--ember);opacity:.85}
+.ports-shot{width:100%;height:auto;display:block;border-radius:12px}
+@keyframes dlExitL{to{transform:translateX(-56px);opacity:0}}
+@keyframes dlExitR{to{transform:translateX(56px);opacity:0}}
+@keyframes dlEnterR{from{transform:translateX(72px);opacity:0}}
+@keyframes dlEnterL{from{transform:translateX(-72px);opacity:0}}
+.pane-exit-l{animation:dlExitL .24s cubic-bezier(.55,0,.68,.19) forwards}
+.pane-exit-r{animation:dlExitR .24s cubic-bezier(.55,0,.68,.19) forwards}
+.pane-enter-r{animation:dlEnterR .42s cubic-bezier(.22,1,.36,1) backwards}
+.pane-enter-l{animation:dlEnterL .42s cubic-bezier(.22,1,.36,1) backwards}
+@media(prefers-reduced-motion:reduce){.pane-exit-l,.pane-exit-r,.pane-enter-r,.pane-enter-l{animation:none}}
+@media(max-width:1024px){#dlPanePorts{grid-template-columns:1fr}.ports-card .btn{margin-top:0}}
+@media(max-width:900px){.ports-desc{grid-template-columns:1fr;padding:24px}.ports-ghost{display:none}}
+
