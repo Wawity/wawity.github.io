@@ -97,6 +97,7 @@
       <a href="#trouble-cli"><span class="dot"></span>Проблемы CLI</a>
       <a href="#trouble-build"><span class="dot"></span>Ошибки сборки</a>
       <a href="#faq"><span class="dot"></span>FAQ</a>
+      <a href="#ports"><span class="dot"></span>Wawity Ports</a>
       <a href="#glossary"><span class="dot"></span>Глоссарий</a>
     </div>
   </aside>
@@ -486,7 +487,7 @@ WawitySetup-CLI.exe -serverinstall -uninstall</pre>
       <p class="lead">При запуске экран очищается, появляется цветной ASCII-логотип, анимированный маскот и меню. После каждой команды экран перерисовывается, поэтому логотип и строка состояния всегда остаются сверху.</p>
       <div class="code">
         <div class="code-top"><span class="tl-dot" style="background:#ff5f57"></span><span class="tl-dot" style="background:#febc2e"></span><span class="tl-dot" style="background:#28c840"></span><span class="code-file">wawity console</span></div>
-<pre><span class="k">W A W I T Y</span>   <span class="c">secure tunnel console v0.2.0</span>
+<pre><span class="k">W A W I T Y</span>   <span class="c">secure tunnel console v0.4.0</span>
 
   <span class="g">●</span> Германия    ↓ 12.4 МБ (350 КБ/с)    ↑ 1.1 МБ (28 КБ/с)
   <span class="g">kill-switch: активен</span>   post-quantum   pid 8124   серверов: 9
@@ -888,6 +889,40 @@ netstat -ano | findstr 18232</pre>
           <button class="tr-q"><span>Что произойдёт при перезагрузке с поднятым туннелем?</span><span class="tr-ic">+</span></button>
           <div class="tr-a"><div><p>Туннель опускается вместе с системой. Без always-on сеть после загрузки работает обычно; с always-on трафик будет заблокирован до повторного подключения.</p></div></div>
         </div>
+      </div>
+    </section>
+
+    <section class="block" id="ports">
+      <h2><span class="n">38</span>Wawity Ports</h2>
+      <p>Отдельное приложение экосистемы для тех, кому нужно <b>открыть входящий порт</b>: игровой сервер, NAS, панель. Оно создаёт правило в Windows Firewall и пробрасывает порт на роутере через UPnP, PCP или NAT-PMP — без веб-интерфейса роутера. Встроенная «Проверка портов» подтверждает реальную доступность из интернета, включая тестовый сервер-приманку с сопоставлением внешних узлов. Во время беты включена анонимная телеметрия двух событий: успешных открытий и ошибок — без IP и номеров портов.</p>
+      <p><a class="btn btn-light" href="https://github.com/Wawity/wawity-ports/releases">Скачать Wawity Ports</a></p>
+      <h3 id="ports-requirements">Требования (<b>Win 10 / 11</b>)</h3>
+      <ul class="list">
+        <li><b>ОС:</b> Windows 10 (1809+) или Windows 11, только x64.</li>
+        <li><b>Права:</b> запуск от администратора — создаются правила брандмауэра.</li>
+        <li><b>Интерфейс:</b> Microsoft Edge WebView2 Runtime (в Windows 11 есть из коробки).</li>
+        <li><b>Роутер:</b> для проброса — UPnP, PCP или NAT-PMP. Без него доступно только правило Windows для локальной сети.</li>
+      </ul>
+      <div class="note">
+        <div class="tag"><i></i>VPN</div>
+        При активном VPN с блокировкой локальной сети управление роутером недоступно — временно включите разрешение LAN в клиенте Wawity. Проверяйте порт при выключенном VPN: онлайн-сервисы показывают адрес сервера VPN, а не ваш домашний.
+      </div>
+      <h3 id="ports-size">Размер и файлы (<b>~16 МБ</b>)</h3>
+      <ul class="list">
+        <li><b>Сам EXE:</b> ~16 МБ вместе с интерфейсом.</li>
+        <li><b>wawity-ports-state.json:</b> журнал пробросов и аренд. Создаётся рядом с EXE — переносите вместе с программой.</li>
+        <li><b>wawity-ports.log:</b> журнал операций с ротацией при 1 МБ (остаётся <code>.log.1</code>).</li>
+        <li><b>Каталог:</b> должен быть доступен для записи — не «Program Files». Папка рабочего стола или загрузок подходит.</li>
+      </ul>
+      <h3 id="ports-portable">Без установщика (<b>0 установщиков</b>)</h3>
+      <ul class="list">
+        <li>Скачали <code>wawity-ports.exe</code>, запустили, подтвердили UAC — это вся установка.</li>
+        <li>Ничего не прописывается в автозагрузку и реестр; при удалении просто удалите файлы.</li>
+        <li>Перед удалением приложения удалите свои пробросы кнопкой удаления — иначе аренды истекут сами в течение часа.</li>
+      </ul>
+      <div class="note">
+        <div class="tag"><i></i>проверено</div>
+        Стенд: TP-Link EC220-G5 (AC1200). Сквозное открытие порта подтверждено внешними узлами из четырёх регионов, включая сценарий конфликта с ручным правилом роутера.
       </div>
     </section>
 
