@@ -666,10 +666,16 @@
   <div class="wrap">
     <div class="section-head" data-reveal>
       <p class="mono-label">загрузка</p>
-      <h2 class="display h-section">Одно ядро.<br>Три формы.</h2>
-      <p class="body">Десктоп с окном, консоль для терминала и тихая установка на сервер. Отличается только способ управления — защита везде одинаковая.</p>
+      <h2 class="display h-section">Сетевые утилиты Windows.<br>Выбирай, зачем пришёл.</h2>
+      <p class="body">Мы специализируемся на сетевых утилитах для Windows. Wawity VPN — полный контроль трафика, Wawity Ports — порты без мучений с роутером. Скачай именно ту, что решает твою задачу, — качество и защита в каждой одинаковые.</p>
     </div>
 
+    <div class="dl-tabs" role="group" aria-label="Что скачать">
+      <button type="button" class="dl-tab is-on" id="dlTabVpn" aria-pressed="true">VPN Client</button>
+      <button type="button" class="dl-tab" id="dlTabPorts" aria-pressed="false">Ports</button>
+    </div>
+
+    <div id="dlPaneVpn">
     <div class="dl-grid" data-reveal>
       <div class="dl-card">
         <span class="tag">рекомендуем</span>
@@ -695,7 +701,7 @@
           <span>TUI-дашборд из девяностых — в хорошем смысле</span>
         </div>
         <div class="dl-file"><span>WawitySetup-CLI.exe</span><span>~18 МБ</span></div>
-        <a class="btn btn-dark" href="https://github.com/Wawity/wawity-desktop/releases/download/0.4.0/WawitySetup-CLI.exe">Скачать CLI<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+        <a class="btn btn-dark" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI.exe">Скачать CLI<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
         <p class="dl-doc"><a href="docs.html#cli-intro">Команды и флаги →</a></p>
       </div>
 
@@ -709,13 +715,47 @@
           <span>Готово к автозапуску службами</span>
         </div>
         <div class="dl-file"><span>WawitySetup-CLI-serverinstall.exe</span><span>~18 МБ</span></div>
-        <a class="btn btn-dark" href="https://github.com/Wawity/wawity-desktop/releases/download/0.4.0/WawitySetup-CLI-serverinstall.exe">Для сервера<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+        <a class="btn btn-dark" href="https://github.com/Wawity/wawity-desktop/releases/download/desktop/WawitySetup-CLI-serverinstall.exe">Для сервера<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
         <p class="dl-doc"><a href="docs.html#install-server">Флаги установки →</a></p>
       </div>
     </div>
 
     <div class="dl-foot" data-reveal>
       <span>Windows 10 / 11</span><span>x64</span><span>kill switch из коробки</span><span><a href="docs.html#requirements">требования</a></span><span><a href="docs.html#uninstall">как удалить</a></span>
+    </div>
+    </div>
+
+    <div id="dlPanePorts" hidden>
+      <div class="dl-card ports-card">
+        <span class="tag">beta</span>
+        <h3>Wawity Ports</h3>
+        <p>Открывает порты для игр и серверов в два клика: входящее правило в Windows Firewall и проброс на роутере — без веб-интерфейса роутера и без отключения защиты.</p>
+        <div class="dl-list">
+          <span>Windows Firewall + проброс через UPnP / PCP / NAT-PMP</span>
+          <span>Автопродление аренды проброса</span>
+          <span>Проверка реальной доступности порта извне</span>
+        </div>
+        <div class="dl-file"><span>wawity-ports.exe</span><span>portable · без установки</span></div>
+        <a class="btn btn-light" href="https://github.com/Wawity/wawity-ports/releases">Скачать для Windows<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0-5-5m5 5 5-5"/></svg></a>
+        <div class="ports-links">
+          <a href="docs.html#ports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v15H4zM8 5v15M12 9h5"/></svg>Документация</a>
+          <a href="https://github.com/Wawity/wawity-ports" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6-6 6 6 6m6-12 6 6-6 6"/></svg>Исходный код</a>
+        </div>
+      </div>
+
+      <div class="ports-desc">
+        <div class="ports-copy">
+          <p class="mono-label">// wawity ports</p>
+          <p class="ports-big">Порты без<br>веб-интерфейса<span class="pt">.</span></p>
+          <p class="ports-lead">Входящее правило в Windows Firewall и проброс на роутере — в два клика. Аренда продлевается сама, а проверка подтверждает реальный доступ из интернета, а не строчку в таблице роутера.</p>
+          <div class="ports-meta"><span>Win 10 / 11</span><span>~16 МБ</span><span>0 установщиков</span></div>
+        </div>
+        <span class="ports-ghost" aria-hidden="true">:25565</span>
+        <figure class="ports-shotbox">
+          <span class="ports-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <img class="ports-shot" src="screen-ports.png" alt="Wawity Ports — главный экран со списком правил" width="1000" height="700" loading="lazy">
+        </figure>
+      </div>
     </div>
   </div>
 </section>
@@ -904,6 +944,26 @@ burger.addEventListener('click',function(e){e.stopPropagation();setMenu(!menu.cl
 $$('a',menu).forEach(function(a){a.addEventListener('click',function(){setMenu(false)})});
 d.addEventListener('click',function(e){if(!menu.contains(e.target)&&!burger.contains(e.target))setMenu(false)});
 d.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false)});
+
+var dlTabVpn=$('#dlTabVpn'),dlTabPorts=$('#dlTabPorts'),dlPaneVpn=$('#dlPaneVpn'),dlPanePorts=$('#dlPanePorts');
+if(dlTabVpn&&dlTabPorts){
+  var dlBusy=false;
+  var setDlTab=function(ports){
+    if(dlBusy)return;dlBusy=true;
+    dlTabVpn.classList.toggle('is-on',!ports);dlTabVpn.setAttribute('aria-pressed',ports?'false':'true');
+    dlTabPorts.classList.toggle('is-on',ports);dlTabPorts.setAttribute('aria-pressed',ports?'true':'false');
+    var out=ports?dlPaneVpn:dlPanePorts,inn=ports?dlPanePorts:dlPaneVpn;
+    if(!out||!inn){dlBusy=false;return;}
+    out.classList.add(ports?'pane-exit-l':'pane-exit-r');
+    setTimeout(function(){
+      out.hidden=true;out.classList.remove('pane-exit-l','pane-exit-r');
+      inn.hidden=false;inn.classList.add(ports?'pane-enter-r':'pane-enter-l');
+      setTimeout(function(){inn.classList.remove('pane-enter-r','pane-enter-l');dlBusy=false;},430);
+    },250);
+  };
+  dlTabVpn.addEventListener('click',function(){setDlTab(false)});
+  dlTabPorts.addEventListener('click',function(){setDlTab(true)});
+}
 
 $$('.section-head h2').forEach(function(h){
   var parts=h.innerHTML.split(/<br\s*\/?>/i);
